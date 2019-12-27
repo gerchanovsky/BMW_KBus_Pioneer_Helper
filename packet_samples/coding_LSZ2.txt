@@ -1,0 +1,154 @@
+﻿IKE->FF: time  4:09PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:10PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:11PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+Unknown->IKE:44 03 80 16 D1 
+[23 0x44]IKE->GLO:80 06 BF 17 44 7E 03 17 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:12PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:13PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:14PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:15PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+Unknown->IKE:44 03 80 16 D1 
+[23 0x44]IKE->GLO:80 06 BF 17 44 7E 03 17 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+PDC->LCM:3F 03 D0 00 EC 
+LCM->PDC:D0 0F 3F A0 09 13 30 27 01 37 30 14 35 07 09 45 21 
+PDC->LCM:3F 03 D0 00 EC 
+LCM->PDC:D0 0F 3F A0 09 13 30 27 01 37 30 14 35 07 09 45 21 
+PDC->LCM:3F 03 D0 00 EC 
+LCM->PDC:D0 0F 3F A0 09 13 30 27 01 37 30 14 35 07 09 45 21 
+PDC->LCM:3F 04 D0 08 00 E3 
+LCM->PDC:D0 23 3F A0 00 72 20 21 EF EF 20 20 20 21 22 22 20 22 22 72 21 20 72 D7 D7 20 20 72 72 BB 5B B6 C2 17 E0 01 5D 
+PDC->LCM:3F 04 D0 08 01 E2 
+LCM->PDC:D0 23 3F A0 01 E0 06 30 5B 60 06 00 FD FC F7 0E BC 0A 10 64 14 01 20 76 8C A4 33 64 00 A4 01 0C 28 0D 96 8F 15 
+PDC->LCM:3F 04 D0 08 02 E1 
+LCM->PDC:D0 23 3F A0 02 31 9F 05 85 56 F0 8C 21 11 EE 09 1E 28 41 0A F5 84 64 05 2F 4F 7F 15 42 A0 21 20 21 21 20 20 39 
+PDC->LCM:3F 04 D0 08 03 E0 
+LCM->PDC:D0 23 3F A0 03 F3 27 7F D7 FF 93 0A 0A 2F EC 03 37 C0 88 88 88 88 88 88 88 88 71 5E 51 47 3F 36 2F 2F 2F 30 67 
+PDC->LCM:3F 04 D0 08 04 E7 
+LCM->PDC:D0 23 3F A0 04 3C 15 FD 15 FE 15 12 FD 12 FE 12 86 C0 6D 47 89 B9 89 48 46 46 07 13 31 72 42 61 C0 18 F8 2D B7 
+PDC->LCM:3F 04 D0 08 05 E6 
+LCM->PDC:D0 23 3F A0 05 50 65 20 20 20 A1 6D 36 04 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 82 
+PDC->LCM:3F 04 D0 08 06 E5 
+LCM->PDC:D0 23 3F A0 06 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 6A 
+Unknown->IKE:9B 03 80 10 08 
+[Key 4-01 5-2B] KL_R:Pos1_Acc KL_15: KL_50:Pos3_StartIKE: Ignition ⸮,⸮?
+IKE->GLO:80 04 BF 11 01 2B 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+IKE->FF: time  4:16PM
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+LSZ: dimmer len=7 dial=0xFF light=200 unk6=0xFF unk7=0x00
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 
+RLS light 4 ON Twilight
+RLS->LCM:E8 05 D0 59 41 01 24 

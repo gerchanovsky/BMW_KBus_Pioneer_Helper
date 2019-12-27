@@ -1,0 +1,114 @@
+http://markgardnergibson.com/BMW/addresses.html
+
+All of the car's ECU's share the same K- and L-lines, which means they all see whatever commands you send.  Therefore, the first byte (or sometimes, pair of bytes) in any command is the address of the computer you want to respond to your command.  Addresses for a given computer vary from car to car, so here are the addresses I know of (all numbers in hex).  The ones I've gotten to work are in bold:
+ 
+00 -- Central body (windows, locks, wipers, etc.)
+12 -- Motronic
+21 -- Central body
+32 -- Automatic transmission
+44 -- Immobilizer (Alarm)
+56 -- ABS
+5B -- Climate control
+60 -- Parking distance control
+80 -- Instrument Cluster
+A4 -- Airbag
+BF -- Immobilizer
+D0 -- Light control module
+FF -- Immobilizer
+ 
+11 00 -- Central body
+36 00 -- ABS
+41 00 -- Airbag
+45 00 -- Central body
+59 00 -- Climate control (plain A/C doesn't have a computer)
+69 00 -- Automatic transmission
+B9 00 -- Remote?
+
+http://markgardnergibson.com/BMW/commands.html
+Here are the DS2 commands I know of.  Those that I've actually used are in bold.  Note that all numbers are hex.
+ 
+00 -- ECU Identification -- This command requests the computer to return a string of information about itself.  Example: "12 04 00 16" tells the Motronic computer (address = 12) to send information about itself. 
+ (The "04" means four bytes in the message, and "16" is the checksum.)
+ 
+The information returned varies among the different computers, but in many cases the first seven digits that the computer returns (after the headers) is a partial BMW part number for that computer.  
+In the case of the Motronic ECU, the data returned must be converted from hex to ASCII to be read.
+ 
+04 01 -- Check fault codes -- This command causes the computer to return a string containing the number of fault codes, followed by the numbers of the codes.  Example: "12 05 04 01 12" tells the Motronic ECU to send any fault codes.
+ 
+04 nn -- Check specific fault code -- Once you have the number, you can get more information about one specific fault by using its number.
+ 
+05 -- Clear trouble codes -- Once the problem has been corrected, codes can be cleared with this command.  Example: 12 04 05 [cs]
+ 
+9F = diagnostic end
+9E = diagnostic mode enable and wait tester
+53 = read supplier ID
+0B = read car coded data, read IO-status
+09 = write car coded data
+31 = test program download
+32 = test program start
+ 
+(Cheers to members of the opendiag list for these last few.  As yet unconfirmed on my car.)
+http://markgardnergibson.com/BMW/responses.html
+The various ECUs in my car vary in their addressing and responses.  I'm including my notes from what I've found so far.  Brackets are added by me to show groupings of numbers.  Look for better organization later:
+ 
+Central Body (00)
+ID:
+   Sent: 00 04 00 04 (L-line)
+   Received: 00 10 A0 8[8 36 94 82] 15 03 02 00 [39 98] 19 14 A0
+ 
+   Analysis: 61 35 [8 369 482] = uncoded Body Control Unit, [39/98] = date?
+
+ECU (12)
+ID:
+  Sent: 12 04 00 16 (K-line)
+  Received: 12 2E A0 31 34 32 39 38 36 31 31 31 30 31 33 30 32 31 33 31 39 38 30 30 30 30 31 31 35 38 35 32 34 31 30 31 39 38 33 31 32 32 33 38 33 9A
+ 
+ Analysis:  Output is in hex.  Converting to ASCII yeilds the following:
+ 
+            [1429861]110130213198 0000115852 4101983122383
+ 
+ Analysis: 14 12 [1 429 861] = BMW part number for an MS41.0 ECU, used until 1/99 on 320i, 323i, 323ti, 328i
+ 
+Faults: 
+  Sent: 12 05 04 01 12
+  Received: 12 06 A0 00 00 B4 (06=6 bytes, A0=ack, no faults)
+ 
+ 
+Immobilizer (44)
+ID:
+   Sent: 44 04 00 40 (K-line)
+   Received: 44 10 A0 8[8 38 46 78] 01 82 82 07 [41 98] 06 05 A6
+   Analysis:   8 384 678 = partial EWS control unit part number, 41/98 = date?
+ 
+ 
+ABS (36 00)
+ID: 
+   Sent: 36 00 05 00 33 (L-line)
+   Received: 36 00 0B 00 00 00 B4 00 00 00 89 (reply: 0B=11 bytes, type B4)
+Faults:
+   Sent: 36 00 05 07 34
+   Received: 36 00 06 07 00 37 (no faults?)
+ 
+
+Cluster (80)
+ID:
+   Sent: 80 04 00 nn
+   Received: 80 12 A0 F8 38 18 88 02 02 90 00 41 98 10 09 02 55 65
+Faults: 
+   Sent: 80 05 04 01 nn
+   Received: 80 14 A0 02 C7 81 00 8C 84 00 00 00 00 00 00 00 00 00 00 78  (20 bytes, ACK, 2 faults, C7h (199d) and 81h (129d), 78=checksum)
+ 
+
+Airbag (A4)
+  No response via A4 04 00 A0 or 41 00 05 00 44
+  UPDATE:  Airbag ECU was bad.  New ECU does respond.
+
+ 
+
+Mystery Computer (B9 00) (Remote?)
+ID:
+  Sent: B9 00 05 00 BC (L-line)
+  Received: B9 00 0B 00 02 04 04 00 [40 98] 68
+  Analysis: Unknown -- Type 04? 40/98 date?
+ 
+       

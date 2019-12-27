@@ -1,0 +1,40 @@
+http://web.comhem.se/bengt-olof.swing/ibusdevicesandoperations.htm#7A
+byte code = pkt[4]; Operations
+
+
+01    closed without CD. "I am alive". Poll CD.
+02    Unlock (quick press) or CD self anounce ("02 01") or poll responce ("02 00")
+10    Request Ignition status
+0C    External lights and open boot or lock/unlock car
+11    Ignition status  (and "flash low small"?) (and poll)
+13    <IKE Sensor Status> (reverse gear)
+14    Country coding request
+15    Country coding response?. Set unit on IKE.
+18    Speed and rpm
+1A 35 00    Followed by text to panel
+23 62 30    Write value to NAV field 0
+24    IKE data request (text data update, E39)
+2B    LED command to BM
+2C    Display Phone symbol
+31 60 00 nn    NAV to radio. Change to CD 'nn'
+32    Left BM nob turn (and steeringwheel '+' & '-')
+38    Request CD and track info
+39    CD status and track info response
+3B    Steering wheel buttons except vol+ and -
+40    Set date and time
+41    OBC get and reset value
+46    Menu commands to NAV
+47    BM info button
+48    BM buttons
+49    Right BM nob turn
+4A    LED on left BM button
+4F    Power message ? Switch off NAV screen
+5D    ?
+6D    Sideview Mirror
+72    Remote key
+74    Ignition lock
+76    External lights
+79    ?
+7A    Window and door message, interior light control
+A2    NAV position and time
+A5 62 01 nn Write value to nav field nn

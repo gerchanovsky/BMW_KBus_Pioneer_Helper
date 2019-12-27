@@ -1,0 +1,30 @@
+https://www.bimmerforums.com/forum/showthread.php?1153365-Feeler-Open-Source-OBC-Firmware/page25
+
+ODBII packet:     c8 10 a0 89 12 98 51 50 05 21 12 20 06 23 37 7e
+                  AD LA [----data-segment--------------------] CS
+
+ibus Packet: C8 0F 3F A0 89 12 98 51 50 05 21 12 20 06 23 37 5E
+             TX LF RX [----data-segment--------------------] CS
+
+
+ODBII packet:    c8 05 40 91 CS
+                 AD LA [dat] CS
+
+ibus Packet: 3F 04 C8 40 91 22
+             TX LF RX [dat] CS
+
+
+Ibus Packet:
+TX = sender address
+LF = length of following bytes (packet length - 2)
+RX = receiver address
+..Data...<max 31/32 bytes I think>
+CS = Checksum <XOR of whole message>
+
+OBDII packet:
+AD = Device address (who is talking to Diagnostics)
+LA = Length all bytes (entire packet)
+..Data...
+CS = Checksum
+
+With OBDII the Diagnostic source/destination is implicitly implied.

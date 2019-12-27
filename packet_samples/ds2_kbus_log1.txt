@@ -1,0 +1,23 @@
+﻿Gong
+2019-11-01 14:23:38.738	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:23:38.802	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:23:38.875	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:23:38.938	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:23:39.003	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:23:39.066	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:23:39.126	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:23:44.092	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:23:44.165	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:23:46.537	80 05 0C 11 98	DIA	IKE	Set IO status	Data="11"    [ ]
+2019-11-01 14:23:46.613	80 04 A0 24	IKE	DIA	Diagnostic command acknowledged	Data=""    []
+2019-11-01 14:23:51.648	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:23:51.723	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:23:57.048	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:23:57.123	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:24:02.525	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:24:02.566	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:24:07.928	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:24:07.968	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+2019-11-01 14:24:13.339	80 04 00 84	DIA	IKE	Read identity	
+2019-11-01 14:24:13.382	80 12 A0 F6 93 29 03 29 08 54 13 41 03 08 35 07 23 40	IKE	DIA	Diagnostic command acknowledged	Data="F6 93 29 03 29 08 54 13 41 03 08 35 07 23"    [ö“) ) T A  5 #]
+---------------

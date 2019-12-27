@@ -1,0 +1,1145 @@
+﻿00 05 00 0c 96 01            open all  
+00 04 BF 72 22 EB            glo_all_unlock
+3F 05 00 0C 97 01            Lock all  
+00 04 76 bf xx chk           Lighting control (xx is a bitmask:1 = warning lights, 2 = low beam, 3 = Fade.  The bits can be combined.  eg passing and hazard lights = 0 0 0 0 0 1 1 0 = $ 06 (hex) )
+80 04 BF 11 00 2a            IKE off  
+80 04 BF 11 01 2B            IKE on   
+D0 08 BF 5B 20 00 04 00 00 18   Turnsig Left Start   
+D0 08 BF 5B 40 00 04 00 00 78   Turnsig Right Start  
+D0 08 BF 5B 00 00 00 00 00 3C   Turnsig Stop         
+D0 08 BF 5B 60 00 04 00 00 58   Turnsig Warn         
+3B 05 80 41 01 01            Time Req (from NAV OR GT to IKE)
+00 05 BF 7A 53 2C BF         Door flap status  
+
+70 03 80 05 F6	05	Backlight Control
+70 03 80 06 F5	06	Identification
+70 03 80 07 F4	07	Gong status
+70 03 80 19 EA	19	Temperature
+70 03 80 10 E3	10	Ignition status request
+70 03 80 11 E2	11	Ignition status
+70 03 80 14 E7	14	Country coding status request
+70 03 80 15 E6	15	Country coding status
+70 03 80 1A E9	1A	IKE Text/Gong
+70 03 80 1B E8	1B	IKE text status
+70 03 80 1C EF	1C	Gong
+70 03 80 1D EE	1D	Temperature request
+70 03 80 44 B7	44	E46 IKE text
+70 03 80 52 A1	52	Text Display Update
+70 03 80 70 83	70	Remote control central locking status
+70 03 80 83 70	83	Air conditioning compressor status
+70 03 80 86 75	86	Aux Heating/Vent status 
+70 03 80 87 74	87	Aux Heating/Vent status request
+3f 05 00 0c 03 01 chk - Doors seduce / unlock (such as button pressed @ Interior) 
+3b 06 80 40 09 00 xx chk - speed limit set (beep is exceeded) 
+3b 05 80 41 09 20 chk - speed limit set on current speed 
+3b 05 80 41 09 08 chk - Disable adjusted speed limit 
+44 05 74 00 ff bf chk - removed key 
+
+5B 05 80 83 00 00 5D	AC Off
+5B 05 80 83 80 08 D5	AC on
+5B 05 80 83 C5 00 98	AC on
+
+57 01,IKE,LOC,Check Control button CHECK_pressed
+57 02,IKE,LOC,Check Control button BC_pressed
+57 41,IKE,LOC,Check Control button CHECK_released
+57 43,IKE,LOC,Check Control button Button 3_released
+9E,DIA,IHKA,Cmd_0x9E
+
+// Setting timer
+[IB] [       GT>>IKE       ] [       UNKNOWN       ] 0x40
+
+SET TIMER:
+3B 80 40 TT HH MM
+
+TT = Timer 1(0F), Timer 2(10)
+HH = Hour (24h)
+MM = Minute
+
+Timer 1 Switch:
+ON  = 3B 80 41 0F 04
+OFF = 3B 80 41 0F 08
+
+Timer 2 Switch:
+ON  = 3B 80 41 10 04
+OFF = 3B 80 41 10 08
+
+
+
+80 06 60 07 00 00 00 E1,IKE  --> PDC  : Gong status, Data="00 00 00"
+ED 05 80 41 01 01 29,VID  --> IKE  : On-board computer data request: Time: current value request
+ED 05 80 41 02 01 2A,VID  --> IKE  : On-board computer data request: Date: current value request
+ED 05 80 41 1B 02 30,VID  --> IKE  : On-board computer data request: Aux_Heat/Vent: status request
+
+80 0A BF 13 03 00 00 02 00 00 43 64    IKE --> PDC : Gong status, Data="00 00 00"
+68 03 80 14 FF             RAD --> IKE : Country coding status request
+3A 00,MFL,IHKA,Recirculating air control AUC_released
+3A 01,MFL,IHKA,Recirculating air control AUC_pressed
+
+
+3B LL 80 01,GT --> IKE : Device status request
+3B LL 80 10,GT --> IKE : Ignition status request
+3B LL 80 14,GT --> IKE : Country coding status request
+
+7F 05 80 44 29 30 A7 <--- 300m
+7F 05 80 44 29 25 B2 <--- 250m
+...
+7F 05 80 44 29 10 87 <--- 100m
+7F 05 80 44 21 90 0F <--- 90m
+7F 05 80 44 21 80 1F <--- 80m
+7F 05 80 44 21 70 EF <--- 70m
+7F 05 80 44 21 60 FF <--- 60m
+7F 05 80 44 21 50 CF <--- 50m
+...
+7F 05 80 44 21 10 8F <--- 10m
+7F 05 80 44 21 00 9F <--- 0m
+7F 05 80 44 20 00 9E <--- CLEAR DISPLAY? (this was the last code logged from the GPS -> IKE
+
+-----------------| speed |----- 
+80 09 FF 24 09 00 32 31 30 20 cs SET SPEEDLIMIT TO "210"
+80 09 FF 24 09 00 20 39 30 20 cs SET SPEEDLIMIT TO "90"
+80 09 FF 24 09 00 20 35 30 20 cs SET SPEEDLIMIT TO "50"
+80 09 FF 24 09 00 20 31 39 20 cs SET SPEEDLIMIT TO "19"
+80 09 FF 24 09 00 20 31 30 20 cs SET SPEEDLIMIT TO "10"
+80 09 FF 24 09 00 20 20 36 20 cs SET SPEEDLIMIT TO "6"
+
+FOURTH, FIFTH and SIXTH _DATA_ byte holds the speed.
+30h = 0, 31h = 1, 32h = 2, 39h = 9 etc
+20h = BLANK
+
+
+3B 05 80 41 09 04 cs ACTIVATE SPEEDLIMIT in OBC
+3B 05 80 41 09 08 cs DE-ACTIVITE SPEELIMIT in OBC
+------------------------------------------------------------------
+KEY_IN                       44 05 BF 74 04 00 8E    // Ignition key in
+KEY_OUT                      44 05 BF 74 00 FF 75    // Ignition key out
+
+//
+MFL_VOL_UP                   50 04 68 32 11 1F       // Steering wheel Volume Up
+MFL_VOL_DOWN                 50 04 68 32 10 1E       // Steering wheel Volume Down
+MFL_SEARCH_UP                50 04 68 3B 01 06       // Steering wheel Search Up
+MFL_SEARCH_DOWN              50 04 68 3B 08 0F       // Steering wheel Search Down
+MFL_TEL_VOL_UP               50 04 C8 32 11 BF       // Steering wheel Volume Up - Telephone
+MFL_TEL_VOL_DOWN             50 04 C8 32 10 BE       // Steering wheel Volume Down - Telephone
+MFL_SES_PRESS                50 04 B0 3B 80 5F       // Steering wheel press and hold phone button
+MFL_SEND_END_PRESS           50 04 C8 3B 80 27       // Steering wheel send/end press
+MFL_RT_PRESS                 50 04 68 3B 02 05       // MFL R/T press
+
+REQUEST_TIME                 68 05 80 41 01 01 AC    // Request current time from IKE
+CLOWN_FLASH                  3F 05 00 0C 4E 01 79    // Turn on clown nose for 3 seconds
+BACK_ONE                     68 05 18 38 08 00 45    // Back
+BACK_TWO                     68 05 18 38 08 01 44    // Back
+SELECT                       68 05 18 38 07 01 4B    // Select
+
+dis_glo_opentrunk            3F 05 00 0C 02 01 CS
+dis_lcm_foglights            3F 0B BF 0C 00 00 00 00 00 00 01 06 CS
+dis_lcm_righttaillight       3F 0B BF 0C 00 00 00 00 00 00 08 0C CS
+dis_lcm_lefttaillight        3F 0B BF 0C 00 00 00 00 00 40 00 06 CS
+
+unk_lcm_keyremove            44 05 BF 74 00 FF 75 //key removed
+unk_lcm_keyinsert            44 05 BF 74 04 01 8F //key 1 inserted
+
+
+turnsig_stop                 D0 08 BF 5B 00 00 00 00 00 3C
+lightsig_highbeam            D0 08 BF 5B 04 00 00 00 00 38
+turnsig_left_start           D0 08 BF 5B 20 00 04 00 00 18
+turnsig_right_start          D0 08 BF 5B 40 00 04 00 00 78
+turnsig_warn                 D0 08 BF 5B 60 00 04 00 00 58
+
+
+http://web.archive.org/web/20170822210759/http://www.online-rubin.de/BMW/I-BUS%20Codes.htm
+When a button is pressed on the remote key (#1) these messages are sent:
+00 04 BF 72 22 EB // unlock in
+00 04 BF 72 12 DB // lock in
+00 04 BF 72 42 8B // boot in
+00 04 BF 72 02 CB // out
+
+08 05 BF 7C 00 01 CF gets a lot of info back including time ???
+
+http://web.comhem.se/bengt-olof.swing/IBus.htm
+http://web.comhem.se/bengt-olof.swing/ibusdevicesandoperations.htm#7A
+https://web.archive.org/web/20090909133501/http://ibus.stuge.se:80/IBus_Message_Syntax
+http://web.archive.org/web/20170822210759/http://www.online-rubin.de/BMW/I-BUS%20Codes.htm
+https://www.bmwgm5.com/bmwgm5/E46_IKE_Connections.htm
+https://www.bmwgm5.com/bmwgm5/IBUS.htm
+https://www.bmwgm5.com/E46_IKE_Connections.htm
+https://translate.google.com/translate?sl=de&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=http%3A%2F%2Fwww.alextronic.de%2Fbmw%2Fprojects_bmw_info_ibus.html&edit-text=
+--------------
+new:
+# https://github.com/TrentSeed/BMW_E46_Android_RPi_IBUS_Controller
+# https://github.com/t3ddftw/DroidIBus
+https://www.e39-forum.de/index.php?thread/28666-ecke-der-ibus-hacker/&pageNo=38
+https://www.ac-services.eu/shop/de/shop_content.php?coID=200
+
+
+80 04 BF 11 00 2A       IGNITION_OFF                 // Ignition Off
+80 04 BF 11 01 2B       IGNITION_POS1                // Ignition Acc position - POS1
+80 04 BF 11 03 29       IGNITION_POS2                // Ignition On position - POS2
+
+00 04 BF 72 22 EB       REMOTE_UNLOCK                // Remote control unlock
+00 04 BF 72 12 DB       REMOTE_LOCK                  // Remote control lock
+00 04 BF 72 42 8B       REMOTE_UNLOCK_BOOT           // Remote Boot unlock
+
+00 04 72 16 BF CS                                       Pressed close button on remote control
+00 04 72 26 BF CS                                       pushed open button on remote control
+00 04 BF 72 02 CS                                       Remote control lock RELEASE
+00 04 BF 72 03 CS                                       No_Button_Pressed Key_battery_low
+00 04 BF 72 12 CS                                       Remote control lock PRESSED
+00 04 BF 72 13 CS                                       Remote control lock PRESSED (Key_battery_low)
+00 04 BF 72 1A D3                                       Schlie?enknopf auf Fernbedienung gedr?ckt   rc_lock_msg
+00 04 BF 72 20 CS                                       Car opened with remote/key 1
+00 04 BF 72 20 E9                               Car opened with remote/key 1
+00 04 BF 72 22 CS                                       All unlock
+00 04 BF 72 22 CS                                       Remote control unlock PRESSED
+00 04 BF 72 23 CS                                       Remote control unlock PRESSED (Key_battery_low)
+00 04 BF 72 2A E3                                       ?ffnenknopf auf Fernbedienung gedr?ckt      rc_unlock_msg
+00 04 BF 76 00 CS                                       ID:TURN_LIGHTS_OFF     0000		Turn all exterior lights off.
+00 04 BF 76 02 CS                                       ID:FLASH_WARN          Hi:3 Lo:2 Warn:1	Flash warning lights on/off repeatedly.
+00 04 BF 76 04 CS                                       ID:FLASH_LOW           Hi:3 Lo:2 Warn:1	Flash lowbeams on/off repeatedly.
+00 04 BF 76 06 CS                                       ID:FLASH_LOW_WARN      Hi:3 Lo:2 Warn:1	Flash lowbeams and warning lights on/off repeatedly.
+00 04 BF 76 08 CS                                       ID:FLASH_HI            Hi:3 Lo:2 Warn:1	Flash highbeams on/off repeatedly.
+00 04 BF 76 0A CS                                       ID:FLASH_HI_WARN       Hi:3 Lo:2 Warn:1	Flash highbeams and warning lights on/off repeatedly.
+00 04 BF 76 0C CS                                       ID:FLASH_LOW_HI        Hi:3 Lo:2 Warn:1	Flash highbeams and lowbeams on/off repeatedly.
+00 04 BF 76 0E CS                                       ID:FLASH_LOW_HI_WARN   Hi:3 Lo:2 Warn:1	Flash highbeams, lowbeams and warning lights on/off repeatedly.
+00 04 BF 76 11 CS                                       ID:FLASH_TEST1
+80 04 BF 11 03 CS                                       ID:FLASH_LOW_SMALL     Hi:3 Lo:2 Warn:1 Small:0
+00 04 bf 76 xx CS		ALLES	LCM	lighting control		xx is a bitmask as follows 7 6 5 4 3 2 1 0 The bits can be combined. eg dipped beam and hazard warning lights = 0 0 0 0 0 1 1 0 = $ 06 (hex)
+										Bit 1 = hazard warning lights,
+										bit 2 = low beam,
+										bit 3 = fade in.
+00 05 BF 7A 12 44 CS                                    Button lock
+00 05 BF 7A 10 01 D1                                    Interior Lights Off / Door Closed
+00 05 BF 7A 10 03 D3                                    Interior Lights Off
+00 05 BF 7A 10 0F DF
+00 05 BF 7A 11 01 D0                                    Interior Lights Off / Door Open
+00 05 BF 7A 11 0F DE                                    Interior Lights Off / Door Open
+00 05 BF 7A 20 0F EF                                    All Doors Closed
+00 05 BF 7A 21 03 E2
+00 05 BF 7A 21 0F EE
+00 05 BF 7A 50 01 91                                    Interior Lights On / Door Closed
+00 05 BF 7A 50 03 93                                    Unlock
+00 05 BF 7A 50 0F 9F
+00 05 BF 7A 51                                          Fahrert?r auf                               fahr_auf_msg
+00 05 BF 7A 51 01 90                                    Interior Lights On / Door Open
+00 05 BF 7A 51 0F 9E                                    Right Door Closed
+00 05 BF 7A 52 0F 9D                                    Left Door Closed
+00 05 BF 7A 53 0F 9C
+00 05 BF 7A 60 00 A0
+00 05 BF 7A 60 03 A3                                    Lock
+00 05 BF 7A 60 0F AF
+00 05 BF 7A 61 03 A2
+00 05 BF 7A 61 0F AE                                    Interior Lights On
+00 05 BF 7D 00 00 C7
+00 05 BF 7D 00 01 C6
+00 05 BF 7D 00 10 D7                                    Door Open
+00 05 BF 7D 00 11 D6
+00 05 00 0C 96 01 CS                                    open all
+D0 07 BF 5B 00 00 00 00 33                              All Lights Off
+3B 03 80 01 B9                                          IKE something0
+3b 04 80 41 xx CS                       NAV     IKE     heater                          Control auxiliary heating: xx = 11 = OFF, xx = 12 = ON
+3B 05 80 41 01 01                                       Get time request from IKE (NAV)
+3B 05 80 41 09 04                                       ACTIVATE SPEEDLIMIT
+3B 05 80 41 09 08                                       DE-ACTIVITE SPEELIMIT
+3b 05 80 41 09 08 CS                    NAV     IKE     Set speed limit                         Set speed limit. The previously set speed remains stored.
+3b 05 80 41 09 20 CS                    NAV     IKE     Set speed limit on speedometer.         Set the speed limit to the currently frozen and activate the limit.
+3b 05 80 41 0a 10 CS                    NAV     IKE     Delete average.                         Set average speed to 0.
+3b 05 80 41 0e 04 CS                    NAV     IKE     Start the timer                         Start the stopwatch / timer.
+3b 05 80 41 0e 08 CS                    NAV     IKE     Stop timer                      Stop the timer.
+3b 05 80 41 1a 01 CS                    NAV     IKE     Request timer                   Stopwatch / timer status requested when the timer is running.
+3b 05 80 41 xx 10 CS                    NAV     IKE     Delete consumption meter        xx = 04 consumption meter 1 to 0 \ xx = 05 consumption meter 2 to 0     Set consumption counter to 0.
+3B 06 80 40 01 0C 3B CS                                   // Full beam
+3b 06 80 40 07 00 xx CS                 NAV     IKE     Distance to the goal            3b 06 80 40 07 00 45 CS - Set a distance of 69km        Enter the distance to the destination in the on-board computer (to calculate the arrival time). xx is the distance
+3B 06 80 40 09 00 10 CS                                 set speed limit
+3B 06 80 40 09 00 32 CS                                 SET SPEED LIMIT to 50 km/h
+3b 06 80 40 09 00 xx CS                 NAV     IKE     Set speed limit                         3b 06 80 40 09 00 32 CS Speed ??limit = 50 km / h       Set speed limit and activate it. xx is the speed.
+3F 05 00 0C 02 01 CS                                      Open trunk
+3F 05 00 0C 02 01 CS                                      Trunc Open
+3F 05 00 0C 47 01 CS                                      Lock Driver
+3F 05 00 0C 4E 01 CS                                      Clown 3sec  //CLOWN_FLASH
+3F 05 00 0C 4F 01 CS                                      Lock 3
+3F 05 00 0C 75 01 CS                                      Wrn Blnk 3sec
+3F 05 00 0C 97 01 CS                                      Lock all
+3F 06 72 0C 02 01 00 CS					Driver Seat: Move to Memory position 1
+3F 06 72 0C 02 02 00 CS					Driver Seat: Move to Memory position 2
+3F 06 72 0C 02 04 00 CS					Driver Seat: Move to Memory position 3
+3F 0B BF 0C 00 00 00 00 00 00 00 06 CS                  // Wrn Blnk OFF?
+3F 0B BF 0C 00 00 00 00 00 00 01 06 CS                  Fog
+3F 0B BF 0C 00 00 00 00 00 00 08 0C CS                  OK:rear light(right taillight)
+3F 0B BF 0C 00 00 00 00 00 00 20 06 CS                  Left Rear lights continuously
+3F 0B BF 0C 00 00 00 00 00 00 80 06 CS                  Right Rear turn signal lights continuously
+3F 0B BF 0C 00 00 00 00 00 02 00 06 CS                  Right front low beam
+3F 0B BF 0C 00 00 00 00 00 04 00 06 CS                  Left front low beam
+3F 0B BF 0C 00 00 00 00 00 10 00 06 CS                  Main beam left + low beams on both sides
+3F 0B BF 0C 00 00 00 00 00 20 00 06 CS                  high beams on both sides of the right low beam +
+3F 0B BF 0C 00 00 00 00 00 40 00 06 CS                  left tail light(constant left)
+3F 0B BF 0C 00 00 00 00 01 00 00 06 CS                  brake light above
+3F 0B BF 0C 00 00 00 00 08 00 00 06 CS                  OK:brake light left
+3F 0B BF 0C 00 00 00 00 10 00 00 06 CS                  OK:Brake Light Right
+3F 0B BF 0C 00 00 00 00 20 00 00 06 CS                  Left front turn signal lights continuously
+3F 0B BF 0C 00 00 00 00 40 00 00 06 CS                  OK:Right front Indicator lights continuously
+3F 0B BF 0C 00 00 00 40 00 00 00 06 CS                  OK:left parking light
+3F 0B BF 0C 00 00 00 80 00 00 00 06 CS                  OK:right parking light
+3F 0B BF 0C 00 00 80 00 00 00 00 06 CS                  ignition at low beam + beam (IKE + LCM)
+3F 0B BF 0C 10 00 00 00 00 00 00 06 CS                  low beam delayed front + rear
+3F 0B BF 0C 20 00 00 00 00 00 00 06 CS                  OK:hazard lights ON/OFF
+
+3F 0B BF 0C 00 00 00 00 00 00 00 00 87                  Leuchten aus                                laus_msg
+3F 0B D0 0C 00 00 00 00 00 04 00 00 0E                  Nebel links                                 nebellinks_msg
+3F 0B D0 0C 00 00 00 00 00 40 00 00 4A                  Nebel rechts                                nebelrechts_msg
+3F 0B D0 0C 00 04 00 00 00 00 00 00 EC                  Fernlicht                                   fern_msg
+
+72 05 BF 78 05 00 B5                            Save Memory: Position 1
+9B 04 51 6D 40 CK                               Passenger Mirror: Stop (motor won't stop until you tell it to)
+9B 04 51 6D 41 CK                               Passenger Mirror: Move Out
+9B 04 51 6D 42 CK                               Passenger Mirror: Move In
+9B 04 51 6D 44 CK                               Passenger Mirror: Move Up
+9B 04 51 6D 48 CK                               Passenger Mirror: Move Down
+
+3F 05 00 0C 00 00 CS                                    Move driver's seat forward
+3F 05 00 0C 00 01 CS                                    Move driver's seat to the rear
+3F 05 00 0C 00 08 CK                                    Trunk: Open
+3F 05 00 0C 00 0B CS                                    All Locks: Toggle Lock/Unlock (Open / close central locking)
+3F 05 00 0C 00 11 CK                                    Turn on Interior Lights for 3 seconds, then dim
+3F 05 00 0C 00 40 CS                                    Open the boot
+3F 05 00 0C 00 44 CK                                    Driver Rear Window: Close
+3F 05 00 0C 00 45 CK                                    Driver Front Window: Open
+3F 05 00 0C 00 46 CS                                    Close rear passenger side window
+3F 05 00 0C 00 47 CK                                    Passenger Front Window: Open
+3F 05 00 0C 00 47 CS                                    Open the rear passenger side window
+3F 05 00 0C 00 65 CK                                    All Windows: Open
+3F 05 00 0C 00 66 CK                                    Sunroof: Open
+3F 05 00 0C 01 01 CK                            	Turn off interior lights.
+3F 05 00 0C 02 01 CK                            	Trunk: Open
+3F 05 00 0C 03 01 CK                            	Lock doors and fade out interior lights
+3F 05 00 0C 05 00 CK                                    Driver Seat: Move Forward
+3F 05 00 0C 05 01 CK                                    Driver Seat: Move Backward
+3F 05 00 0C 34 01 CK                                    All Doors: Toggle Lock/Unlock
+3F 05 00 0C 41 01 76                                    Driver Rear Window: Open
+3F 05 00 0C 42 01 CK                                    Driver Rear Window: Close
+3F 05 00 0C 43 01 CK                                    Passenger Rear Window: Close
+3F 05 00 0C 44 01 CK                                    Passenger Rear Window: Open
+3F 05 00 0C 46 01 CK                                    Passenger Front Door: Lock
+3F 05 00 0C 47 01 CK                                    Driver Front Door: Lock
+3F 05 00 0C 4E 01 CK                                    Turn on clown nose for 3 seconds.
+3F 05 00 0C 52 01 65                                    Driver Front Window: Open
+3F 05 00 0C 53 01 CK                                    Driver Front Window: Close
+3F 05 00 0C 54 01 CK                                    Passenger Front Window: Open
+3F 05 00 0C 55  01 CK                                   Passenger Front Window: Close
+3F 05 00 0C 60 01 CK                                    Turn on interior lights for 3 seconds.
+3F 05 00 0C 7E 01 CK                                    Sunroof: Open
+3F 05 00 0C 7F 01 CK                                    Sunroof: Close
+3F 06 00 0C 01 30 01 CS                                 Fold out driver's side mirror
+3F 06 00 0C 01 31 01 CS                                 Fold in driver's side mirror
+3F 06 00 0C 02 30 01 CS                                 Fold out front passenger's side mirror
+3F 06 00 0C 02 31 01 CS                                 Fold in front passenger's side mirror
+3F 06 72 0C 01 01 00 CK                                 Driver Seat: Move Forward
+3F 06 72 0C 01 02 00 CK                                 Driver Seat: Move Backward
+3F 06 72 0C 01 04 00 CK                                 Driver Seat: Move Up
+3F 06 72 0C 01 08 00 CK                                 Driver Seat: Move Down
+3F 06 72 0C 01 40 00 CK                                 Driver Seat: Move Upper Portion Forward
+3F 06 72 0C 01 80 00 CK                                 Driver Seat: Move Upper Portion Backward
+3F 06 72 0C 02 01 00 CK                                 Driver Seat: Move to Memory Position 1
+3F 06 72 0C 02 02 00 CK                                 Driver Seat: Move to Memory Position 2
+3F 06 72 0C 02 04 00 CK                                 Driver Seat: Move to Memory Position 3
+3F 05 BF 0C 01 01 CK                            Cycle through exterior lighting patterns (high, low, fogs).
+44 05 BF 74 04                                          Schl?ssel xx eingesteckt                    key_in_msg
+44 05 BF 74 00 FF CS                                    ignition off (Bordmonitor is shutdown after this message)
+44 05 BF 74 00 FF                                       Schl?ssel entnommen                         key_out_msg
+5B 05 80 83 00 00 5D                                    A/C turn OFF
+5B 05 80 83 80 00 CS                                    A/C turn ON
+5B 05 80 83 80 08 D5                                    AC on
+5B 05 80 83 C5 00 98                                    A/C turn ON                                     ++----00:x1,01:*100,10:x10,11:2
+68 05 80 41 01 01 CS                                    Request current time from OBC/IKE               ||+---0:m,1:empty
+76 04 BF 00 00 CS                                       // off                                          |||+--disp
+76 04 BF 00 02 CS                                       // warning//1<<1                         //0x0  0000 -
+76 04 BF 00 04 CS                                       // low beam//1<<2                        //0x1  0001 m*1
+76 04 BF 00 08 CS                                       // fade//1<<3                            //0x2  0010 -
+7F 05 80 44 20 00 CS                                    Speedlimit stop                          //0x3  0011 *1
+7F 05 80 44 21 00 CS                                    0m                                       //0x4  0100 -
+7F 05 80 44 21 10 CS                                    // 10m                                   //0x5  0101 m*100
+7F 05 80 44 21 70 CS                                    Speedlimit set                           //0x6  0110 -
+7F 05 80 44 21 90 CS                                    // 90m                                   //0x7  0111  *100
+7F 05 80 44 29 10 CS                                    // 100m                                  //0x8  1000 -
+7F 05 80 44 29 30 CS                                    300m                                     //0x9  1001 m*10
+7F 05 80 44 23 70 CS                                    70 (no meter)                            //0xA  1010 -
+7F 05 80 44 25 70 CS                                    7000m                                    //0xB  1011  *10
+7F 05 80 44 27 70 CS                                    7000                                     //0xC  1100 -
+7F 05 80 44 29 70 CS                                    700m                                     //0xD  1101 m*2
+7F 05 80 44 2b 70 CS                                    700                                      //0xE  1110 -
+7F 05 80 44 2d 70 CS                                    140m                                     //0xF  1111  *2
+7F 05 80 44 2f 70 CS                                    140
+
+
+
+
+7F 0B 80 1F 40 18 10 02 00 03 20 03 CS                  IKE something1
+7F 0B 80 1F 40 18 11 02 00 03 20 03 CS                  IKE something2
+7F 0B 80 1F 40 18 12 02 00 03 20 03 CS                  IKE something3
+80 04 BF 11 03 CS                                       ID:FLASH_LOW_SMALL
+80 05 BF 18 xx yy CS                    IKE     LCM     Speed ??and speed               xx speed / 2 yy speed / 100. Message is repeated every 2 seconds.
+80 09 FF 24 06 00 31 31 38 30 CS                        SET SPEEDLIMIT TO 118
+80 09 FF 24 09 00 20 35 30 20 CS                        SET SPEEDLIMIT TO 50
+80 09 FF 24 09 00""210                                          SET SPEEDLIMIT TO 210
+80 0C E7 24 01 00 31 39 3A 30 37 20 20 CS
+80 0C E7 24 01 00 31 39 3A 30 38 20 20 CS
+80 0C E7 24 01 00 31 39 3A 30 39 20 20 CS
+80 0E E7 24 0A 00 36 38 2E 37 20 4B 4D 2F 48
+80 0e e7 24 0e 00xxxxxxxxxxxxxxxx CS    IKE     OBC     Output from the timer           Output of the timer as plaintext. xx is the text.
+80 0e e7 24 1a 00xxxxxxxxxxxxxxxx CS    IKE     OBC     Output of the stopwatch                 Output of the stopwatch, is only sent if the stopwatch has been requested and started before xx is the time in plain text (xx is the text)
+C8 04 50 2C xx CS                       TEL     MFL     phone status                    / xx is a bitmask as follows 7 6 5 4 3 2 1 0    Bit6 0 = Telephone adapter not installed, 1 = Telephone adapter installed, Example 1: C8 04 E7 2C 10 17 See byte 5 Hex 10 is binary 0001 0000 This means: Handsfree off \, Telfon off   Bit0 0 = Handsfree off, 1 = Handsfree on, Bit1 0 = Telephone menu on on-board monitor or MID / 1 = active call, Bit2 1 = incoming call, Bit3 1 = Telephone display disabled, Bit4 0 = Telephone off / 1 = Telephone on, Bit5 0 = telephone inactive / 1 = telephone active
+BF 03 80 16 2A                          LCM     IKE     Requirement mileage             The kilometers are coded in bytes 5-7 (eg D0 A0 01), calculated as follows: km = byte 7 * 65536 + byte 6 * 256 + byte 5         Without the request of this kilometer display, the message rarely (distance of several minutes)
+C8 05 80 23 41 20                                       IKE tel ClrScr
+C8 05 80 23 41 20 0F                                    clear screen
+C8 09 80 1A 00 30 20 35 30 20 CS                        //
+C8 0A 80 23 42 30 68 65 6C 6C 6F CS                     //
+C8 0A 80 23 42 30 68 65 6C 6C 6F 00 CS                  layout 42,62-Radio?,flags=bit4 CLS
+D0 07 BF 5B 01 00 00 00 CS      PARKLIGHT_GET_MSG
+D0 07 BF 5B 02 00 00 00 CS      LOWBEAM_GET_MSG
+D0 07 BF 5B 04 00 00 00 CS      HIGHBEAM_GET_MSG
+D0 07 BF 5B 20 00 00 00 CS      LEFT_TURN_GET_MSG
+D0 07 BF 5B 20 00 04 00 17 --Licht aus                  Blinker Links Meldung                       bllinks_msg
+D0 07 BF 5B 21 00 04 00 16 --Standlicht                 Blinker Links Meldung                       bllinkss_msg
+D0 07 BF 5B 23 00 04 00 14 --Licht                      Blinker Links Meldung                       bllinksl_msg
+D0 07 BF 5B 27 00 04 00 10 --Fernlicht                  Blinker Links Meldung                       bllinksf_msg
+D0 07 BF 5B 40 00 00 00 CS      RIGHT_TURN_GET_MSG
+D0 07 BF 5B 40 00 04 00 77 --Licht aus                  Blinker Rechts Meldung                      blrechts_msg
+D0 07 BF 5B 41 00 04 00 76 --Standlicht                 Blinker Rechts Meldung                      blrechtss_msg
+D0 07 BF 5B 43 00 04 00 74 --Licht                      Blinker Rechts Meldung                      blrechtsl_msg
+D0 07 BF 5B 47 00 04 00 70 --Fernlicht                  Blinker Rechts Meldung                      blrechtsf_msg
+D0 07 BF 5B 60 00 04 00 CK                              Flash dash blinkers (without flashing exterior blinkers)
+D0 07 BF 5B 60 00 80 00 CK                              Flash dash blinkers FAST/SLOW intermitent.
+D0 08 BF 5B 00 00 00 00 00 CS                           Turnsig Stop               [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 00 00 04 00 00 58 00                        // set Time//0x00 | 0x04
+D0 08 BF 5B 04 00 00 00 00 CS                           Lightsig highbeam          [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 20 00 04 00 00 CS                           Turnsig Left Start         [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 40 00 04 00 00 CS                           Turnsig Right Start        [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 60 00 04 00 00 CS                           Turnsig Warn               [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+E8 05 D0 59 11 08 7D                                    Lichtsensor Dunkel                              dunkel_msg
+E8 05 D0 59 51 08 3D                                    Lichtsensor Hell                                hell_msg
+F0 03 00 79 CS                                          BMBT-->GM:Doors/flaps status request
+F0 03 68 01 CS                                          "I'm alive" from Bordmonitor to Radio every 10'th second//http://web.comhem.se/bengt-olof.swing/IBus.htm
+F0 03 80 10 CS                                          BMBT-->IKE:Ignition status request
+F0 03 D0 5D CS                                          BMBT-->LKM:Light dimmer status request
+F0 03 D0 5D 7E                                          Light dimmer status request
+44 05 BF 74 00 FF 75                                    Warning Light - not working. I can see the data in the output  but no vehicle response
+3F 0B BF 0C 20 00 00 00 00 00 00 06                     Warning Light - not working. Not sure why
+
+  //12  IKE sensor status request
+  //13  IKE sensor status
+  //1A  IKE Text/Gong
+  //1B  IKE text status
+  //44  E46 IKE text
+
+Control of body electronics
+Source:      Transmitter 3F Hex / DIS
+Destination: 0x00
+
+Other I-Bus codes (telephone, LCM, light, IKE, on-board computer, navigation, cassette drive)
+44 05 bf 74 04 xx CS	 	???	LCM	Key inserted			xx is the key number
+44 05 bf 74 00 ff CS	 	???	LCM	Removed key			Message comes when the key is removed
+
+
+TX = sender address (see list of IBus Devices)
+LL = length (number of following bytes)
+RX = recipient address (see list of IBus Devices)
+MM = ibus message (see list of IBus Messages)
+DB1...DBn = databytes 1 to n (can be empty for some messages)
+CS = XOR checksum (see VB6 and C Checksum Code example)
+
+MM:
+0x01: Device status request
+0x02: Device status ready
+0x03: "Bus status request"
+0x04: "Bus status"
+0x06: "DIAG read memory"
+0x07: "DIAG write memory"
+0x08: "DIAG read coding data"
+0x09: "DIAG write coding data"
+0x0C: Vehicle control
+0x10: "Ignition status request"
+0x11: Ignition status
+0x12: "IKE sensor status request"
+0x13: "IKE sensor status"
+0x14: "Country coding status request"
+0x15: Country coding status
+0x16: "Odometer request"
+0x17: "Odometer"
+0x18: Speed/RPM
+0x19: Temperature
+0x1A: "IKE text display/Gong"
+0x1B: "IKE text status"
+0x1C: "Gong"
+0x1D: Temperature request
+0x1F: UTC time and date
+0x23: Update MID
+0x24: Update ANZV
+0x34: DSP Equalizer Button
+0x38: CD status request
+0x39: CD status
+0x40: Set On-Board Computer Data
+0x41: On-Board Computer Data Request
+0x48: BMBT buttons
+0x49: BMBT buttons
+0x4F: RGB Control
+0x5A: Lamp state request
+0x5B: Lamp state
+0x53: Vehicle data request
+0x54: Vehicle data status
+0x5B: Lamp Status
+0x71: Rain sensor status request
+0xA0: "DIAG data"
+0xAA: Navigation Control
+
+ADDR:
+Address	Device	Description
+0X00    GM      Body Module
+0x18    CDC     CD Changer
+0x28    FUH     Radio controlled clock
+0x30    CCM     Check control module
+0x3B    GT      Graphics driver (in navigation system)
+0x3F    DIA     Diagnostic
+0x40    FBZV    Remote control central locking
+0x43    GTF     Graphics driver for rear screen (in navigation system)
+0x44    EWS     Immobiliser
+0x46    CID     Central information display (flip-up LCD screen)
+0x50    MFL     Multi function steering wheel
+0x51    MM      Mirror memory
+0x5B    IHK     Integrated heating and air conditioning
+0x60    PDC     Park distance control
+0x67    ONL     unknown
+0x68    RAD     Radio
+0x6A    DSP     Digital signal processing audio amplifier
+0x72    SM      Seat memory
+0x76    CDCD    CD changer, DIN size.
+0x7F    NAVE    Navigation (Europe)
+0x80    IKE     Instrument cluster electronics
+0x9B    MM      Mirror memory
+0x9C    MM      Mirror memory
+0xA0    FMID    Rear multi-info-display
+0xA4    ABM     Air bag module
+0xA8    KAM     unknown
+0xAC    ASP     unknown
+0xB0    SES     Speed recognition system
+0xBB    NAVJ    Navigation (Japan)
+0xBF    GLO     Global, broadcast address
+0xC0    MID     Multi-info display
+0xC8    TEL     Telephone
+0xD0    LCM     Light control module
+0xDA    GTHL    unknown
+0xDA    SM      Seat memory
+0xE0    IRIS    Integrated radio information system
+0xE7    ANZV    Front display
+0xE8    ISP     unknown
+0xED    TV      Television
+0xF0    BMBT    On-board monitor operating part
+0xF5    CSU     unknown
+0xFF    LOC     Local
+
+/**
+* Generate CRC for the message
+*/
+public byte genMessageCRC(byte[] msg){
+	byte crc = 0x00;
+	for(int i = 0; i < msg.length; i++)
+		crc = (byte) (crc ^ msg[i]);
+	return crc;
+}
+
+
+00 05 bf 7d 00 30 f7 - sunroof open and possibly unlock
+00 05 bf 7d 00 20 CS - sunroof open and lock
+00 05 bf bf 7d 00 70 - close sunroof and possibly unlock
+00 05 bf 7d 00 60 CS - sunroof close and lock
+00 05 BF 7A 10 02 xx // central unlocked
+00 05 BF 7A 20 02 xx // central locked
+
+3f 05 00 0c 7e 01 CS - a piece of open sunroof
+3F 05 00 0C 7F 01
+3f 05 00 0c 7f 01 CS - a piece sunroof close
+3f 05 00 0c 52 01 CS - the front driver's side window, a piece of open
+3f 05 00 0c 53 01 CS - the front driver's side window, a piece of close
+3f 05 00 0c 54 01 CS - the front passenger side window, a piece of open
+3f 05 00 0c 55 01 CS - the front passenger side window, a piece of close
+3f 05 00 0c 41 01 CS - rear driver's side window, a piece of open
+3f 05 00 0c 42 01 CS - rear driver's side window, a piece schli.en
+3f 05 00 0c 44 01 CS - rear passenger side window, a piece of open
+3f 05 00 0c 43 01 CS - rear passenger side window, a piece schli.en
+80 04 bf 11 00 2a - Innenraumbel. Abdimmen
+3f 05 00 0c 01 01 CS - Innenraumbel. Off
+3f 05 00 0c 30 01 CS -? + Innenraumbel. Abdimmen
+3f 05 00 0c 60 01 CS - Innenraumbel. For 3 sec turn (no fade)
+3f 05 00 0c 68 01 CS - Innenraumbel. Off and andimmen
+3f 05 00 0c 03 01 CS - doors ver / unlock (Knopf @ interior pressed)
+3f 05 00 0c 34 01 CS - doors locked (as with key pressed)
+3f 05 00 0c 46 01 CS - doors + hardlock tank lid, trunk open
+3f 05 00 0c 47 01 CS - driver door lock (door handle can be difficult to draw)
+3f 05 00 0c 4f 01 CS - All doors except drivers door verschl.en
+3f 05 00 0c 97 01 CS - doors lock (hardlock)
+3f 05 00 0c 02 01 CS - trunk open
+3f 05 00 0c 05 01 CS - trunk open (again)
+3f 05 00 0c 95 01 CS - trunk open (again)
+3f 05 00 0c 49 01 CS - front windshield wiper
+3f 05 00 0c 62 01 CS - Scheibenwischwasser forward spray
+00 04 bf 76 0x CS - blink: 2 = Warnblinker, 4 = passing beam, 8 = beam
+3f 05 00 0c 70 01 CS - Warnblinker (IKE + LCM) + Innenraumbel. Andimmen
+3f 05 00 0c 75 01 CS - Warnblinker (LCM) for 3 seconds
+3f 0b bf 0c 00 00 00 00 00 00 01 06 CS - fog lights
+3f 0b bf 0c 00 00 00 00 00 40 00 06 CS - taillight left (+ A)
+3f 0b bf 0c 00 00 00 00 00 00 08 0c CS - taillight right (A +)
+3f 0b bf 0c 00 00 00 00 01 00 00 06 CS - stop light up
+3f 0b bf 0c 00 00 00 00 08 00 00 06 CS - stop light left (+ A)
+3f 0b bf 0c 00 00 00 00 10 00 00 06 CS - stop light right (A +)
+3f 0b bf 0c 00 00 00 00 00 02 00 06 CS - passing beam front right
+3f 0b bf 0c 00 00 00 00 00 04 00 06 CS - passing beam front left
+3f 0b bf 0c 10 00 00 00 00 00 00 06 CS - passing beam front + rear delayed
+3f 0b bf 0c 00 00 00 00 00 10 00 06 CS - beam passing beam sided left +
+3f 0b bf 0c 00 00 00 00 00 20 00 06 CS - Remote + passing beam of light right on both sides
+3f 0b bf 0c 00 00 80 00 00 00 00 06 CS - passing beam + when ignition beam (IKE + LCM)
+3f 0b bf 0c 00 00 00 00 00 00 20 06 CS - left rear turn signal lights permanently (+ A)
+3f 0b bf 0c 00 00 00 00 00 00 80 06 CS - right rear turn signal lights permanently (+ A)
+3f 0b bf 0c 00 00 00 00 20 00 00 06 CS - front left blinker lights permanently (+ A)
+3f 0b bf 0c 00 00 00 00 40 00 00 06 CS - right front turn signal lights permanently (+ A)
+3f 0b bf 0c 00 00 00 40 00 00 00 06 CS - Park light left
+3f 0b bf 0c 00 00 00 80 00 00 00 06 CS - Park right light
+3f 0b bf 0c 20 00 00 00 00 00 00 06 CS - Warnblinker
+
+
+3b 05 80 41 0a 10 CS - average speed delete
+Bf 03 80 16 2a - Requirement Kilometers
+3b 06 80 40 09 00 xx CS - Speed limit set (beep when crossing)
+3b 05 80 41 09 20 CS - Speed Limit on current speed set
+3b 05 80 41 09 08 CS - Deactivate set speed limit
+Received codes:
+44 05 bf 74 04 xx CS - Key xx in.
+Bf 44 05 ff 74 00 CS - key removed
+
+00 04 bf 72 16 df - Connect button on remote
+00 04 bf 72 26 ef - Open button on remote
+00 04 bf 72 06 cf - button on remote released
+80 05 bf 18 xx yy CS - xx = Speed / 2, yy = Drehzahl/100, message every 2 seconds
+3F 05 00 0C 01 01 turn off interior lights
+3F 05 00 0C 02 01 open trunk
+3F 05 00 0C 03 01 lock doors + fade out interior lights
+3F 05 00 0C 05 01 open trunk (again??)
+3F 05 00 0C 13 01 return some data, relating to light control? (unsure)
+3F 05 00 0C 30 01 turn on key buzzer for 2 seconds + fade-in/out interior lights
+3F 05 00 0C 34 01 lock/unlock doors
+3F 05 00 0C 41 01 Open rear driver window
+3F 05 00 0C 42 01 close rear driver window
+3F 05 00 0C 43 01 close rear passenger window
+3F 05 00 0C 44 01 open rear passenger window
+3F 05 00 0C 45 01 trigger unknown relay (coming from rear doors?)
+3F 05 00 0C 46 01 lock front passenger door only
+3F 05 00 0C 47 01 lock front driver door only
+3F 05 00 0C 49 01 trigger wipers
+3F 05 00 0C 4A 01 trigger unknown relay (under cluster)
+3F 05 00 0C 4B 01 trigger windshield washer pump for 3 seconds (no liquid sprayed)
+3F 05 00 0C 4E 01 turn-on clown nose for 3 seconds
+3F 05 00 0C 4F 01 lock all but driver door
+3F 05 00 0C 52 01 Open front driver window
+3F 05 00 0C 53 01 close front driver window
+3F 05 00 0C 54 01 Open front passenger window
+3F 05 00 0C 55 01 close front passenger window
+3F 05 00 0C 60 01 turn on interior lights for 3 seconds
+3F 05 00 0C 62 01 spray windshield washer fluid
+3F 05 00 0C 63 01 trigger trunk relay for 3 seconds (use 95 01 or 02 01 instead for release only)
+3F 05 00 0C 68 01 fade out interior lights
+3F 05 00 0C 70 01 flash hazards + turn on interior lights
+3F 05 00 0C 73 01 trigger many door relays, don't know what it does
+3F 05 00 0C 75 01 flash hazards for 3 seconds (no blinker in-dash)
+3F 05 00 0C 7E 01 open sunroof
+3F 05 00 0C 7F 01 close sunroof
+3F 05 00 0C 95 01 open trunk (yes, again!)
+3F 05 00 0C 97 01 lock/unlock doors
+
+
+===== INDICATORS
+
+3F 0B D0 0C 00 00 00 00 00 00 00 06 CK
+                        80 		- right (side) indicator
+                        40 		- right front indicator
+			20 		- left front indicator
+			      80 	- right rear idndicator / RIGHT SIDE MARKER + RIGHT REAR FASHER (STAY LIT)
+			      20 	- left rear indicator  / LEFT SIDE MARKER + LEFT REAR FLASHER (STAY LIT)
+			      04 	- left (side) indicator
+
+
+3F 0B D0 0C 00 00 00 00 20 00 24 06 EA  - left indicators (all 3 at once)
+3F 0B D0 0C 00 00 00 00 C0 00 00 06 2E  - right indicators (all 3 at once)
+
+
+===== STOP LIGHTS
+
+3F 0B D0 0C 00 00 00 00 00 00 00 06 CK
+               10 			- stop lights (all 3)
+		        10 		- right stop light (inner)
+			08		- left stop light (inner)
+			04 		- left stop light (outer)
+			01 		- center stop light
+ 			   01   	- right stop light (outer)
+
+3F 0B D0 0C 00 00 00 00 18 00 00 06 F6  - right inner + left inner
+3F 0B D0 0C 00 00 00 00 04 01 00 06 EB  - right outer + left outer
+3F 0B D0 0C 00 00 00 00 14 00 00 06 FA  - right inner + left outer
+3F 0B D0 0C 00 00 00 00 08 01 00 06 E7  - right outer + left inner
+
+===== FRONT LIGHTS
+
+3F 0B D0 0C 00 00 00 00 00 00 00 06 CK
+			      40 - przeslony xenon
+-----------------------------------------------------------------
+
+1st byte
+
+20 - awaryjne
+10 - tylne przeciwmgielne kontrolka
+01 - mijania
+
+2nd byte
+
+10 - swiatla stop (wszystkie 3)
+08 - tylne przecimgielne + kontrolka
+04 - przednie przecimgielne + kontrolka
+01 - mijania przod tyl i dzienne
+02 - mijania bez dziennych
+
+3rd byte
+80 - dlugie halogeny + kontrolka
+40 - przednie przeciwmgielne + kontrolka
+
+4rd byte
+
+80 - prawy kierunkowskaz
+40 - lewy kierunek
+10 - tylne przeciwgielne
+01 - mijania
+
+5th byte
+
+80 - boczny kierunke prawy + akurator
+40 - kierunek przedni prawy (swieci ciagle)
+20 - kierunek przedni lewy (swieci ciagle)
+10 - prawy stop
+08 - lewy stop
+04 - lewy stop (obwodka)
+01 - srodkowy stop
+
+6th byte
+40 - left tyl mijania
+20 - prawy dlugie halogen i mijania
+10 - lewy dlugi halogen i mijania
+08 - tailling left
+04 - mijania lewy xenon
+02 - mijania prawy xenon
+02 - mijania prawy
+01 - prawy stop obwodka
+
+7th byte
+
+80 - prawy kierunek tylny (swieci ciagle)
+40 - dlugie xenon - podnosi preslone nie zapala
+20 - lewy tylny kierunek (swieci ciagle)
+10 - tylne przecimgielne z kontrolka (na pare sek)
+04 - lewy boczny kierunek swieci
+
+3f 0b bf 0c 00 00 00 00 00 00 00 06 ck - rribus
+3F 0C D0 0C 00 00 00 00 21 20 00 00 00 EE - forum
+3F 0B D0 0C 00 00 00 40 00 00 00 06 ck - drive
+----------------------------------------------------------------
+SET TIME:
+               HR MIN
+3B 06 80 40 01 0C 3B
+
+SET UNITS, MPG, 24H
+80 05 BF 15 01 08
+
+LIGHTS:
+BM 	= 	| Double Rate | Rind | Lind | RearFogs | FrontFogs | FullBeam | ? | ? |
+BM2 	= 	| CarImage | ? | LsideLight | RSideLight | Rr-L-Sidelight | Rr-R-Sidelight | ? | ? |
+ 5B _BM_ 00 00 _BM2_ 00
+
+DOORS:
+BM = 	| ? | ? | ? | ? | RL | RR | FL | FR |
+BM2 = 	| ? | ? | Boot | ? | ? | ? | ? | ? |
+00 05 BF 7A _BM_ _BM2_
+---------------------------------
+    def request_for_ignition(self):
+        """
+        Request ignition status from the IKE
+        IBUS Message: BF 03 80 10 2C
+        @return
+        0x01 - Pos1_Acc
+        0x02 - Pos2_On
+        0x03 - Pos3_Start
+        """
+        self.ibus.send("bf0380102c")
+
+    def request_for_sensors(self):
+        """
+        IKE sensor status request
+        IBUS Message: BF 03 80 12 2E
+        Contains R_Gear, Oil Presure, Handbrake etc.
+        """
+        self.ibus.send("bf0380122e")
+
+    def request_for_gong(self):
+        """
+        IBUS Message: BF 03 80 1a 26
+        But, it doesn't work for me :(
+        """
+        self.ibus.send("bf03801a26")
+
+    def request_for_mileage(self):
+        """
+        Request mileage from the IKE
+        IBUS Message: BF 03 80 16 2A
+        @return 80 0A BF 17 DC 11 03 01 28 72 CC 7B (201 180 kms)
+        Bytes 5-7 contain the Mileage in KMs
+        Bytes 8 and 9 hold the inspection interval in KMs
+        Byte 10 is the SIA Type (0x40 == Inspection)
+        Byte 11 is the the days to inspection.
+        """
+        self.ibus.send("bf0380162a")
+
+    def request_for_fuel_1(self):
+        self.ibus.send("3b0580410401fa")
+
+    def reset_fuel_1(self):
+        self.ibus.send("3b0580410410eb")
+
+    def request_for_fuel_2(self):
+        self.ibus.send("3b0580410501fb")
+
+    def reset_fuel_2(self):
+        self.ibus.send("3b0580410510ea")
+
+    def request_for_range(self):
+        self.ibus.send("3b0580410601f8")
+
+    def request_for_distance(self):
+        self.ibus.send("3b0580410701f9")
+
+    def reset_distance(self):
+        self.ibus.send("3b0580410710e8")
+
+    def request_for_limit(self):
+        self.ibus.send("3b0580410901f7")
+
+    def request_for_avg_speed(self):
+        self.ibus.send("3b0580410a01f4")
+
+    def reset_avg_speed(self):
+        self.ibus.send("3b0580410a10e5")
+
+    def set_speed_limit(self, speed):
+        """
+        3b 06 80 40 09 00 xx CK - speed limits set (audio signal with exceeding)
+        3b 05 80 41 09 20 CK    - speed limits on current speed set
+        """
+        packet = IBUSPacket(source_id="3b",
+                            length="06",
+                            destination_id="80",
+                            data="400900" + "{:02x}".format(speed))
+        self.ibus.send(packet.raw)
+
+    def reset_speed_limit(self):
+        """
+        3b 05 80 41 09 08 fe - deactivate adjusted speed limit
+        """
+        self.ibus.send("3b0580410908fe")
+
+    def request_for_vin(self):
+        """
+        @return D0 10 80 54 *50 4E 07 72 3*0 07 DB 00 03 0C 07 00 0B 90
+        LCM IKE Vehicle data status VIN PN07723
+        Total dist 201 100 kms [124 958 mls]; SI-L 30 litres since last service
+        SI-T 11 days since last service
+        """
+        self.ibus.send("8003d05300")
+
+    def request_for_radio_status(self):
+        """
+        @return 68 0D 3F A0 01 0D 56 20 20 30 31 30 31 34 94
+        5th bit indicates RADIO is on or not
+
+        68 0d 3f a0 31 0d ... - on
+        68 0d 3f a0 30 0d ... - off
+        """
+        self.ibus.send("3f03680b5f")
+
+    def request_for_radio_mode_switch(self):
+        """
+        @return 68 03 3f a0 f4
+        """
+        self.ibus.send("3f04680c0956")
+
+    def clown_nose_on(self):
+        """
+        It turns-on "clown nose" under back mirror for 3 seconds
+        """
+        self.ibus.send("3f05000c4e0179")
+
+    def request_light_status(self):
+        """
+        @return  5B 00 00 00 00 00 3C
+        Contains all information about active lights
+        """
+        self.ibus.send("bf03d05a36")
+
+    def request_lcm_io_status(self):
+        """
+        Or 3F LL D0 0B 00 CK
+        @returns d0233fa01040fefe0006000008ab00000000001e00000b000000000000000000000000008c
+        Details about parsing: https://github.com/kmalinich/node-bmw-client/blob/master/modules/LCM.js
+        """
+        self.ibus.send("3f03d00be7")
+
+    def clear_fault_memory(self, dest):
+        """
+        3F 03 08 05 31	DIA	SHD	Clear fault memory
+        08 03 3F A0 94	SHD	DIA	Diagnostic command acknowledged
+        """
+        pass
+
+
+    # looking for vehicle VIN
+    if packet.source_id == "d0" and packet.destination_id == "80":
+        try:
+            DATA["obc"]["vin"] = data[1].decode("hex") + data[2].decode("hex") + data[3] + data[4] + data[5]
+            print("VIN: %s" % DATA["obc"]["vin"])
+        except:
+            DATA["obc"]["vin"] = None
+            print("VIN: unknown")
+
+    """
+    OBC (On Board Computer)
+    Messages from the IKE to the GlobalBroadcast
+    0x11 - Ignition state
+    0x13 - Reversing, Handbrake, Oil presure state
+    0x15 - OBC units
+    0x17 - Mileage
+    0x18 - Speed/RPM
+    0x19 - Temp
+
+    Base on: https://github.com/t3ddftw/DroidIBus/blob/master/app/src/main/java/com/ibus/droidibus/ibus/systems/GlobalBroadcastSystem.java
+    """
+    if packet.source_id == "80" and packet.destination_id == "bf":
+        # Ignition status
+        if data[0] == "11":
+            if int(data[1], 16) == 0:
+                if DATA["obc"]["ignition"] > int(data[1], 16) and DATA["bluetooth"]["connected"]:
+                    bluetooth.disconnect(DATA["bluetooth"]["adapter"])
+
+            # set new ignition state
+            DATA["obc"]["ignition"] = int(data[1], 16)
+            print("Ignition state: %d" % DATA["obc"]["ignition"])
+            return
+        """
+        R_Gear detection
+        80 0A BF 13 02 10 00 00 00 00 38 CK // in reverse
+        80 0A BF 13 02 00 00 00 00 00 38 CK  // out of reverse
+        """
+        if data[0] == "13":
+            if (int(data[2], 16) >> 4) == 1:
+                # decrease volume while reversing
+                if not DATA["pdc"]["active"]:
+                    ibus.cmd.request_for_pdc()
+                    ibus.cmd.volume_down()
+                    if DATA["bluetooth"]["connected"]:
+                        if DATA["player"]["state"] == "playing":
+                            bluetooth.player_control("pause")
+                            DATA["radio"]["to_resume"] = True
+                        else:
+                            DATA["radio"]["to_resume"] = False
+                DATA["pdc"]["active"] = True
+                print("PDC: active")
+            else:
+                # increase volume after reversing
+                if DATA["pdc"]["active"]:
+                    ibus.cmd.reset_display()
+                    if DATA["bluetooth"]["connected"] and DATA["radio"]["to_resume"]:
+                        bluetooth.player_control("play")
+                        DATA["radio"]["to_resume"] = False
+                    ibus.cmd.volume_up()
+                DATA["pdc"]["active"] = False
+                print("PDC: inactive")
+        # Mileage
+        elif data[0] == "17":
+            DATA["obc"]["mileage"] = (int(data[3], 16)*65536) + (int(data[2], 16)*256) + int(data[1], 16)
+            print("Mileage: %d (km)" % DATA["obc"]["mileage"])
+        # Speed/RPM
+        elif data[0] == "18":
+            DATA["obc"]["speed"] = int(data[1], 16) * 2
+            DATA["obc"]["rpm"] = int(data[2], 16) * 100
+            print("Speed: %d km/h, RPM: %d" % (DATA["obc"]["speed"], DATA["obc"]["rpm"]))
+        # Temperatures
+        elif data[0] == "19":
+            DATA["obc"]["outside"] = hex2int(data[1])
+            DATA["obc"]["coolant"] = hex2int(data[2])
+            print("Outside: %d (C), Coolant: %d (C)" % (DATA["obc"]["outside"], DATA["obc"]["coolant"]))
+        return
+
+    # Lights status
+    if packet.source_id == "d0" and packet.destination_id == "bf":
+        if data[0] == "5b":
+            hex_value = int(data[1], 16)
+            DATA["lights"]["parking"] = check_bitmask(hex_value, 0x01)
+            DATA["lights"]["lowbeam"] = check_bitmask(hex_value, 0x02)
+            DATA["lights"]["highbeam"] = check_bitmask(hex_value, 0x04)
+            DATA["lights"]["fog_front"] = check_bitmask(hex_value, 0x08)
+            DATA["lights"]["fog_rear"] = check_bitmask(hex_value, 0x10)
+            DATA["lights"]["turn_left"] = check_bitmask(hex_value, 0x20)
+            DATA["lights"]["turn_right"] = check_bitmask(hex_value, 0x40)
+            DATA["lights"]["turn-fast"] = check_bitmask(hex_value, 0x80)
+            return
+
+        if data[0] == "5c":
+            DATA["dimmer"] = int(data[1], 16)
+            return
+
+#    if packet.source_id == "d0" and packet.destination_id == "3f":
+    if packet.source_id == "d0":
+        if data[0] == "a0":
+            DATA["io_status"] = packet.raw
+            return
+
+    """
+    * Handle OBC messages sent from IKE
+    * IBus Message: 80 0C FF 24 <System> 00 <Data> <CRC>
+
+    Base on: https://github.com/t3ddftw/DroidIBus/blob/master/app/src/main/java/com/ibus/droidibus/ibus/systems/BroadcastSystem.java
+    https://github.com/t3ddftw/DroidIBus/blob/master/app/src/main/java/com/ibus/droidibus/ibus/systems/GFXNavigationSystem.java
+    """
+    if packet.source_id == "80" and packet.destination_id == "ff":
+        # Fuel 1
+        if data[1] == "04":
+            try:
+                DATA["obc"]["fuel_1"] = float(packet.data[4:14].lstrip("00").decode("hex"))
+                print("Fuel 1: %f" % DATA["obc"]["fuel_1"])
+            except:
+                DATA["obc"]["fuel_1"] = None
+        # Fuel 2
+        elif data[1] == "05":
+            try:
+                DATA["obc"]["fuel_2"] = float(packet.data[4:14].lstrip("00").decode("hex"))
+                print("Fuel 2: %f" % DATA["obc"]["fuel_2"])
+            except:
+                DATA["obc"]["fuel_2"] = None
+        # Range
+        elif data[1] == "06":
+            try:
+                DATA["obc"]["range"] = int(packet.data[4:14].lstrip("00").decode("hex"))
+                print("Range: %i" % DATA["obc"]["range"])
+            except:
+                DATA["obc"]["range"] = None
+        # Distance // actualy I've never got it working in my E46 :|
+        elif data[1] == "07":
+            try:
+                DATA["obc"]["distance"] = int(packet.data[4:14].lstrip("00").decode("hex"))
+                print("Distance: %i" % DATA["obc"]["distance"])
+            except:
+                DATA["obc"]["distance"] = None
+        # Speed limit
+        elif data[1] == "09":
+            try:
+                DATA["obc"]["limit"] = int(packet.data[4:14].lstrip("00").decode("hex"))
+                print("Speed limit: %i" % DATA["obc"]["limit"])
+            except:
+                DATA["obc"]["limit"] = None
+        # AVG speed
+        elif data[1] == "0a":
+            try:
+                DATA["obc"]["avg_speed"] = float(packet.data[4:14].lstrip("00").decode("hex"))
+                print("AVG speed: %f" % DATA["obc"]["avg_speed"])
+            except:
+                DATA["obc"]["avg_speed"] = None
+        return
+
+
+
+// Zündschloss
+
+const char ignition_off_msg[] PROGMEM = { 0x80, 0x04, 0xBF, 0x11, 0x00, 0x2A }; //Zündung aus 80 04 BF 11 00 2A dürfte Richtig sein
+const char ignition_pos1_msg[] PROGMEM = { 0x80, 0x04, 0xBF, 0x11,0x01, 0x2B }; // POS1_ACC 80 04 BF 11 01 2B dürfte Richtig sein
+const char ignition_pos2_msg[] PROGMEM = { 0x80, 0x04, 0xBF, 0x11,0x02, 0x28 }; // POS2_ON müsste Falsch sein müsste 0x03 sein
+const char ignition_pos3_msg[] PROGMEM = { 0x80, 0x04, 0xBF, 0x11,0x03, 0x29 }; // POS3_START müsste Falsch sein müsste 0x06 sein
+
+
+wobei ich ich nicht sicher bin welche Nachrichten nun richtig sind.
+
+Wenn ich die gefunden Forums Beiträge interpretiere
+
+Bei jeder Änderung in der Schlüsselstellung wird folgendes Telegramm gesendet:
+
+80 04 BF 11 03 29
+IKE --> GLO : Ignition status: Pos1_Acc Pos2_On
+
+Wobei das Databyte wie folgt gesetzt wird:
+
+Bit0 = Pos1_Acc
+Bit1 = Pos2_On
+Bit2 = Pos3_Start
+
+
+
+------------------------
+https://www.e39-forum.de/index.php?thread/28666-ecke-der-ibus-hacker/&pageNo=32
+
+
+#define LEFT_TURNLIGHT           (1L << 1)
+#define RIGHT_TURNLIGHT          (1L << 2)
+#define LEFT_TURNLIGHT_BACK      (1L << 3)
+#define RIGHT_TURNLIGHT_BACK     (1L << 4)
+#define FOGLIGHT_FRONT_LEFT      (1L << 5)
+#define FOGLIGHT_FRONT_RIGHT     (1L << 6)
+#define FOGLIGHT_BACK_LEFT       (1L << 7)
+#define FOGLIGHT_BACK_RIGHT      (1L << 8)
+#define LOWBEAM_LEFT             (1L << 9)
+#define LOWBEAM_RIGHT            (1L << 10)
+#define PARKINGLIGHT_LEFT        (1L << 11)
+#define PARKINGLIGHT_RIGHT       (1L << 12)
+#define HIGHBEAM_LEFT            (1L << 13)
+#define HIGHBEAM_RIGHT           (1L << 14)
+#define BRAKE_LEFT               (1L << 15)
+#define BRAKE_CENTER             (1L << 16)
+#define BRAKE_RIGHT              (1L << 17)
+#define BACKLIGHT_LEFT           (1L << 18)
+#define BACKLIGHT_RIGHT          (1L << 19)
+#define REARGEAR_LEFT            (1L << 20)
+#define REARGEAR_RIGHT           (1L << 21)
+#define LICENSE_PLATE            (1L << 22)
+#define LEFT_INDICATOR           (1L << 23)
+#define RIGHT_INDICATOR          (1L << 24)
+#define LIGHT_STATE_CHANGED      (1L << 31)
+
+    // 3f,d0,0c,0,0,80,0,0,0,0,0,0 - indicator left
+    // 3f,d0,0c,0,0,50,0,0,0,0,0,0 - indicator right
+
+----------------------------------------------------------------------
+
+
+00			Broadcast
+18	CDC		CD Player
+3B	NAV		Navigation / Videomodule
+43			Menu Screen
+50	MFL		Multi Function Steering Wheel
+60	PDC		Parking Distance Control
+68	RAD		Radio
+6A	DSP		Digital Sound Processor
+80	IKE		Instrument Control Electronics
+BF	LCM		Light Control Module
+C0	MID		Multi-Information Display
+C8	TEL		Telephone
+D0	NAV		Navigation Location
+E7	OBC		Textbar
+ED			Lights, Wipers, Seat Memory
+F0	BMB		Board Monitor Buttons
+FF			Broadcast
+44			Unknown
+08			Unknown				08 05 BF 7C 00 01 CF gets a lot of info back including time ???
+30			Unknown
+3F	DIS		Diagnostics PC			Used by BMW technicians.
+7F			Unknown
+A8			Unknown
+BB			TV Module
+9B			Driver's Mirror
+51      		Passenger Mirror

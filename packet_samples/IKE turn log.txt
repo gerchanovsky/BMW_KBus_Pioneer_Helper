@@ -1,0 +1,192 @@
+ets Jun  8 2016 00:22:57
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:1
+load:0x3fff0018,len:4
+load:0x3fff001c,len:1044
+load:0x40078000,len:8896
+load:0x40080400,len:5816
+entry 0x400806ac
+--IBUS Library Debugger (enter h for help)--
+DS3231 regs: 0E=00 0F=00
+Bad checksum: 0A!=32 len=9/9 tail=0 remove=E8|E8 07 BF 5C FE 3F FF 00 0A 
+Bad length: BF avail=8 tail=1 remove 07| BF 5C FE 3F FF 00 0A 
+Bad length: 5C avail=7 tail=2 remove BF| 5C FE 3F FF 00 0A 
+Bad length: FE avail=6 tail=3 remove 5C| FE 3F FF 00 0A 
+Bad length: 3F avail=5 tail=4 remove FE| 3F FF 00 0A 
+Bad length: FF avail=4 tail=5 remove 3F| FF 00 0A 
+Bad length: 00 avail=10 tail=6 remove FF| 00 0A E8 05 D0 59 11 02 77 
+Bad checksum: BF!=D2 len=12/19 tail=7 remove=00|00 0A E8 05 D0 59 11 02 77 D0 08 BF 
+Bad length: E8 avail=18 tail=8 remove 0A| E8 05 D0 59 11 02 77 D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+LSZ: dimmer dial=0xFE sensor=63
+IKE->FF: Time:  8:42PM
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+LSZ: dimmer dial=0xFE sensor=63
+LSZ: dimmer dial=0xFE sensor=63
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+LSZ: dimmer dial=0xFE sensor=63
+left turn
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 21 00 04 00 01 18 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+LSZ: dimmer dial=0xFE sensor=63
+
+right turn
+t Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 41 00 04 00 01 78 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 01 00 00 00 01 3C 
+LSZ: dimmer dial=0xFE sensor=63
+
+--------
+eed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=73C]IKE->GLO: 80 06 BF 19 11 49 00 78 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+LSZ: dimmer dial=0xFE sensor=63
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+IHK->IKE: 5B 05 80 83 CE 28 BB 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 03 00 00 00 01 3E 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 03 00 00 00 01 3E 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=74C]IKE->GLO: 80 06 BF 19 11 4A 00 7B 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+IHK->IKE: 5B 05 80 83 CE 20 B3 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=74C]IKE->GLO: 80 06 BF 19 11 4A 00 7B 
+LSZ: dimmer dial=0xFE sensor=63
+
+-------------------
+D0 08 BF 5B 03 00 00 00 01 3E 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=75C]IKE->GLO: 80 06 BF 19 11 4B 00 7A 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 43 00 04 00 01 7A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 43 00 04 00 01 7A 
+IKE->FF: Time:  8:49PM
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 43 00 04 00 01 7A 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 43 00 04 00 01 7A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 43 00 04 00 01 7A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 03 00 00 00 01 3E 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 03 00 00 00 01 3E 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+IHK->IKE: 5B 05 80 83 CE 28 BB 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=76C]IKE->GLO: 80 06 BF 19 11 4C 00 7D 
+LSZ: dimmer dial=0xFE sensor=63
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+IKE->FF: Consumption 1: 17.0
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+
+
+
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+LSZ: dimmer dial=0xFE sensor=63
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+IHK->IKE: 5B 05 80 83 CE 28 BB 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=77C]IKE->GLO: 80 06 BF 19 11 4D 00 7C 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 23 00 04 00 01 1A 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 03 00 00 00 01 3E 
+Set Light Broadcast:
+LCM->GLO: D0 08 BF 5B 03 00 00 00 01 3E 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+IHK->IKE: 5B 05 80 83 CE 20 B3 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Temp Air=17C/Cooling=77C]IKE->GLO: 80 06 BF 19 11 4D 00 7C 
+LSZ: dimmer dial=0xFE sensor=63
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 
+[Speed 0kmh/700rpm]IKE->GLO: 80 05 BF 18 00 07 25 

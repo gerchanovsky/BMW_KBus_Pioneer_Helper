@@ -1,0 +1,306 @@
+\node-bmw-ref-master\ike\get-set-units.txt
+https://web.archive.org/web/20160412025013/http://web.comhem.se/bengt-olof.swing/IBus.htm
+==================
+The sideview mirror selector switch on the left door armrest will send these messages: (Thanks saft6luck) I will use this message to turn on rearview camera
+
+9B 04 51    6D 40 E3 // right
+9B 04 51    6D 80 23 // left
+
+saft6luck: "For my LH driven car the 0x9B is the left and 0x51 is the right mirror module. Btw. I duno if this changes for the RH driven car. The mirrors are controlled by these modules and the buttons are read in by the 0x9B module in my case."
+
+When key is inserted into the ignition lock these messages are sent. I will use this to detect ignition on.
+
+44 05 BF 74 04 01 8F // in
+44 05 BF 74 00 FF 75 // out
+
+> GT --> IKE : Ignition status request  (Jochen)
+
+Answer:
+80 04 BF 11 03 29
+
+80 = IKE
+04 = length
+BF = Global
+11 = Ignition status
+03 = Data
+29 = checksum
+
+Data: (bit mapped)
+Bit 1 = KL_R (Pos1_Acc)
+Bit 2 = KL_15 (Pos2_On)
+Bit 3 = KL_50 (Pos3_Start)
+
+
+
+When gear is put in reverse and ignition is on these messages are sent: (Thanks saft6luck) I will use this to turn on rearview camera
+
+Note that the four red marked bytes are really a bitvector. Only the bold one bit is significant for these messages.
+
+80 0A BF 13 02 10 00 00 00 00 38 0C // in
+80 0A BF 13 02 00 00 00 00 00 38 1C // out
+            ---+-------
+handbrake on
+oil pressure low
+brake pads worn
+transmission emergency program
+gearbox not in P
+motor running
+vehicle driving
+reverse not plausible
+Gear: R
+Gear: 1
+Gear: 2
+Gear: D
+alarm horn on
+immobiliser on
+Aux heating on
+Aux ventillation on
+Temp deg F
+
+
+
+80 04 BF 11 00 2A,IKE->GLO : Ignition status, Off
+80 04 BF 11 01 2B,IKE->GLO : Ignition status, Pos1_Acc
+80 04 BF 11 03 29,IKE->GLO : Ignition status, Pos1_Acc Pos2_On
+80 04 BF 11 07 2D,IKE->GLO : Ignition status, Pos1_Acc Pos2_On Pos3_Start
+
+Set Time (thanks enforcer) I might use this to set car time from PC/GPS time.
+
+GT telling IKE to set the time:
+
+3B 06 80 40 01 0C 3B cc
+GT –> IKE : On-board computer set data: Set Time = 12:59
+40 = OBC  Set data
+01 = Time
+0C = hours in hex
+3B = minutes in hex
+
+GT telling IKE to set the date:
+
+3B 07 80 40 02 1B 05 08 cc
+GT –> IKE : On-board computer set data: Set Date = 27/05/08
+40 = OBC Set data
+02 = Date
+1B = day in hex
+05 = month in hex
+08 = year in hex
+
+\node-bmw-ref-master\ibus\e46\log-filter-e46.txt 
+3B 80 40 01 10 30,GT --> IKE : On-board computer set data: Set Time = 16:48
+3B 80 40 01 11 01,GT --> IKE : On-board computer set data: Set Time = 17:01
+3B 80 40 01 16 10,GT --> IKE : On-board computer set data: Set Time = 22:16
+3B 80 40 02 05 08 0B,GT --> IKE : On-board computer set data: Set Date = 05/08/11
+3B 80 40 02 0F 0A 0B,GT --> IKE : On-board computer set data: Set Date = 15/10/11
+3B 80 40 02 16 08 0B,GT --> IKE : On-board computer set data: Set Date = 22/08/11
+3B 80 41 01 01,GT --> IKE : On-board computer data request: Time: current value request
+3B 80 41 02 01,GT --> IKE : On-board computer data request: Date: current value request
+7F 80 1F 40 14 58 07 00 07 20 11,NAV --> IKE : Time & date: UTC 14:58 07 Juli 2011
+7F 80 1F 40 14 59 07 00 07 20 11,NAV --> IKE : Time & date: UTC 14:59 07 Juli 2011
+7F 80 1F 40 16 35 24 00 07 20 11,NAV --> IKE : Time & date: UTC 16:35 24 Juli 2011
+7F 80 1F 40 19 05 13 00 10 20 11,NAV --> IKE : Time & date: UTC 19:05 13 October 2011
+7F 80 1F 40 20 07 12 00 10 20 11,NAV --> IKE : Time & date: UTC 20:07 12 Oktober 2011
+7F 80 1F 40 20 07 20 00 07 20 11,NAV --> IKE : Time & date: UTC 20:07 20 Juli 2011
+7F 80 1F 40 20 08 12 00 10 20 11,NAV --> IKE : Time & date: UTC 20:08 12 Oktober 2011
+7F 80 1F 40 20 08 20 00 07 20 11,NAV --> IKE : Time & date: UTC 20:08 20 Juli 2011
+7F 80 1F 40 20 15 22 00 08 20 11,NAV --> IKE : Time & date: UTC 20:15 22 August 2011
+7F 80 1F 40 20 16 22 00 08 20 11,NAV --> IKE : Time & date: UTC 20:16 22 August 2011
+7F 80 1F 40 21 26 06 00 07 20 11,NAV --> IKE : Time & date: UTC 21:26 06 Juli 2011
+7F 80 1F 40 21 27 06 00 07 20 11,NAV --> IKE : Time & date: UTC 21:27 06 Juli 2011
+7F 80 1F 40 21 28 06 00 07 20 11,NAV --> IKE : Time & date: UTC 21:28 06 Juli 2011
+7F 80 1F 40 21 28 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:28 25 October 2011
+7F 80 1F 40 21 29 06 00 07 20 11,NAV --> IKE : Time & date: UTC 21:29 06 Juli 2011
+7F 80 1F 40 21 29 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:29 25 October 2011
+7F 80 1F 40 21 30 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:30 25 October 2011
+7F 80 1F 40 21 31 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:31 25 October 2011
+7F 80 1F 40 21 32 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:32 25 October 2011
+7F 80 1F 40 21 33 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:33 25 October 2011
+7F 80 1F 40 21 34 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:34 25 October 2011
+7F 80 1F 40 21 35 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:35 25 October 2011
+7F 80 1F 40 21 36 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:36 25 October 2011
+7F 80 1F 40 21 37 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:37 25 October 2011
+7F 80 1F 40 21 38 25 00 10 20 11,NAV --> IKE : Time & date: UTC 21:38 25 October 2011
+---------------
+\node-bmw-ref-master\ike\requests.txt
+41 01 01 :: VID ---> IKE : OBC request: Time: current value request
+41 01 01 :: GT ----> IKE : OBC request: Time: current value request
+41 02 01 :: VID ---> IKE : OBC request: Date: current value request
+41 02 01 :: GT ----> IKE : OBC request: Date: current value request
+41 03 01 :: GT ----> IKE : OBC request: Outside_Temp: current value request
+41 04 01 :: GT ----> IKE : OBC request: Consumption_1: current value request
+41 05 01 :: GT ----> IKE : OBC request: Consumption_2: current value request
+41 06 01 :: GT ----> IKE : OBC request: Range: current value request
+41 07 01 :: GT ----> IKE : OBC request: Distance: current value request
+41 08 01 :: GT ----> IKE : OBC request: Arrival: current value request
+41 09 01 :: GT ----> IKE : OBC request: Limit: current value request
+41 09 02 :: GT ----> IKE : OBC request: Limit: status request
+41 0A 01 :: GT ----> IKE : OBC request: Average_Speed: current value request
+41 0D 02 :: GT ----> IKE : OBC request: Code: status request
+41 0E 03 :: GT ----> IKE : OBC request: Stopwatch: current value request: status request
+41 0F 01 :: GT ----> IKE : OBC request: Timer_1: current value request
+41 10 01 :: GT ----> IKE : OBC request: Timer_2: current value request
+41 1A 01 :: GT ----> IKE : OBC request: Interim_Time: current value request
+41 1B 02 :: VID ---> IKE : OBC request: Aux_Heat/Vent: status request
+41 1B 03 :: GT ----> IKE : OBC request: Aux_Heat/Vent: current value request: status request
+-----------------
+\node-bmw-ref-master\gm\strings.txt 
+src: 0x3F // DIA
+dst: 0x00 // ZKE (body module)
+cmd: 0xC0 // Set IO status
+
+LF left  front
+RF right front
+LR left  rear
+RR right rear
+SR sunroof
+
+// Locks (tested)
+
+00 0B 01 : toggle (only 'outside' locks)
+03 01    : nothing
+34 01    : nothing
+9E 01    : nothing
+9F 01    : nothing
+01 52 01 : unlock LF
+
+// Locks (need tested)
+
+00 0B    : lock all
+00 40    : soft close
+00 41    : lock rear doors, trunk and gas cap
+00 41 01 : lock rear doors
+00 42    : lock gas cap
+00 42 01 : unlock rear doors
+4F 01    : lock all but LF
+97 01    : toggle
+
+52 01 : LF window open
+53 01 : LF window close
+47 01 : LF lock
+
+
+// Misc
+
+00 10 : Wheel up, interior on
+00 17 : Interior on, no fade
+00 3C : Red nose on for 3 sec
+00 56 : ALARM!!!
+00 91 : Interior light, hazard button
+00 AE : Red nose flash for 3 sec
+00 B1 : wheel up, down
+4E 01 : turn on the 'clown nose' for 3 seconds
+60 01 : turn on interior lights for 3 seconds
+62 01 : spray windshield washer fluid
+63 01 : trigger trunk relay for 3 seconds
+68 01 : fade out interior lights
+70 01 : flash hazards + turn on interior lights
+73 01 : trigger many door relays, don't know what it does
+75 01 : flash hazards for 3 seconds (no blinker in-dash)
+
+\node-bmw-ref-master\gm\strings.txt \node-bmw-ref-master\gm\misc-strings.txt 
+// Key fob messages
+cmd: 0x72 // Key fob message
+
+0x00 : no button pressed
+0x10 : lock down
+0x20 : unlock down
+0x40 : trunk down
+
+01 3A 01 : LF unlock (CL)
+01 39 01 : LF lock (CL)
+02 3A 01 : RF unlock (CL)
+02 39 01 : RF lock (CL)
+
+01 41 01 : Rear lock
+01 42 02 : Rear unlock
+
+// Below:
+// src : DIA
+// dst : GM
+// cmd : 0x0C (Set IO status)
+
+01 01 Turn off interior lights
+02 01 Open trunk
+03 01 Lock doors + fade out interior lights
+05 01 Open trunk (again??)
+13 01 Return some data, relating to light control? (unsure)
+30 01 Turn on key buzzer for 2 seconds + fade-in/out interior lights
+34 01 Lock/unlock doors
+
+
+60 01 Turn on interior lights for 3 seconds
+62 01 Spray windshield washer fluid
+63 01 Trigger trunk relay for 3 seconds (use 95 01 or 02 01 instead for release only)
+68 01 Fade out interior lights
+70 01 Flash hazards + turn on interior lights
+73 01 Trigger many door relays, don't know what it does
+75 01 Flash hazards for 3 seconds (no blinker in-dash)
+
+
+97 01 Lock/unlock doors
+
+\node-bmw-ref-master\gm\interior-light-pwm.txt 
+3F LL 00 0C 10 05 3F CK // 24.7% = 63/255 = 3F/FF
+------------------
+\node-bmw-ref-master\ibus\bus-lib.txt 
+3B 80 40 01 01 1A,GT --> IKE On-board computer set data Set Time = 01:26
+3B 80 40 01 07 18,GT --> IKE On-board computer set data Set Time = 07:24
+3B 80 40 01 10 30,GT --> IKE On-board computer set data Set Time = 16:48
+3B 80 40 01 11 01,GT --> IKE On-board computer set data Set Time = 17:01
+3B 80 40 01 16 10,GT --> IKE On-board computer set data Set Time = 22:16
+3B 80 40 02 05 08 0B,GT --> IKE On-board computer set data Set Date = 05/08/11
+3B 80 40 02 0A 05 10,GT --> IKE On-board computer set data Set Date = 10/05/16
+3B 80 40 02 0F 0A 0B,GT --> IKE On-board computer set data Set Date = 15/10/11
+3B 80 40 02 16 08 0B,GT --> IKE On-board computer set data Set Date = 22/08/11
+3B 80 40 02 1F 07 10,GT --> IKE On-board computer set data Set Date = 31/07/16
+3B 80 40 01 01 1A,GT,IKE,On-board computer set data Set Time = 01:26
+3B 80 40 01 07 18,GT,IKE,On-board computer set data Set Time = 07:24
+3B 80 40 01 10 30,GT,IKE,On-board computer set data Set Time = 16:48
+3B 80 40 01 11 01,GT,IKE,On-board computer set data Set Time = 17:01
+3B 80 40 01 16 10,GT,IKE,On-board computer set data Set Time = 22:16
+3B 80 40 02 05 08 0B,GT,IKE,On-board computer set data Set Date = 05/08/11
+3B 80 40 02 0A 05 10,GT,IKE,On-board computer set data Set Date = 10/05/16
+3B 80 40 02 0F 0A 0B,GT,IKE,On-board computer set data Set Date = 15/10/11
+3B 80 40 02 16 08 0B,GT,IKE,On-board computer set data Set Date = 22/08/11
+3B 80 40 02 1F 07 10,GT,IKE,On-board computer set data Set Date = 31/07/16
+--------------------
+\node-bmw-ref-master\ibus\ibusmonitor.c 
+		case 0x74:
+			printf("IGNITION KEY ");
+			if (msg[4] == 0x04)
+				printf("INSERT %d", msg[5]);
+			if (msg[4] == 0x00)
+				printf("REMOVE");
+			break;
+-------------------
+\node-bmw-ref-master\ibus\ibusmonitor.c \node-bmw-ref-master\ibus\possible-cmd-codes.txt 
+startDiagnosticSession                 0x10
+readDiagnosticTroubleCodes             0x13
+clearDiagnosticInformation             0x14
+readDiagnosticTroubleCodesByStatus     0x18
+readStatusOfDiagnosticTroubleCodes     0x17
+readECUIdentification                  0x1A
+
+stopDiagnosticSession                  0x20
+readDataByLocalIdentifier              0x21
+readDataByCommonIdentifier             0x22
+readMemoryByAddress                    0x23
+sequrityAccess                         0x27
+
+startRoutineByLocalIdentifier          0x31
+stopRoutineByLocalIdentifier           0x32
+requestRoutineResultsByLocalIdentifier 0x33
+requestDownload                        0x34
+requestUpload                          0x35
+requestTransferData                    0x36
+requestTransferExit                    0x37
+startRoutineByAddress                  0x38
+stopRoutineByAddress                   0x39
+requestRoutineResultsByAddress         0x3A
+
+writeDataByCommonIdentifier            0x2E
+writeDataByLocalIdentifier             0x3B
+writeMemoryByAddess                    0x3D
+
+startCommunication                     0x81
+stopCommunication                      0x82
+-------------------

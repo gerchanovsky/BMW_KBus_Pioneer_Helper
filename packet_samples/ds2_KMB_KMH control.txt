@@ -1,0 +1,135 @@
+80 04 9F 1B End test
+80 04 A0 24 Status reset
+80 07 0C 0A 01 40 C0 
+80 07 0C 0A 0B 40 CA 
+80 07 0C 0B 01 40 C1 
+80 07 0C 0B 01 40 C1 
+80 07 0C 0C 0B 40 CC 
+
+80 07 0C 08 07 16 92 
+80 07 0C 08 07 16 92 
+80 07 0C 08 46 DD 18 
+
+80 07 0C 08 46 DD 18 	10km/h
+80 07 0C 08 07 16 92 	100km/h
+80 07 0C 08 04 92 15 	155km/h
+80 07 0C 08 46 DD 18 	10km/h
+
+80 07 0C 0A 01 40 C0 	 speedometer 10
+80 07 0C 0B 01 40 C1 	 tachometer  10
+80 07 0C 0C 01 40 C6 	 tank indicator 10
+80 07 0C 0D 01 40 C7 	 coolant temperature 10
+80 07 0C 0E 01 40 C4 	 EC indicator 10
+
+speedometer 10-20-30-40-50-60-70-80-90
+80 07 0C 0A 01 40 C0 	10
+80 07 0C 0A 02 80 03 	20
+80 07 0C 0A 03 C0 42 	30
+80 07 0C 0A 05 00 84 	40
+80 07 0C 0A 06 40 C7 	50
+80 07 0C 0A 07 80 06 	60
+80 07 0C 0A 08 C0 49 	70
+80 07 0C 0A 0A 00 8B 	80
+80 07 0C 0A 0B 40 CA 	90
+80 07 0C 0A 1F 40 DE   250
+
+80 07 0C ID [Speed-low] [Speed-high] CS
+ID= A:speedometer,B:tachometer,C:Fuel,D:Coolant,E:MPG
+Speed = Km/h<<5
+
+
+@echo off
+echo 04185A5A5A5A55AA19A7FFFF00000001FFE0F8BD0001FFF800185A5A5A5A55AA00091A9D000000000000000000000000>example_dump_1.txt
+certutil -decodehex example_dump_1.txt example_dump_1.bin
+
+MODE COM8:115200,n,8,1
+copy example_dump_1.bin \\.\com8 /b
+
+@echo off
+del example_dump_1.txt example_dump_1.bin
+echo %1>example_dump_1.txt
+certutil -decodehex example_dump_1.txt example_dump_1.bin
+MODE COM1:9600,e,8,1
+copy example_dump_1.bin \\.\com1 /b
+
+
+
+send_hex.bat 80070C0A0140C08004A024
+send_hex.bat 80070C0A0B40CA8004A024
+
+send_hex.bat 80070C0846DD188004A024
+send_hex.bat 80070C080492158004A024
+
+RealTerm
+HexCSV2DEC.exe example_dump_1.txt
+ах
+10km/h  128 7 12 10 1 64 192 
+250km/h 128 7 12 10 31 64 222 
+
+
+80 07 0C 0A 00 00 81     0kmh  | 128 7 12 10 0 0 129    
+80 07 0C 0A 1F 40 0E    10kmh  | 128 7 12 10 1 64 192   
+80 07 0C 0A 20 80 F1   250kmh  | 128 7 12 10 31 64 14   
+80 07 0C 0A 21 C0 60   260kmh  | 128 7 12 10 32 128 241 
+                       270kmh  | 128 7 12 10 33 192 96  
+
+
+80 07 0C 0B 03 84 07   03 84 = 384h=900
+
+KOMBI46 redesign
+0x80 0x07 0x0C 0x0A 0x00 0x00 0x81 0
+0x80 0x07 0x0C 0x0B 0x00 0x00 0x80 0
+0x80 0x07 0x0C 0x0A 0x0a 0x8c 0x07 270 odo
+0x80 0x07 0x0C 0x0B 0x09 0x92 0x1B 245 tach
+0x80 0x07 0x0C 0x0A 0x0a 0x8c 0x07 0x80 0x04 0xA0 0x24 0x80 0x07 0x0C 0x0B 0x09 0x92 0x1B 270odo 245taho
+
+0x80 0x04 0x9F 0x1B                reset analog
+
+Self test
+0x80 0x04 0x30 0xB4   4 seconds
+Stop test
+0x80 0x04 0x9F 0x1B   reset analog
+
+0x80 0x07 0x0C 0x0A 0x0a 0x8c 0x07 0x80 0x07 0x0C 0x0B 0x0a 0x28 0xa2
+
+0x80 0x07 0x0C 0x0A 0x21 0xC0 0x60 
+0x80 0x07 0x0C 0x0B 0x21 0xC0 0x61
+
+
+80 07 0C 0B 00 00 80     tacho 0        |128 7 12 11 0 0 128  
+80 07 0C 0B 01 40 C1     tacho 10       |128 7 12 11 1 64 193 
+80 07 0C 0B 21 C0 61     tacho 270      |128 7 12 11 33 192 97
+
+80 07 0C 0B 01 40 C1 	 tachometer  10
+-------------
+// Start/keep diagnosing (keepalive signal)
+3F LL 80 9E CS
+
+// Stop diagnosing
+3F LL 80 9F CS
+
+// Set speedometer needle to 88deg
+3F LL 80 0C 0A 00 FA CS
+
+
+80 07 0C 0B 21 C0 61
+
+80 04 9F 1B End test
+80 04 A0 24 Status reset
+
+
+3F 03 80 9E CS           KBus diag start
+3F 06 80 0C 08 04 92 CS  KBus 155km/h
+
+
+//Old IKE Gauge Sweep
+:80 04 30 B4
+:80 04 A0 24
+
+//Stop
+:80 04 9F 1B
+:80 04 A0 24
+
+3F 03 80 9E CS
+3F 03 80 30 CS
+3F 03 80 9F CS

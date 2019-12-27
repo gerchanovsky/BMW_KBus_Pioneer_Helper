@@ -1,0 +1,113 @@
+﻿https://www.bimmerforums.com/forum/showthread.php?1153365-Feeler-Open-Source-OBC-Firmware/page25
+
+Additional spare info. 
+
+K line and OBD2 are pretty simple. 1 wire bi-directional with a 12V idle; active low configuration at 10.4kbaud. All iBus modules must wake up after a 00 pulse. They go to sleep (minimum current consumption) after about 30 seconds of inactivity on the iBus. There is no collision detection or line signalling. All iBus modules will respond positively to a correctly decoded message, or the sender will resend again up to three times (if memory serves), or the module will be marked as faulty and ignored. Whilst each module has it's own address, there are some GLO (global) messages and LOC (general update) messages, and other modules tend to be a bit nosey. The LCM for example will listen to messages not addressed to it about the state of the Ignition.
+
+
+On E46 (and I guess E39) the Instrument cluster acts as an OBD2/ibus gateway. 
+
+In this log I am logging the iBus and stimulating the car with INPA over OBD2. The cluster is taking the OBD2 messages from the round diagnostic connector and adding the source/destination addresses and recalculating the checksum, before broacasting over the iBus. It then takes the responses from the modules and converts them back to OBD2 and gives them to the 20 pin connector.
+
+Hence if you wish to use the OBD2 diagnostic socket/line and OBD2 message format on OBD2 cars, you can access all the modules in the car to get live data from the sensors using OBD2 messages, or vice versa.
+
+IE you have two ways of cracking the same nut, and also can use INPA to reverse engineer the iBus commands for probing the vehicle sensors.
+Code:
+! Logging RLS sensor light value is 232, 23613/06/2010 14:14:23.750:  DIA  --> RLS : Read memory: Block 02, Offset 54, Length 01
+13/06/2010 14:14:23.765:  E8 04 3F A0 FF 8C
+13/06/2010 14:14:23.765:  RLS  --> DIA : Diagnostic command acknowledged, Data="FF"    [ÿ]
+13/06/2010 14:14:23.828:  3F 06 E8 06 02 55 01 81
+13/06/2010 14:14:23.828:  DIA  --> RLS : Read memory: Block 02, Offset 55, Length 01
+13/06/2010 14:14:23.843:  E8 04 3F A0 EC 9F
+13/06/2010 14:14:23.843:  RLS  --> DIA : Diagnostic command acknowledged, Data="EC"    [ì]
+13/06/2010 14:14:23.890:  3F 06 E8 06 02 56 01 82
+13/06/2010 14:14:23.890:  DIA  --> RLS : Read memory: Block 02, Offset 56, Length 01
+13/06/2010 14:14:23.921:  E8 04 3F A0 FF 8C
+13/06/2010 14:14:23.921:  RLS  --> DIA : Diagnostic command acknowledged, Data="FF"    [ÿ]
+13/06/2010 14:14:23.968:  3F 06 E8 06 02 57 01 83
+13/06/2010 14:14:23.968:  DIA  --> RLS : Read memory: Block 02, Offset 57, Length 01
+13/06/2010 14:14:23.984:  E8 04 3F A0 EC 9F
+13/06/2010 14:14:23.984:  RLS  --> DIA : Diagnostic command acknowledged, Data="EC"    [ì]
+13/06/2010 14:14:24.031:  3F 03 E8 1B CF
+13/06/2010 14:14:24.031:  DIA  --> RLS : Read config data
+
+13/06/2010 14:14:57.187:  ! Logging RLS sensor light value is 0
+13/06/2010 14:14:57.234:  80 05 BF 18 00 00 22
+13/06/2010 14:14:57.234:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+13/06/2010 14:14:57.250:  3F 06 E8 06 02 56 01 82
+13/06/2010 14:14:57.250:  DIA  --> RLS : Read memory: Block 02, Offset 56, Length 01
+13/06/2010 14:14:57.265:  E8 04 3F A0 00 73
+13/06/2010 14:14:57.265:  RLS  --> DIA : Diagnostic command acknowledged, Data="00"    [ ]
+13/06/2010 14:14:57.343:  3F 06 E8 06 02 57 01 83
+13/06/2010 14:14:57.343:  DIA  --> RLS : Read memory: Block 02, Offset 57, Length 01
+13/06/2010 14:14:57.359:  E8 04 3F A0 00 73
+13/06/2010 14:14:57.359:  RLS  --> DIA : Diagnostic command acknowledged, Data="00"    [ ]
+13/06/2010 14:14:57.406:  3F 03 E8 1B CF
+If I were doing this for E39 users I'd add a 3 pin male and female connector to the board to act as a pass through for PWR/GND/iBus at the CD changer.
+
+----------------
+I agree I'm fairly sure the Tx/Rx pins are 9600baud over a BMW proprietary protocol called DS2 aka OBD1. When I get some time I'll get INPA working over DS2 and see if I can log the RS232 data with a portsniffer.
+
+Note the DME won't be on the iBus (peripheral bus) it'll be on the can-bus (critical components like ASC and DME) and again the IKE (KOMBI; cluster) will be the gateway. You'll need to turn on the ignition to run diagnostics, I was thinking more about how your unit would go to sleep and wakeup if it was in an E39 with only PWR/GND/iBus available.
+
+Notes: The RLS is on the k-bus along with things like IKHA, GMIII etc. You are seeing on the iBus courtesy of the IKE.
+Code:
+07/05/2010 18:04:17.296:  DIA  --> GM  : Read identity
+07/05/2010 18:04:17.328:  00 0F 3F A0 88 38 55 38 11 01 40 08 12 99 01 12 8D
+07/05/2010 18:04:17.328:  GM   --> DIA : Diagnostic command acknowledged, Data="88 38 55 38 11 01 40 08 12 99 01 12"    [ˆ8U8  @  ™  ]
+07/05/2010 18:04:17.390:  3F 03 00 00 3C
+07/05/2010 18:04:17.390:  DIA  --> GM  : Read identity
+07/05/2010 18:04:17.406:  00 0F 3F A0 88 38 55 38 11 01 40 08 12 99 01 12 8D
+07/05/2010 18:04:17.406:  GM   --> DIA : Diagnostic command acknowledged, Data="88 38 55 38 11 01 40 08 12 99 01 12"    [ˆ8U8  @  ™  ]
+07/05/2010 18:04:17.468:  3F 03 00 00 3C
+07/05/2010 18:04:17.468:  DIA  --> GM  : Read identity
+07/05/2010 18:04:17.500:  00 0F 3F A0 88 38 55 38 11 01 40 08 12 99 01 12 8D
+07/05/2010 18:04:17.500:  GM   --> DIA : Diagnostic command acknowledged, Data="88 38 55 38 11 01 40 08 12 99 01 12"    [ˆ8U8  @  ™  ]
+07/05/2010 18:04:17.578:  3F 03 00 00 3C
+What I'm not seeing in any of my iBus logs is a peep from the DME, ABS, ASC etc. I believe the cluster is not putting them on the iBus. Ie, there is no CANbus/ibus gateway in the IKE evident in my logs.
+
+I have a good BMW PDF on the evolving bus systems through the years, but it's 1.2MB and the forum won't let me upload it. PM me an email addy and I'll forward it on if you are interested.
+
+-----------------------
+https://www.bimmerforums.co.uk/threads/how-to-use-a-resler-interface-with-inpa.85971/
+A Relser interface (cheap knockoffs are available) is a USB-RS232 adaptor and a K line transceiver (sound familiar? :) ), but instead of a 16 pin OBD2 plug it has a socket on it that fits the CDC power/Gnd/iBus line. 
+
+You can use a Resler with Navcoder to do things like change the language on your nav, or the BT name, log the iBus, enable voice activation of the TCU; among other things.
+
+The iBus is electrically similar to the diagnostic port except the data messages include the sender's and destination address. 
+On the diagnostic port the sender is implied and is DIA.
+Code:
+Diagnostic port
+D2  packet:       c8 10 a0 89 12 98 51 50 05 21 12 20 06 23 37 7e
+                  AD LA [----data-segment--------------------] CS
+CDC port
+ibus Packet:   C8 0F 3F A0 89 12 98 51 50 05 21 12 20 06 23 37 5E
+               TX LF RX [----data-segment--------------------] CS
+
+
+D2 packet:       c8 05 40 91 CS
+                 AD LA [dat] CS
+
+ibus Packet: 3F 04 C8 40 91 22
+             TX LF RX [dat] CS
+
+
+Ibus Packet:
+TX = sender address
+LF = length of following bytes (packet length - 2)
+RX = receiver address
+..Data...
+CS = Checksum
+
+D2 packet:
+AD = Device address (who is talking to Diagnostics)
+LA = Length all bytes (entire packet)
+..Data...
+CS = Checksum
+The KOMBI and the LCZ (backup) are gatways for the iBus to the diagnostics port. Basically it takes messages on the diag port and puts them on the iBus, and takes the reply and passes it back to the diag port.
+
+If like me you have a load of E46 gear on the bench and you don't have a KOMBI, you can talk to it with INPA without one. Or if you own a Resler but no USB OBD2 interface you can run INPA on your car. The KOMBI should handle the gatway function for taking data on the iBus and passing it to the DME/ABS/ASC, although I've not tried that part.
+
+
+DME/ABS/ASC are not on the iBus, the iBus is not a priority one data bus. You wouldn't want an iBus fault in the radio jamming up the DME. 
+So they are kept separate and the KOMBI is the gateway when needed.

@@ -1,0 +1,399 @@
+﻿12/06/2010 11:40:16.984:  50 04 FF 3B 00 90
+12/06/2010 11:40:16.984:  MFL  --> LOC : Radio/Telephone control:_pressed
+12/06/2010 11:40:21.562:  50 03 C8 01 9A
+12/06/2010 11:40:21.562:  MFL  --> TEL : Device status request  (R/T button)
+                          50 03 B0 01 E2 
+                          MFL  --> SES : Device status request  (R/T button)
+			  68 03 18 01 72	Radio polling for CD changer. Expects response of 18 04 68 02 00 76.
+
+5/26/2011 9:39:09 AM.006: 50 04 FF 3B 40 D0
+5/26/2011 9:39:09 AM.006: MFL --> LOC : Radio/Telephone control: Mode_Toggle_pressed  "Activate phone"
+5/26/2011 9:38:47 AM.917: 50 04 FF 3B 00 90
+5/26/2011 9:38:47 AM.917: MFL --> LOC : Radio/Telephone control: No_buttons_pressed
+5/26/2011 9:39:21 AM.347: 50 04 C8 3B 80 27
+5/26/2011 9:39:21 AM.347: MFL --> TEL : Radio/Telephone control: Send/End_pressed
+5/26/2011 9:39:22 AM.056: 50 04 C8 3B 90 37
+5/26/2011 9:39:22 AM.056: MFL --> TEL : Radio/Telephone control: Send/End_pressed_long
+5/26/2011 9:39:22 AM.148: 50 04 C8 3B A0 07
+5/26/2011 9:39:22 AM.148: MFL --> TEL : Radio/Telephone control: Send/End_released
+5/26/2011 9:39:22 AM.783: 50 04 FF 3B 00 90
+5/26/2011 9:39:22 AM.783: MFL --> LOC : Radio/Telephone control: No_buttons_pressed
+5/26/2011 9:39:22 AM.797: C8 05 80 23 41 20 0F
+5/26/2011 9:39:22 AM.797: TEL --> IKE : Display Text: Layout=0x41: Flags=CLS F0=
+5/26/2011 9:39:22 AM.837: 80 04 C8 1B 02 55
+5/26/2011 9:39:22 AM.837: IKE --> TEL : IKE text status: 2 text messages acknowledged
+
+https://www.bimmerforums.com/forum/showthread.php?1153365-Feeler-Open-Source-OBC-Firmware/page25
+
+Key codes of the steering wheel buttons (address 50)
+
+Radio news: ADDRESS 68 HEX
+Format of the message:       <50 04 68 > <key code> <XOR>
+
+Button "-" (volume +):       32 10 Press/repeat
+Button "+" (volume -):       32 11 Press/repeat
+Button ">" (next title):     3B 01 Press 
+                             3B 11 Pressed >1s
+                             3B 21 Release
+Button "<" (previous title): 3B 08 Press
+                             3B 18 pressed >1s
+                             3B 28 release
+
+Messages to the telephone: ADDRESS C8 HEX
+Format of the message:       <50 04 C8 > <key code> <XOR>
+Button 'Dial/Select':        3B 80 press 
+                             3B 90 pressed > 1s
+                             3B A0 release
+Button "R / T":              3B 40 press
+
+Voice Control Messages (SES / ULF): ADDRESS B0 HEX
+Activating the SES by holding down the 'Select' key: <50 04 B0 > 3B 80 5F
+Note: with MFL from Mj. 1999 we automatically recognize the SES and deliver the above code while holding the handset key. 
+      The older MFL can not do this! Thus, with these the SES can not be activated directly.
+---
+TEL -> MFL	
+phone status	C8 04 50 2C xx chk / xx is a bitmask as follows 7 6 5 4 3 2 1 0	
+                Example 1: C8 04 E7 2C 10 17 See byte 5 Hex 10 is binary 0001 0000 that means: Handsfree off \, Telfon off	
+                   Bit0 0 = Handsfree off, 1 = Handsfree on, 
+                   Bit1 0 = Telephone menu on on-board monitor or MID / 1 = active call, 
+                   Bit2 1 = incoming call, 
+                   Bit3 1 = Telephone display disabled, 
+                   Bit4 0 = Telephone off / 1 = Telephone on, 
+                   Bit5 0 = telephone inactive / 1 = telephone active
+                   Bit6 0 = Telephone adapter not installed, 1 = Telephone adapter installed, 
+
+https://bmwraspcontrol.de/board/printthread.php?tid=343&page=5
+1970-Jan-01 01:00:08.302869: info: ibus: Received: C8 04 50 02 30 AE 
+https://xoutpost.com/electronics/bluetooth/81491-retrofit-bluetoth-using-tcu-ece-european-us-x5-e53.html
+5/26/2011 9:38:48 AM.731: 50 03 C8 01 9A
+5/26/2011 9:38:48 AM.731: MFL --> TEL : Device status request
+5/26/2011 9:38:48 AM.751: C8 04 50 02 38 A6
+5/26/2011 9:38:48 AM.751: TEL --> MFL : Device status ready Bit3 Assist_ready_after_Reset Bit5
+
+
+  case 0x50://src==MFL
+    if (dst==0xC8 || dst==0x68 || dst==0xB0 || dst==0xFF) { //TEL,RAD,SES or 0xFF
+      switch (msg) {
+      case 0x01://ping
+        //50 03 C8 01  -> TEL
+        //50 03 B0 01  -> SES
+        //               0xE7 - OBC/TextBar
+        //pressRT();
+        {
+          //TEL --> MFL : Device status ready Bit3 Assist_ready_after_Reset Bit5
+          //byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x38 };//https://xoutpost.com/electronics/bluetooth/81491-retrofit-bluetoth-using-tcu-ece-european-us-x5-e53.html
+          //byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x30 };//http://bmwraspcontrol.de/board/printthread.php?tid=343&page=5
+          //byte tel_reply[] = {0xC8, 0x04, 0x50/E7, 0x2C,   xx };https://translate.google.com/translate?sl=de&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=http%3A%2F%2Fwww.alextronic.de%2Fbmw%2Fprojects_bmw_info_ibus.html&edit-text=
+          //xx
+          //Bit0 = Handsfree on
+          //Bit1 = active call, (Telephone menu on on-board monitor or MID)
+          //Bit2 = incoming call
+          //Bit3 = Telephone display enabled
+          //Bit4 = Telephone on
+          //Bit5 = telephone active
+          //Bit6 = Telephone adapter installed
+          byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x00 };
+          debugSerial.printf("Send pong from %02X\r\n", dst);
+          ibus.write(tel_reply);
+        }
+        return;
+      case 0x3B:  
+        switch (code&0xCF) {//button code
+        case 0x00://R/T 50 04 68 3B 02 switch to Radio
+        case 0x02://R/T 50 04 68 3B 02 MFL R/T press
+        case 0x40://R/T 50 04 FF 3B 40 D0 switch to Telephone Siri (RT_PRESS)
+                  //    50 04 C8 3B 40
+                  //    50 04 FF 3B 40 MFL R/T press - activate SIRI
+static bool skip_RT = true;
+          if (skip_RT)
+            skip_RT = false; // on TEL detection MFL will send RT to switch to RAD
+          else
+            pressRT();            
+          break;//return;
+#define CODE2PRESS(code) (BTN_PRESS_TYPE)((code>>4)&3)
+        case 0x80://Dial
+          pressDial(CODE2PRESS(code));
+          return;
+        case 0x01://Next/FF
+        case 0x08://Prev/Rew
+          switch (CODE2PRESS(code)) {
+          case BTN_PRESS:  wired_remote_press((code&1)?NEXT:PREV, PRESS_TIME_INFINITE);break;
+          case BTN_HOLD:   break;
+          case BTN_RELEASE:
+          default:         wired_remote_release();
+          }
+          return;
+#undef CODE2PRESS
+        }
+        break;
+      case 0x32: // Vol+/Vol-
+        switch (code) {
+        case 0x10:wired_remote_press(VOL_DN, PRESS_TIME_SHORT);return;//Vol-
+        case 0x11:wired_remote_press(VOL_UP, PRESS_TIME_SHORT);return;//Vol+
+        //case 0x30:// Vol- release
+        //case 0x31:// Vol+ release
+        }
+        break;
+      }
+    }
+    break;
+
+E36 plus DICE Mediabridge (CDC + TEL replacement)
+Code:
+2010-12-11 16:53:09.078:  ! IGN ON
+2010-12-11 16:53:11.593:  00
+2010-12-11 16:53:11.593:  WARNING: Discarded 1 bytes: [00]
+2010-12-11 16:53:11.609:  68 03 C0 01 AA
+2010-12-11 16:53:11.609:  RAD  --> MID : Device status request
+2010-12-11 16:53:11.718:  68 03 A0 01 CA
+2010-12-11 16:53:11.718:  RAD  --> FID : Device status request
+2010-12-11 16:53:11.828:  68 03 80 01 EA
+2010-12-11 16:53:11.828:  RAD  --> IKE : Device status request
+2010-12-11 16:53:11.906:  76 04 FF 02 01 8E
+2010-12-11 16:53:11.906:  CDCD --> LOC : Device status ready, after Reset after Reset
+2010-12-11 16:53:11.953:  68 03 C0 01 AA
+2010-12-11 16:53:11.953:  RAD  --> MID : Device status request
+2010-12-11 16:53:12.078:  68 03 A0 01 CA
+2010-12-11 16:53:12.078:  RAD  --> FID : Device status request
+2010-12-11 16:53:12.203:  68 03 80 01 EA
+2010-12-11 16:53:12.203:  RAD  --> IKE : Device status request
+2010-12-11 16:53:12.562:  68 04 FF 3B 00 A8
+2010-12-11 16:53:12.562:  RAD  --> LOC : Radio/Telephone control, No_buttons_pressed
+2010-12-11 16:53:12.578:  68 03 D0 5D E6
+2010-12-11 16:53:12.578:  RAD  --> LCM : Light dimmer status request
+2010-12-11 16:53:12.593:  68 04 BF 02 00 D1
+2010-12-11 16:53:12.593:  RAD  --> GLO : Device status ready, 
+2010-12-11 16:53:12.609:  68 03 18 01 72
+2010-12-11 16:53:12.609:  RAD  --> CDC : Device status request
+2010-12-11 16:53:12.625:  18 04 68 02 00 76
+2010-12-11 16:53:12.625:  CDC  --> RAD : Device status ready, 
+2010-12-11 16:53:12.734:  68 05 18 38 01 00 4C
+2010-12-11 16:53:12.734:  RAD  --> CDC : CD_control, Stop
+2010-12-11 16:53:12.781:  68 05 18 38 00 00 4D
+2010-12-11 16:53:12.781:  RAD  --> CDC : CD_control, Status_Request
+2010-12-11 16:53:12.796:  18 0A 68 39 00 02 00 3F 00 01 01 7E
+2010-12-11 16:53:12.796:  CDC  --> RAD : CD_status, Stop  Request=Pause  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:12.828:  68 05 18 38 07 00 4A
+2010-12-11 16:53:12.828:  RAD  --> CDC : CD_control, Mode7_Function_00
+2010-12-11 16:53:12.843:  18 0A 68 39 02 02 00 3F 00 01 01 7C
+2010-12-11 16:53:12.843:  CDC  --> RAD : CD_status, Play  Request=Pause  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:12.859:  68 03 6A 01 00
+2010-12-11 16:53:12.859:  RAD  --> DSP : Device status request
+2010-12-11 16:53:12.875:  68 05 18 38 08 00 45
+2010-12-11 16:53:12.875:  RAD  --> CDC : CD_control, Random_Off
+2010-12-11 16:53:12.890:  18 0A 68 39 02 02 00 3F 00 01 01 7C
+2010-12-11 16:53:12.890:  CDC  --> RAD : CD_status, Play  Request=Pause  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:13.187:  68 05 18 38 03 00 4E
+2010-12-11 16:53:13.187:  RAD  --> CDC : CD_control, Play
+2010-12-11 16:53:13.203:  18 0A 68 39 02 09 00 3F 00 01 01 77
+2010-12-11 16:53:13.203:  CDC  --> RAD : CD_status, Play  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:13.218:  68 03 6A 01 00
+2010-12-11 16:53:13.218:  RAD  --> DSP : Device status request
+2010-12-11 16:53:13.937:  18 0A 68 39 08 09 00 3F 00 01 00 7C
+2010-12-11 16:53:13.937:  CDC  --> RAD : CD_status, Loading  Request=Play  CD=1  Track=0  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:13.968:  18 0A 68 39 08 09 00 3F 00 01 01 7D
+2010-12-11 16:53:13.968:  CDC  --> RAD : CD_status, Loading  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:13.984:  18 0A 68 39 07 09 00 3F 00 01 01 72
+2010-12-11 16:53:13.984:  CDC  --> RAD : CD_status, End  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:14.015:  18 0A 68 39 02 09 00 3F 00 01 01 77
+2010-12-11 16:53:14.015:  CDC  --> RAD : CD_status, Play  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:15.703:  C8 11 80 23 42 30 55 53 42 20 20 20 20 20 20 20 20 20 6C
+2010-12-11 16:53:15.703:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="USB         "
+2010-12-11 16:53:18.937:  18 0A 68 39 08 09 00 3F 00 01 00 7C
+2010-12-11 16:53:18.937:  CDC  --> RAD : CD_status, Loading  Request=Play  CD=1  Track=0  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:18.953:  18 0A 68 39 08 09 00 3F 00 01 01 7D
+2010-12-11 16:53:18.953:  CDC  --> RAD : CD_status, Loading  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:18.984:  18 0A 68 39 07 09 00 3F 00 01 01 72
+2010-12-11 16:53:18.984:  CDC  --> RAD : CD_status, End  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:19.000:  18 0A 68 39 02 09 00 3F 00 01 01 77
+2010-12-11 16:53:19.000:  CDC  --> RAD : CD_status, Play  Request=Play  CD=1  Track=1  CDs_Loaded=P1,P2,P3,P4,P5,P6
+2010-12-11 16:53:19.187:  C8 11 80 23 42 30 55 4E 53 55 50 50 4F 52 54 45 44 20 7D
+2010-12-11 16:53:19.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="UNSUPPORTED "
+2010-12-11 16:53:20.687:  C8 11 80 23 42 30 4E 53 55 50 50 4F 52 54 45 44 20 20 08
+2010-12-11 16:53:20.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="NSUPPORTED  "
+2010-12-11 16:53:21.187:  C8 11 80 23 42 30 53 55 50 50 4F 52 54 45 44 20 20 20 66
+2010-12-11 16:53:21.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="SUPPORTED   "
+2010-12-11 16:53:21.687:  C8 11 80 23 42 30 55 50 50 4F 52 54 45 44 20 20 20 20 15
+2010-12-11 16:53:21.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="UPPORTED    "
+2010-12-11 16:53:22.187:  C8 11 80 23 42 30 50 50 4F 52 54 45 44 20 20 20 20 20 60
+2010-12-11 16:53:22.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="PPORTED     "
+2010-12-11 16:53:22.515:  68 03 18 01 72
+2010-12-11 16:53:22.515:  RAD  --> CDC : Device status request
+2010-12-11 16:53:22.515:  18 04 68 02 00 76
+2010-12-11 16:53:22.515:  CDC  --> RAD : Device status ready, 
+2010-12-11 16:53:22.687:  C8 11 80 23 42 30 50 4F 52 54 45 44 20 20 20 20 20 20 10
+2010-12-11 16:53:22.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="PORTED      "
+2010-12-11 16:53:23.187:  C8 11 80 23 42 30 4F 52 54 45 44 20 20 20 20 20 20 20 60
+2010-12-11 16:53:23.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="ORTED       "
+2010-12-11 16:53:23.687:  C8 11 80 23 42 30 52 54 45 44 20 20 20 20 20 20 20 20 0F
+2010-12-11 16:53:23.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="RTED        "
+2010-12-11 16:53:24.187:  C8 11 80 23 42 30 55 4E 53 55 50 50 4F 52 54 45 44 20 7D
+2010-12-11 16:53:24.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="UNSUPPORTED "
+2010-12-11 16:53:25.687:  C8 11 80 23 42 30 4E 53 55 50 50 4F 52 54 45 44 20 20 08
+2010-12-11 16:53:25.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="NSUPPORTED  "
+2010-12-11 16:53:26.187:  C8 11 80 23 42 30 53 55 50 50 4F 52 54 45 44 20 20 20 66
+2010-12-11 16:53:26.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="SUPPORTED   "
+2010-12-11 16:53:26.687:  C8 11 80 23 42 30 55 50 50 4F 52 54 45 44 20 20 20 20 15
+2010-12-11 16:53:26.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="UPPORTED    "
+2010-12-11 16:53:27.203:  C8 11 80 23 42 30 50 50 4F 52 54 45 44 20 20 20 20 20 60
+2010-12-11 16:53:27.203:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="PPORTED     "
+2010-12-11 16:53:27.687:  C8 11 80 23 42 30 50 4F 52 54 45 44 20 20 20 20 20 20 10
+2010-12-11 16:53:27.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="PORTED      "
+2010-12-11 16:53:28.187:  C8 11 80 23 42 30 4F 52 54 45 44 20 20 20 20 20 20 20 60
+2010-12-11 16:53:28.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="ORTED       "
+2010-12-11 16:53:28.687:  C8 11 80 23 42 30 52 54 45 44 20 20 20 20 20 20 20 20 0F
+2010-12-11 16:53:28.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="RTED        "
+2010-12-11 16:53:29.187:  C8 11 80 23 42 30 55 4E 53 55 50 50 4F 52 54 45 44 20 7D
+2010-12-11 16:53:29.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="UNSUPPORTED "
+2010-12-11 16:53:30.687:  C8 11 80 23 42 30 4E 53 55 50 50 4F 52 54 45 44 20 20 08
+2010-12-11 16:53:30.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="NSUPPORTED  "
+2010-12-11 16:53:31.187:  C8 11 80 23 42 30 53 55 50 50 4F 52 54 45 44 20 20 20 66
+2010-12-11 16:53:31.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="SUPPORTED   "
+2010-12-11 16:53:31.687:  C8 11 80 23 42 30 55 50 50 4F 52 54 45 44 20 20 20 20 15
+2010-12-11 16:53:31.687:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="UPPORTED    "
+2010-12-11 16:53:31.906:  ! IGN OFF
+2010-12-11 16:53:32.187:  C8 11 80 23 42 30 50 50 4F 52 54 45 44 20 20 20 20 20 60
+2010-12-11 16:53:32.187:  TEL  --> IKE : Display Text, Layout=0x42:  Flags=Bit4,CLS  F0="PPORTED     "
+2010-12-11 16:53:32.515:  68 03 18 01 72
+2010-12-11 16:53:32.515:  RAD  --> CDC : Device status request
+2010-12-11 16:53:32.531:  18 04 68 02 00 76
+2010-12-11 16:53:32.531:  CDC  --> RAD : Device status ready
+And E46 is far more chatty. Here's an E46 log of the car being unlocked and the Ignition being turned on. E39 post 09/98 should be much the same.
+Code:
+12/06/2010 11:40:16.359:  IKE  --> GLO : Device status ready
+12/06/2010 11:40:16.359:  80 04 BF 11 00 2A
+12/06/2010 11:40:16.359:  IKE  --> GLO : Ignition status: Off
+12/06/2010 11:40:16.375:  E8 06 00 58 FF 7F 00 36
+12/06/2010 11:40:16.375:  RLS  --> GM  : Headlight wipe interval, Data="FF 7F 00"
+12/06/2010 11:40:16.390:  E8 05 D0 59 10 00 74
+12/06/2010 11:40:16.390:  RLS  --> LCM : Low beam/Park, Data="10 00"
+12/06/2010 11:40:16.453:  E8 05 D0 59 50 00 34
+12/06/2010 11:40:16.453:  RLS  --> LCM : Low beam/Park, Data="50 00"
+12/06/2010 11:40:16.468:  44 05 BF 74 04 04 8A
+12/06/2010 11:40:16.468:  EWS  --> GLO : Immobiliser status: Valid_key_detected Key_4
+12/06/2010 11:40:16.515:  80 04 BF 11 01 2B
+12/06/2010 11:40:16.515:  IKE  --> GLO : Ignition status: Pos1_Acc
+12/06/2010 11:40:16.531:  80 09 BF 13 00 00 00 00 00 00 25
+12/06/2010 11:40:16.531:  IKE  --> GLO : IKE sensor status:
+12/06/2010 11:40:16.531:  D0 07 BF 5B 00 00 00 00 33
+12/06/2010 11:40:16.531:  LCM  --> GLO : Lamp status: All_Off  All_OK
+12/06/2010 11:40:16.546:  00 05 BF 7A 51 20 B1
+12/06/2010 11:40:16.546:  GM   --> GLO : Doors/flaps status: Open:  DvrDoorFr Boot   Ctrl_Locking: Unlocked
+12/06/2010 11:40:16.562:  00 04 BF 76 00 CD
+12/06/2010 11:40:16.562:  GM   --> GLO : Crash Alarm: No_Crash
+12/06/2010 11:40:16.578:  00 05 BF 7D 00 10 D7
+12/06/2010 11:40:16.578:  GM   --> GLO : Sunroof control: Unlock DB2=0x10
+12/06/2010 11:40:16.578:  00 04 BF 72 02 CB
+12/06/2010 11:40:16.578:  GM   --> GLO : ChkCtrl Remote Central Locking: No_Button_Pressed
+12/06/2010 11:40:16.609:  80 0C FF 24 01 00 31 31 3A 33 37 41 4D 64
+12/06/2010 11:40:16.609:  IKE  --> LOC : Update Text:  Layout=Time  Flags=  F0="11:37AM"
+12/06/2010 11:40:16.625:  80 0A FF 24 03 00 2B 31 35 2E 35 66
+12/06/2010 11:40:16.625:  IKE  --> LOC : Update Text:  Layout=Outside_Temp  Flags=  F0="+15.5"
+12/06/2010 11:40:16.640:  44 05 BF 74 05 04 8B
+12/06/2010 11:40:16.640:  EWS  --> GLO : Immobiliser status: Immobilisation_deactivated Valid_key_detected Key_4
+12/06/2010 11:40:16.671:  80 0A FF 24 03 00 2B 31 35 2E 35 66
+12/06/2010 11:40:16.671:  IKE  --> LOC : Update Text:  Layout=Outside_Temp  Flags=  F0="+15.5"
+12/06/2010 11:40:16.687:  80 09 FF 24 06 00 20 20 35 34 55
+12/06/2010 11:40:16.687:  IKE  --> LOC : Update Text:  Layout=Range  Flags=  F0="  54"
+12/06/2010 11:40:16.765:  80 09 FF 24 04 00 31 37 2E 34 4A
+12/06/2010 11:40:16.765:  IKE  --> LOC : Update Text:  Layout=Consumption_1  Flags=  F0="17.4"
+12/06/2010 11:40:16.812:  80 04 BF 11 03 29
+12/06/2010 11:40:16.812:  IKE  --> GLO : Ignition status: Pos1_Acc Pos2_On
+12/06/2010 11:40:16.828:  80 09 BF 13 03 00 00 00 00 00 26
+12/06/2010 11:40:16.828:  IKE  --> GLO : IKE sensor status: Handbrake_On  Oil_Pressure_Low 
+12/06/2010 11:40:16.843:  D0 07 BF 5B 00 00 00 00 33
+12/06/2010 11:40:16.843:  LCM  --> GLO : Lamp status: All_Off  All_OK
+12/06/2010 11:40:16.859:  00 04 BF 72 02 CB
+12/06/2010 11:40:16.859:  GM   --> GLO : ChkCtrl Remote Central Locking: No_Button_Pressed
+12/06/2010 11:40:16.875:  80 03 D0 53 00
+12/06/2010 11:40:16.875:  IKE  --> LCM : Vehicle data request
+12/06/2010 11:40:16.890:  D0 10 80 54 41 5A 19 27 80 06 21 41 2C 00 00 24 EC 33
+12/06/2010 11:40:16.890:  LCM  --> IKE : Vehicle data status: VIN XXXXXXX; Total dist 156900 kms; SI-L 3000 litres since last service; ; SI-T 9452 days since last service
+12/06/2010 11:40:16.921:  80 09 BF 13 03 B0 00 00 00 00 96
+12/06/2010 11:40:16.921:  IKE  --> GLO : IKE sensor status: Handbrake_On  Oil_Pressure_Low  Gear_P 
+12/06/2010 11:40:16.921:  D0 07 BF 5C FF FF 00 00 34
+12/06/2010 11:40:16.921:  LCM  --> GLO : Light dimmer: Data="FF FF 00 00"
+12/06/2010 11:40:16.953:  E8 03 00 75 9E
+12/06/2010 11:40:16.953:  RLS  --> GM  : Wiper status request
+12/06/2010 11:40:16.968:  00 04 E8 77 05 9E
+12/06/2010 11:40:16.968:  GM   --> RLS : Wiper status, Data="05"
+12/06/2010 11:40:16.984:  50 04 FF 3B 00 90
+12/06/2010 11:40:16.984:  MFL  --> LOC : Radio/Telephone control:_pressed
+12/06/2010 11:40:17.000:  E8 06 00 58 FF 7F 00 36
+12/06/2010 11:40:17.000:  RLS  --> GM  : Headlight wipe interval, Data="FF 7F 00"
+12/06/2010 11:40:17.015:  E8 05 D0 59 50 00 34
+12/06/2010 11:40:17.015:  RLS  --> LCM : Low beam/Park, Data="50 00"
+12/06/2010 11:40:17.046:  80 09 FF 24 0A 00 31 39 2E 38 46
+12/06/2010 11:40:17.046:  IKE  --> LOC : Update Text:  Layout=Average_Speed  Flags=  F0="19.8"
+12/06/2010 11:40:17.328:  80 09 BF 13 03 B0 00 04 00 00 92
+12/06/2010 11:40:17.328:  IKE  --> GLO : IKE sensor status: Handbrake_On  Oil_Pressure_Low  Gear_P 
+12/06/2010 11:40:17.562:  5B 03 00 71 29
+12/06/2010 11:40:17.562:  IHKA --> GM  : Rain sensor status
+12/06/2010 11:40:17.578:  00 04 BF 72 02 CB
+12/06/2010 11:40:17.578:  GM   --> GLO : ChkCtrl Remote Central Locking: No_Button_Pressed
+12/06/2010 11:40:17.796:  50 03 C8 01 9A
+12/06/2010 11:40:17.796:  MFL  --> TEL : Device status request
+12/06/2010 11:40:17.859:  5B 04 BF 02 01 E3
+12/06/2010 11:40:17.859:  IHKA --> GLO : Device status ready after Reset after Reset
+12/06/2010 11:40:17.859:  80 04 BF 11 03 29
+12/06/2010 11:40:17.859:  IKE  --> GLO : Ignition status: Pos1_Acc Pos2_On
+12/06/2010 11:40:17.890:  60 04 BF 02 01 D8
+12/06/2010 11:40:17.890:  PDC  --> GLO : Device status ready after Reset after Reset
+12/06/2010 11:40:17.906:  80 04 BF 11 03 29
+12/06/2010 11:40:17.906:  IKE  --> GLO : Ignition status: Pos1_Acc Pos2_On
+12/06/2010 11:40:18.093:  60 03 80 1D FE
+12/06/2010 11:40:18.093:  PDC  --> IKE : Temperature request
+12/06/2010 11:40:18.109:  80 05 BF 18 00 00 22
+12/06/2010 11:40:18.109:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:18.109:  80 06 BF 19 0F 0F 00 20
+12/06/2010 11:40:18.109:  IKE  --> GLO : Temperature: Outside 15°C, Coolant 15°C
+12/06/2010 11:40:18.187:  5B 03 80 12 CA
+12/06/2010 11:40:18.187:  IHKA --> IKE : IKE sensor status request
+12/06/2010 11:40:18.203:  80 09 BF 13 03 B0 00 04 00 00 92
+12/06/2010 11:40:18.203:  IKE  --> GLO : IKE sensor status: Handbrake_On  Oil_Pressure_Low  Gear_P 
+12/06/2010 11:40:18.218:  5B 03 D0 5D D5
+12/06/2010 11:40:18.218:  IHKA --> LCM : Light dimmer status request
+12/06/2010 11:40:18.250:  D0 07 BF 5C FF FF 00 00 34
+12/06/2010 11:40:18.250:  LCM  --> GLO : Light dimmer: Data="FF FF 00 00"
+12/06/2010 11:40:18.343:  44 03 80 16 D1
+12/06/2010 11:40:18.343:  EWS  --> IKE : Odometer request
+12/06/2010 11:40:18.359:  80 06 BF 17 00 00 00 2E
+12/06/2010 11:40:18.359:  IKE  --> GLO : Odometer: 0 km
+12/06/2010 11:40:18.859:  80 09 BF 13 03 B0 00 00 00 00 96
+12/06/2010 11:40:18.859:  IKE  --> GLO : IKE sensor status: Handbrake_On  Oil_Pressure_Low  Gear_P 
+12/06/2010 11:40:19.625:  D0 07 BF 5C FF FF FF 00 CB
+12/06/2010 11:40:19.625:  LCM  --> GLO : Light dimmer: Data="FF FF FF 00"
+12/06/2010 11:40:20.109:  80 05 BF 18 00 00 22
+12/06/2010 11:40:20.109:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:21.562:  50 03 C8 01 9A
+12/06/2010 11:40:21.562:  MFL  --> TEL : Device status request
+12/06/2010 11:40:22.093:  80 05 BF 18 00 00 22
+12/06/2010 11:40:22.093:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:24.109:  80 05 BF 18 00 00 22
+12/06/2010 11:40:24.109:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:26.109:  80 05 BF 18 00 00 22
+12/06/2010 11:40:26.109:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:26.375:  E8 06 00 58 FF 7F 00 36
+12/06/2010 11:40:26.375:  RLS  --> GM  : Headlight wipe interval, Data="FF 7F 00"
+12/06/2010 11:40:26.390:  E8 05 D0 59 50 00 34
+12/06/2010 11:40:26.390:  RLS  --> LCM : Low beam/Park, Data="50 00"
+12/06/2010 11:40:26.640:  50 03 C8 01 9A
+12/06/2010 11:40:26.640:  MFL  --> TEL : Device status request
+12/06/2010 11:40:27.000:  5B 05 80 83 00 08 55
+12/06/2010 11:40:27.000:  IHKA --> IKE : Air conditioning compressor status: 
+12/06/2010 11:40:27.031:  80 09 BF 13 03 B0 00 00 00 00 96
+12/06/2010 11:40:27.031:  IKE  --> GLO : IKE sensor status: Handbrake_On  Oil_Pressure_Low  Gear_P 
+12/06/2010 11:40:27.531:  3F 03 5B 00 67
+12/06/2010 11:40:27.531:  DIA  --> IHKA: Read identity
+12/06/2010 11:40:27.562:  5B 0F 3F A0 88 38 24 46 10 02 31 00 11 99 03 04 B5
+12/06/2010 11:40:27.562:  IHKA --> DIA : Diagnostic command acknowledged, Data="88 38 24 46 10 02 31 00 11 99 03 04"    [ˆ8$F  1  ™  ]
+12/06/2010 11:40:28.109:  80 05 BF 18 00 00 22
+12/06/2010 11:40:28.109:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:28.109:  80 06 BF 19 0F 0F 00 20
+12/06/2010 11:40:28.109:  IKE  --> GLO : Temperature: Outside 15°C, Coolant 15°C
+12/06/2010 11:40:29.375:  80 0C FF 24 01 00 31 31 3A 33 38 41 4D 6B
+12/06/2010 11:40:29.375:  IKE  --> LOC : Update Text:  Layout=Time  Flags=  F0="11:38AM"
+12/06/2010 11:40:30.093:  80 05 BF 18 00 00 22
+12/06/2010 11:40:30.093:  IKE  --> GLO : Speed/RPM: Speed 0 km/h, 0 RPM
+12/06/2010 11:40:31.437:  3F 03 5B 00 67
+Both were recoreded using a Resler Interface that uses Prolific 232 USB/RS232 mit Melexis TH3122 iBus interface.

@@ -1,0 +1,15 @@
+# Project-specific
+credentials.h
+
+# OSX
+*/.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Other files
+log*.txt
+*~
+*.zip
+src/*.zip
+src/*.txt

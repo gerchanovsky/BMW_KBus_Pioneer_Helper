@@ -1,0 +1,263 @@
+LCM->GLO: D0 08 BF
+left turn
+D0 08 BF 5B 21 00 04 00 01 18
+D0 08 BF 5B 23 00 04 00 01 1A
+
+right turn
+D0 08 BF 5B 41 00 04 00 01 78
+D0 08 BF 5B 43 00 04 00 01 7A
+
+no signal
+D0 08 BF 5B 01 00 00 00 01 3C
+D0 08 BF 5B 03 00 00 00 01 3E
+            ^^     ^
+
+
+D0 08 BF 5B 60 00 04 00 00 CS   Turnsig Warn               [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 60 00 04 00 00 58   Turnsig Warn
+D0 08 BF 5B 40 00 04 00 00 CS   Turnsig Right Start        [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 40 00 04 00 00 78   Turnsig Right Start
+D0 08 BF 5B 20 00 04 00 00 CS   Turnsig Left Start         [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 20 00 04 00 00 18   Turnsig Left Start
+D0 08 BF 5B 04 00 00 00 00 CS   Lightsig highbeam          [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 04 00 00 00 00 38   lightsig_highbeam
+D0 08 BF 5B 00 00 04 00 00 58   // set Time//0x00 | 0x04
+D0 08 BF 5B 00 00 00 00 00 CS   Turnsig Stop               [4]=00-Stop,04-High beam,20-Left start,40-Right start,60-Warn start
+D0 08 BF 5B 00 00 00 00 00 3C   Turnsig Stop
+D0 08 BF 5B 00 00 00 00 00      Turnsig Stop
+D0 07 BF 5B 60 00 80 00 CK      Flash dash blinkers FAST/SLOW intermitent.
+D0 07 BF 5B 60 00 04 00 CK      Flash dash blinkers (without flashing exterior blinkers)
+D0 07 BF 5B 47 00 04 00 70 --Fernlicht                  Blinker Rechts Meldung                      blrechtsf_msg
+D0 07 BF 5B 43 00 04 00 74 --Licht                      Blinker Rechts Meldung                      blrechtsl_msg
+D0 07 BF 5B 41 00 04 00 76 --Standlicht                 Blinker Rechts Meldung                      blrechtss_msg
+D0 07 BF 5B 40 00 04 00 77 --Licht aus                  Blinker Rechts Meldung                      blrechts_msg
+D0 07 BF 5B 40 00 00 00 CS      RIGHT_TURN_GET_MSG
+D0 07 BF 5B 27 00 04 00 10 --Fernlicht                  Blinker Links Meldung                       bllinksf_msg
+D0 07 BF 5B 23 00 04 00 14 --Licht                      Blinker Links Meldung                       bllinksl_msg
+D0 07 BF 5B 21 00 04 00 16 --Standlicht                 Blinker Links Meldung                       bllinkss_msg
+D0 07 BF 5B 20 00 04 00 17 --Licht aus                  Blinker Links Meldung                       bllinks_msg
+D0 07 BF 5B 20 00 00 00 CS      LEFT_TURN_GET_MSG
+D0 07 BF 5B 04 00 00 00 CS      HIGHBEAM_GET_MSG
+D0 07 BF 5B 02 00 00 00 CS      LOWBEAM_GET_MSG
+D0 07 BF 5B 01 00 00 00 CS      PARKLIGHT_GET_MSG
+D0 07 BF 5B 00 00 00 00 33                              All Lights Off
+
+src: 0xD0 // LCM
+dst: 0xBF // GLO
+cmd: 0x5B // Lamp status
+
+Byte 1 // Lights on
+  0x01 = Park
+  0x02 = Low_Beam
+  0x04 = High_Beam
+  0x08 = Fog_Front
+  0x10 = Fog_Rear
+  0x20 = Indicator_Left
+  0x40 = Indicator_Right
+  0x80 = Indicator_Fast_Blink
+Byte 2 // Faulty
+  0x01 = Park
+  0x02 = Low_Beam
+  0x04 = High_Beam
+  0x08 = Fog_Front
+  0x10 = Fog_Rear
+  0x20 = Indicator_Left
+  0x40 = Indicator_Right
+  0x80 = License_Plate
+Byte 3 // Lights on
+  0x01 =
+  0x02 = Brake
+  0x04 = Indicator_sync
+  0x08 = Tail
+  0x10 = Trailer
+  0x20 = Reverse
+  0x40 = Trailer?
+  0x80 = Hazard
+Byte 4 // Faulty
+  0x01 = Brake_Right
+  0x02 = Brake_Left
+  0x04 = Tail_Right
+  0x08 = Tail_Left
+  0x10 = Low_Beam_Right
+  0x20 = Low_Beam_Left
+  0x40 =
+  0x80 =
+
+D0 07 BF 5C FF FF 00 00 34      LCM  --> GLO : Light dimmer: Data="FF FF 00 00"
+D0 07 BF 5C FF FF FF 00 CB      LCM  --> GLO : Light dimmer: Data="FF FF FF 00"
+--------------------------------------------
+https://www.e39-forum.de/index.php?thread/28666-ecke-der-ibus-hacker/&pageNo=32
+
+
+#define LEFT_TURNLIGHT           (1L << 1)
+#define RIGHT_TURNLIGHT          (1L << 2)
+#define LEFT_TURNLIGHT_BACK      (1L << 3)
+#define RIGHT_TURNLIGHT_BACK     (1L << 4)
+#define FOGLIGHT_FRONT_LEFT      (1L << 5)
+#define FOGLIGHT_FRONT_RIGHT     (1L << 6)
+#define FOGLIGHT_BACK_LEFT       (1L << 7)
+#define FOGLIGHT_BACK_RIGHT      (1L << 8)
+#define LOWBEAM_LEFT             (1L << 9)
+#define LOWBEAM_RIGHT            (1L << 10)
+#define PARKINGLIGHT_LEFT        (1L << 11)
+#define PARKINGLIGHT_RIGHT       (1L << 12)
+#define HIGHBEAM_LEFT            (1L << 13)
+#define HIGHBEAM_RIGHT           (1L << 14)
+#define BRAKE_LEFT               (1L << 15)
+#define BRAKE_CENTER             (1L << 16)
+#define BRAKE_RIGHT              (1L << 17)
+#define BACKLIGHT_LEFT           (1L << 18)
+#define BACKLIGHT_RIGHT          (1L << 19)
+#define REARGEAR_LEFT            (1L << 20)
+#define REARGEAR_RIGHT           (1L << 21)
+#define LICENSE_PLATE            (1L << 22)
+#define LEFT_INDICATOR           (1L << 23)
+#define RIGHT_INDICATOR          (1L << 24)
+#define LIGHT_STATE_CHANGED      (1L << 31)
+
+    // 3f,d0,0c,0,0,80,0,0,0,0,0,0 - indicator left
+    // 3f,d0,0c,0,0,50,0,0,0,0,0,0 - indicator right
+--------------------------------------------
+
+3f 05 00 0c 70 01 CS - Warnblinker (IKE + LCM) + Innenraumbel. Andimmen
+3f 05 00 0c 75 01 CS - Warnblinker (LCM) for 3 seconds
+3f 0b bf 0c 00 00 00 00 00 00 01 06 CS - fog lights
+3f 0b bf 0c 00 00 00 00 00 40 00 06 CS - taillight left (+ A)
+3f 0b bf 0c 00 00 00 00 00 00 08 0c CS - taillight right (A +)
+3f 0b bf 0c 00 00 00 00 01 00 00 06 CS - stop light up
+3f 0b bf 0c 00 00 00 00 08 00 00 06 CS - stop light left (+ A)
+3f 0b bf 0c 00 00 00 00 10 00 00 06 CS - stop light right (A +)
+3f 0b bf 0c 00 00 00 00 00 02 00 06 CS - passing beam front right
+3f 0b bf 0c 00 00 00 00 00 04 00 06 CS - passing beam front left
+3f 0b bf 0c 10 00 00 00 00 00 00 06 CS - passing beam front + rear delayed
+3f 0b bf 0c 00 00 00 00 00 10 00 06 CS - beam passing beam sided left +
+3f 0b bf 0c 00 00 00 00 00 20 00 06 CS - Remote + passing beam of light right on both sides
+3f 0b bf 0c 00 00 80 00 00 00 00 06 CS - passing beam + when ignition beam (IKE + LCM)
+3f 0b bf 0c 00 00 00 00 00 00 20 06 CS - left rear turn signal lights permanently (+ A)
+3f 0b bf 0c 00 00 00 00 00 00 80 06 CS - right rear turn signal lights permanently (+ A)
+3f 0b bf 0c 00 00 00 00 20 00 00 06 CS - front left blinker lights permanently (+ A)
+3f 0b bf 0c 00 00 00 00 40 00 00 06 CS - right front turn signal lights permanently (+ A)
+3f 0b bf 0c 00 00 00 40 00 00 00 06 CS - Park light left
+3f 0b bf 0c 00 00 00 80 00 00 00 06 CS - Park right light
+3f 0b bf 0c 20 00 00 00 00 00 00 06 CS - Warnblinker
+
+    def request_light_status(self):
+        """
+        @return  5B 00 00 00 00 00 3C
+        Contains all information about active lights
+        """
+        self.ibus.send("bf03d05a36")
+
+    def request_light_status(self):
+        """
+        @return  5B 00 00 00 00 00 3C
+        Contains all information about active lights
+        """
+        self.ibus.send("bf03d05a36")
+
+    def request_lcm_io_status(self):
+        """
+        Or 3F LL D0 0B 00 CK
+        @returns d0233fa01040fefe0006000008ab00000000001e00000b000000000000000000000000008c
+        Details about parsing: https://github.com/kmalinich/node-bmw-client/blob/master/modules/LCM.js
+        """
+        self.ibus.send("3f03d00be7")
+
+-----------------
+LIGHTS:
+BM 	= 	| Double Rate | Rind | Lind | RearFogs | FrontFogs | FullBeam | ? | ? |
+BM2 	= 	| CarImage | ? | LsideLight | RSideLight | Rr-L-Sidelight | Rr-R-Sidelight | ? | ? |
+ 5B _BM_ 00 00 _BM2_ 00
+
+===== INDICATORS
+
+3F 0B D0 0C 00 00 00 00 00 00 00 06 CK
+                        80 		- right (side) indicator
+                        40 		- right front indicator
+			20 		- left front indicator
+			      80 	- right rear idndicator / RIGHT SIDE MARKER + RIGHT REAR FASHER (STAY LIT)
+			      20 	- left rear indicator  / LEFT SIDE MARKER + LEFT REAR FLASHER (STAY LIT)
+			      04 	- left (side) indicator
+
+
+3F 0B D0 0C 00 00 00 00 20 00 24 06 EA  - left indicators (all 3 at once)
+3F 0B D0 0C 00 00 00 00 C0 00 00 06 2E  - right indicators (all 3 at once)
+
+
+===== STOP LIGHTS
+
+3F 0B D0 0C 00 00 00 00 00 00 00 06 CK
+               10 			- stop lights (all 3)
+		        10 		- right stop light (inner)
+			08		- left stop light (inner)
+			04 		- left stop light (outer)
+			01 		- center stop light
+ 			   01   	- right stop light (outer)
+
+3F 0B D0 0C 00 00 00 00 18 00 00 06 F6  - right inner + left inner
+3F 0B D0 0C 00 00 00 00 04 01 00 06 EB  - right outer + left outer
+3F 0B D0 0C 00 00 00 00 14 00 00 06 FA  - right inner + left outer
+3F 0B D0 0C 00 00 00 00 08 01 00 06 E7  - right outer + left inner
+
+===== FRONT LIGHTS
+
+3F 0B D0 0C 00 00 00 00 00 00 00 06 CK
+			      40 - przeslony xenon
+-----------------------------------------------------------------
+
+1st byte
+
+20 - awaryjne
+10 - tylne przeciwmgielne kontrolka
+01 - mijania
+
+2nd byte
+
+10 - swiatla stop (wszystkie 3)
+08 - tylne przecimgielne + kontrolka
+04 - przednie przecimgielne + kontrolka
+01 - mijania przod tyl i dzienne
+02 - mijania bez dziennych
+
+3rd byte
+80 - dlugie halogeny + kontrolka
+40 - przednie przeciwmgielne + kontrolka
+
+4rd byte
+
+80 - prawy kierunkowskaz
+40 - lewy kierunek
+10 - tylne przeciwgielne
+01 - mijania
+
+5th byte
+
+80 - boczny kierunke prawy + akurator
+40 - kierunek przedni prawy (swieci ciagle)
+20 - kierunek przedni lewy (swieci ciagle)
+10 - prawy stop
+08 - lewy stop
+04 - lewy stop (obwodka)
+01 - srodkowy stop
+
+6th byte
+40 - left tyl mijania
+20 - prawy dlugie halogen i mijania
+10 - lewy dlugi halogen i mijania
+08 - tailling left
+04 - mijania lewy xenon
+02 - mijania prawy xenon
+02 - mijania prawy
+01 - prawy stop obwodka
+
+7th byte
+
+80 - prawy kierunek tylny (swieci ciagle)
+40 - dlugie xenon - podnosi preslone nie zapala
+20 - lewy tylny kierunek (swieci ciagle)
+10 - tylne przecimgielne z kontrolka (na pare sek)
+04 - lewy boczny kierunek swieci
+
+3f 0b bf 0c 00 00 00 00 00 00 00 06 ck - rribus
+3F 0C D0 0C 00 00 00 00 21 20 00 00 00 EE - forum
+3F 0B D0 0C 00 00 00 40 00 00 00 06 ck - drive

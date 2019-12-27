@@ -1,0 +1,507 @@
+typedef struct {
+  const __FlashStringHelper *package;
+  const __FlashStringHelper *text;
+} MENU_ITEM;
+
+//https://web.archive.org/web/20090909133501/http://ibus.stuge.se:80/IBus_Message_Syntax
+//http://web.comhem.se/bengt-olof.swing/IBus.htm
+//https://www.bmwgm5.com/bmwgm5/E46_IKE_Connections.htm
+//https://www.bmwgm5.com/E46_IKE_Connections.htm
+//https://www.bmwgm5.com/bmwgm5/IBUS.htm
+static const MENU_ITEM ibus_menu[] = {
+  5B 05 80 83 00 00 5D"),F("AC Off")},
+  5B 05 80 83 80 08 D5"),F("AC on")},
+  5B 05 80 83 C5 00 98"),F("AC on")},
+  3F 05 00 0C 02 01"),F("Open trunk")},
+  00 04 BF 72 22"),F("All unlock")},
+  C8 05 80 23 41 20"),F("IKE tel ClrScr")},
+  68 05 80 41 01 01"),F("Get time request from IKE")},
+  3B 05 80 41 01 01"),F("Get time request from IKE (NAV)")},
+//https://translate.google.com/translate?sl=de&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=http%3A%2F%2Fwww.alextronic.de%2Fbmw%2Fprojects_bmw_info_ibus.html&edit-text=
+  3B 06 80 40 09 00 32"),F("SET SPEED LIMIT to 50 km/h")},
+  3B 05 80 41 09 20"),F("SET SPEED LIMIT to CURRENT SPEED")},
+  3B 05 80 41 09 08"),F("RESTORE STORED SPEED LIMIT")},
+  3B 05 80 41 0E 04"),F("Start the stopwatch / timer")},
+  3B 05 80 41 1A 01"),F("Stopwatch / timer status requested when the timer is running.")},
+  3B 05 80 41 0E 08"),F("Stop the timer")},
+  F0 03 80 10"),F("BMBT-->IKE:Ignition status request")},
+  F0 03 D0 5D"),F("BMBT-->LKM:Light dimmer status request")},
+  F0 03 00 79"),F("BMBT-->GM:Doors/flaps status request")},
+
+  00 04 BF 72 03"),F("No_Button_Pressed Key_battery_low")},
+  00 04 BF 72 12"),F("Remote control lock PRESSED")},
+  00 04 BF 72 13"),F("Remote control lock PRESSED (Key_battery_low)")},
+  00 04 BF 72 02"),F("Remote control lock RELEASE")},
+  00 04 BF 72 20"),F("Car opened with remote/key 1")},
+  00 04 BF 72 22"),F("Remote control unlock PRESSED")},
+  00 04 BF 72 23"),F("Remote control unlock PRESSED (Key_battery_low)")},
+  44 05 BF 74 00 FF"),F("ignition off (Bordmonitor is shutdown after this message)")},
+  F0 03 68 01"),F("'I'm alive' from Bordmonitor to Radio every 10'th second")},//http://web.comhem.se/bengt-olof.swing/IBus.htm
+  00 04 BF 76 00"),F("ID:TURN_LIGHTS_OFF")},
+  00 04 BF 76 02"),F("ID:FLASH_WARN")},
+  00 04 BF 76 04"),F("ID:FLASH_LOW")},
+  00 04 BF 76 06"),F("ID:FLASH_LOW_WARN")},
+  00 04 BF 76 08"),F("ID:FLASH_HI")},
+  00 04 BF 76 0A"),F("ID:FLASH_HI_WARN")},
+  00 04 BF 76 0C"),F("ID:FLASH_LOW_HI")},
+  00 04 BF 76 0E"),F("ID:FLASH_LOW_HI_WARN")},
+  80 04 BF 11 03"),F("ID:FLASH_LOW_SMALL")},
+  00 04 BF 76 11"),F("ID:FLASH_TEST1")},
+  00 05 BF 7A 12 44"),F("Button lock")},
+  00 04 72 16 BF"),F("Pressed close button on remote control")},
+  00 04 72 26 BF"),F("pushed open button on remote control")},
+  00 05 00 0C 96 01"),F("open all")},
+  3F 05 00 0C 02 01"),F("Trunc Open")},
+  3F 05 00 0C 47 01"),F("Lock Driver")},
+  3F 05 00 0C 4E 01"),F("Clown 3sec")},  //CLOWN_FLASH
+  3F 05 00 0C 4F 01"),F("Lock 3")},
+  3F 05 00 0C 75 01"),F("Wrn Blnk 3sec")},
+  3F 05 00 0C 97 01"),F("Lock all")},
+//3B 06 80 40 01 0C 3B"),F("Full beam")},
+  68 05 80 41 01 01"),F("Request current time from IKE")},//REQUEST_TIME
+  5B 05 80 80 00 00"),F("A/C turn OFF")},
+  5B 05 80 83 80 00"),F("A/C turn ON")},
+  3B 03 80 01 B9"),F("IKE something0")},
+  7F 0B 80 1F 40 18 10 02 00 03 20 03"),F("IKE something1")},
+  7F 0B 80 1F 40 18 11 02 00 03 20 03"),F("IKE something2")},
+  7F 0B 80 1F 40 18 12 02 00 03 20 03"),F("IKE something3")},
+  7F 05 80 44 29 30"),F("300m")},
+//7F 05 80 44 29 10"),F("100m")},
+//7F 05 80 44 21 90"),F("90m")},
+//7F 05 80 44 21 10"),F("10m")},
+  7F 05 80 44 21 00"),F("0m")},
+//BF 03 80 16 2A"),F("Request mileage")},
+//C8 09 80 1A 00 30 20 35 30 20",
+//C8 0A 80 23 42 30 68 65 6C 6C 6F",
+  C8 05 80 23 41 20 0F"),F("clear screen")},
+  C8 0A 80 23 42 30 68 65 6C 6C 6F 00"),F("layout 42,62-Radio?,flags=bit4 CLS")},
+  3B 06 80 40 09 00 10"),F("set speed limit")},
+  3B 05 80 41 09 04"),F("ACTIVATE SPEEDLIMIT")},
+  3B 05 80 41 09 08"),F("DE-ACTIVITE SPEELIMIT")},
+//3B 05 80 41 09 04",
+  68 05 80 41 01 01"),F("Get time from OBC")},
+  //12  IKE sensor status request
+  //13  IKE sensor status
+  //1A  IKE Text/Gong
+  //1B  IKE text status
+  //44  E46 IKE text
+  7F 05 80 44 20 00"),F("Speedlimit stop")},
+  7F 05 80 44 21 70"),F("Speedlimit set")},
+//3F 0B BF 0C 00 00 00 00 00 00 00 06"),F("Wrn Blnk OFF?")},
+  3F 0B BF 0C 00 00 00 00 00 00 01 06"),F("Fog")},
+  3F 0B BF 0C 00 00 00 00 00 00 08 0C"),F("OK:rear light(right taillight)")},
+  3F 0B BF 0C 00 00 00 00 00 00 20 06"),F("Left Rear lights continuously")},
+  3F 0B BF 0C 00 00 00 00 00 00 80 06"),F("Right Rear turn signal lights continuously")},
+  3F 0B BF 0C 00 00 00 00 00 02 00 06"),F("Right front low beam")},
+  3F 0B BF 0C 00 00 00 00 00 04 00 06"),F("Left front low beam")},
+  3F 0B BF 0C 00 00 00 00 00 10 00 06"),F("Main beam left + low beams on both sides")},
+  3F 0B BF 0C 00 00 00 00 00 20 00 06"),F("high beams on both sides of the right low beam +")},
+  3F 0B BF 0C 00 00 00 00 00 40 00 06"),F("left tail light(constant left)")},
+  3F 0B BF 0C 00 00 00 00 01 00 00 06"),F("brake light above")},
+  3F 0B BF 0C 00 00 00 00 08 00 00 06"),F("OK:brake light left")},
+  3F 0B BF 0C 00 00 00 00 10 00 00 06"),F("OK:Brake Light Right")},
+  3F 0B BF 0C 00 00 00 00 20 00 00 06"),F("Left front turn signal lights continuously")},
+  3F 0B BF 0C 00 00 00 00 40 00 00 06"),F("OK:Right front Indicator lights continuously")},
+  3F 0B BF 0C 00 00 00 40 00 00 00 06"),F("OK:left parking light")},
+  3F 0B BF 0C 00 00 00 80 00 00 00 06"),F("OK:right parking light")},
+  3F 0B BF 0C 00 00 80 00 00 00 00 06"),F("ignition at low beam + beam (IKE + LCM)")},
+  3F 0B BF 0C 10 00 00 00 00 00 00 06"),F("low beam delayed front + rear")},
+  3F 0B BF 0C 20 00 00 00 00 00 00 06"),F("OK:hazard lights ON/OFF")},
+  D0 08 BF 5B 00 00 00 00 00"),F("Turnsig Stop")},
+  D0 08 BF 5B 04 00 00 00 00"),F("Lightsig highbeam")},
+  D0 08 BF 5B 20 00 04 00 00"),F("Turnsig Left Start")},
+  D0 08 BF 5B 40 00 04 00 00"),F("Turnsig Right Start")},
+  D0 08 BF 5B 60 00 04 00 00"),F("Turnsig Warn")},
+//76 04 BF 00 00 00"),F("off")},
+//76 04 BF 00 02 00"),F("warning")},//1<<1
+//76 04 BF 00 04 00"),F("low beam")},//1<<2
+//76 04 BF 00 08 00"),F("fade")},//1<<3
+//D0 08 BF 5B 00 00 04 00 00 58 00"),F("set Time")},//0x00 | 0x04
+  F0 03 D0 5D 7E"),F("Light dimmer status request")},
+  80 09 FF 24 09 00""210 "),F("SET SPEEDLIMIT TO 210")},
+  80 09 FF 24 09 00 20 35 30 20"),F("SET SPEEDLIMIT TO 50")},
+//80 09 FF 24 06 00 31 31 38 30"),F("SET SPEEDLIMIT TO 118")},
+//80 0C E7 24 01 00 31 39 3A 30 37 20 20"),
+//80 0C E7 24 01 00 31 39 3A 30 38 20 20"),
+//80 0C E7 24 01 00 31 39 3A 30 39 20 20"),
+//80 0E E7 24 0A 00 36 38 2E 37 20 4B 4D 2F 48"),
+};
+
+
+/*
+https://translate.google.com/translate?sl=de&tl=en&js=y&prev=_t&hl=en&ie=UTF-8&u=http%3A%2F%2Fwww.alextronic.de%2Fbmw%2Fprojects_bmw_info_ibus.html&edit-text=
+Describe the text line in the instrument cluster: ADDRESS 80 HEX
+
+Format of the message:
+<68 17 80 > 23 62 30 <Option> <Text in ASCII Hex> <XOR>
+Note: All characters that can be displayed in the text line must always be sent, otherwise the "old" characters will not be overwritten. Thus, the message length is always "17H".
+The message can be viewed with the following options:
+35 00 normal display
+37 01 Display text between two red files
+37 03 Display texts between two red, flashing files
+37 04 Display gong and text between two red, blinking files
+37 05 Show gong and text
+37 08 Gong I (without displaying a message)
+37 10 Gong II (without displaying a message)
+
+Control of body electronics
+Control unit messages for the E39 series: Address 00 Hex (Transmitter 3F Hex / DIS)
+<3F 05 00> 0C 00 44 <XOR> Close driver side window
+<3F 05 00> 0C 00 45 <XOR> Open driver side window
+<3F 05 00> 0C 00 46 <XOR> Close rear passenger side window
+<3F 05 00> 0C 00 47 <XOR> Open the rear passenger side window
+<3F 05 00> 0C 00 65 <XOR> open all windows
+<3F 05 00> 0C 00 66 <XOR> Open sunroof
+<3F 05 00> 0C 00 0B <XOR> Open / close central locking
+<3F 05 00> 0C 00 40 <XOR> Open the boot
+<3F 05 00> 0C 00 00 <XOR> Move driver's seat forward
+<3F 05 00> 0C 00 01 <XOR> Move driver's seat to the rear
+*/
+
+/*
+68 LL 3B A5 62 01 41  // Main radio field 41, field size 8
+68 LL 3B A5 62 01 42  // Main radio field 42, field size 7
+68 LL 3B A5 62 01 43  // Main radio field 43, field size 11
+68 LL 3B A5 62 01 44  // Main radio field 44, field size 7
+68 LL 3B A5 62 01 45  // Main radio field 45, field size 11
+68 LL 3B A5 62 01 06  // Main radio field 06, field size 18
+68 LL 3B A5 62 01 10  // Main radio field 06, field size ??
+//
+68 LL 3B 21 60 00 40  // menu field 1, field size 20
+68 LL 3B 21 60 00 41  // menu field 2, field size 20
+68 LL 3B 21 60 00 42  // menu field 3, field size 20
+68 LL 3B 21 60 00 43  // menu field 4, field size 20
+68 LL 3B 21 60 00 44  // menu field 5, field size 20
+//
+68 LL 3B 21 60 00 45  // menu field 6, field size 20
+68 LL 3B 21 60 00 46  // menu field 7, field size 20
+68 LL 3B 21 60 00 47  // menu field 8, field size 20
+68 LL 3B 21 60 00 48  // menu field 9, field size 20
+68 LL 3B 21 60 00 49  // menu field 10, field size 20
+*/
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+//
+// RAD display message header
+//
+const byte SL_HEADER [] PROGMEM                   = C8 00 80 23 42 32 }; // Single line radio display header
+//const byte SL_HEADER [] PROGMEM                 = 68 12 3B 23 62 10 41 }; // Single line radio display header
+//
+// NAV display message headers
+const byte RAD1 [] PROGMEM                        = 06 68 00 3B A5 62 01 };  // radio field headers
+const byte RAD2 [] PROGMEM                        = 06 68 00 3B 23 62 01  }; // Main radio text(AUX etc) header, field size 11
+const byte RAD3 [] PROGMEM                        = 05 68 00 3B 23 62  };       // Main radio text(AUX etc) header, field size 11
+const byte RAD0 [] PROGMEM                        = 41 42 43 44 45 06 10  }; // Indidvidual radio fields
+//                                              
+// Working                                      
+const byte MEN1 []  PROGMEM                       = 06 68 00 3B 21 60 00 }; // Main menu field header
+const byte MEN  [] PROGMEM                        = 40 41 42 43 44 45 46 47 48 49 }; // Indidvidual menu fields
+const byte MENP [] PROGMEM                        = 40 41 42 43 44 45 46 47 48 49 }; // Indidvidual menu fields - partial message
+const byte MENE [] PROGMEM                        = 00 01 02 03 04 05 06 07 08 09 }; // Indidvidual menu fields - end message
+
+//
+// NAV display message body
+const byte Menu_text_1 [] PROGMEM                 = 68 11 3B 21 60 00 40 41 72 74 69 73 74 20 4E 61 6D 65 };//0x6D // F0="Artist Name"
+const byte Menu_text_2 [] PROGMEM                 = 68 10 3B 21 60 00 41 54 72 61 63 6B 20 4E 61 6D 65 };//0x0B // F1="Track Name"
+const byte Menu_text_3 [] PROGMEM                 = 68 10 3B 21 60 00 42 41 6C 62 75 6D 20 4E 61 6D 65 };//0x10 // F2="Album Name"
+//                                              
+const byte Menu_text_4 [] PROGMEM                 = 68 0C 3B 21 60 00 45 6D 65 6E 75 20 34 };//0x5C // F5="menu 4"
+const byte Menu_text_5 [] PROGMEM                 = 68 0C 3B 21 60 00 46 6D 65 6E 75 20 35 };//0x5E // F6="menu 5"
+const byte Menu_text_6 [] PROGMEM                 = 68 0C 3B 21 60 00 07 6D 65 6E 75 20 36 };//0x1C // F7="menu 6"
+//                                              
+const byte Header_text_1 [] PROGMEM               = 68 0B 3B A5 62 01 41 20 20 20 20 20 };//0xFF //Blank
+const byte Header_text_2 [] PROGMEM               = 68 0B 3B A5 62 01 42 20 50 20 36 20 };//0x9A //p 6
+const byte Header_text_3 [] PROGMEM               = 68 0B 3B A5 62 01 43 20 20 20 20 20 };//0xFD //Blank ;
+const byte Header_text_4 [] PROGMEM               = 68 0B 3B A5 62 01 44 20 20 20 20 20 };//0xFA //Blank ;
+const byte Header_text_5 [] PROGMEM               = 68 0D 3B A5 62 01 45 20 20 20 20 20 20 20 };//0xFD //Blank
+const byte Header_text_6 [] PROGMEM               = 68 1A 3B A5 62 01 46 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 C9 }; //Blank
+const byte Header_text_7 [] PROGMEM               = 68 1A 3B A5 62 01 07 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 88 }; //Blank
+//                                              
+const char Menu_blank [] PROGMEM                  = {"               "};
+const byte Menu_black_0 [] PROGMEM                = 68 15 3B 21 60 00 40 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x67 // 40
+const byte Menu_black_1 [] PROGMEM                = 68 15 3B 21 60 00 41 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x66 // 41
+const byte Menu_black_2 [] PROGMEM                = 68 15 3B 21 60 00 42 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x65 // 42
+const byte Menu_black_3 [] PROGMEM                = 68 15 3B 21 60 00 43 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x64 // 43
+const byte Menu_black_4 [] PROGMEM                = 68 15 3B 21 60 00 44 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x63 // 44
+const byte Menu_black_5 [] PROGMEM                = 68 15 3B 21 60 00 45 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x62 // 45
+const byte Menu_black_6 [] PROGMEM                = 68 15 3B 21 60 00 46 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x61 // 46
+const byte Menu_black_7 [] PROGMEM                = 68 15 3B 21 60 00 47 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x60 // 47
+const byte Menu_black_8 [] PROGMEM                = 68 15 3B 21 60 00 48 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x6F // 48
+const byte Menu_black_9 [] PROGMEM                = 68 15 3B 21 60 00 49 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x6E // 49
+//
+// Nav screen display clear screen items
+//
+const byte CLS [] PROGMEM                         = 68 04 3B 46 0C }; //0x1D >> Clear screen
+const byte UPDATE [] PROGMEM                      = 68 06 3B A5 62 01 00 }; //0x93 >> Clear screen
+
+// Nav message responses
+//
+const byte Screen_Text_Receive_1 [] PROGMEM       = 3B 05 68 22 00 00 };//0x74 //1 Screen Text messages received
+const byte Screen_Text_Receive_2 [] PROGMEM       = 3B 05 68 22 00 01 };//0x75 //2 Screen Text messages received
+const byte Screen_Text_Receive_3 [] PROGMEM       = 3B 05 68 22 00 02 };//0x76 //3 Screen Text messages received
+const byte Screen_Text_Receive_4 [] PROGMEM       = 3B 05 68 22 00 03 };//0x77 //4 Screen Text messages received
+const byte Screen_Text_Receive_5 [] PROGMEM       = 3B 05 68 22 00 04 };//0x70 //5 Screen Text messages received
+const byte Screen_Text_Receive_6 [] PROGMEM       = 3B 05 68 22 00 05 };//0x71 //6 Screen Text messages received
+const byte Screen_Text_Receive_7 [] PROGMEM       = 3B 05 68 22 00 06 };//0x72 //7 Screen Text messages received
+                                                  
+const byte Screen_Text_End_Message [] PROGMEM     = 68 06 3B A5 62 01 00 };//0x93 // Screen end text
+                                                  
+const byte Menu_Text_Receive_1 [] PROGMEM         = 3B 05 68 22 00 FF };//0x8B //1 Menu Text messages received
+const byte Menu_Text_Receive_2 [] PROGMEM         = 3B 05 68 22 01 FF };//0x8A //2 Menu Text messages received
+const byte Menu_Text_Receive_3 [] PROGMEM         = 3B 05 68 22 02 FF };//0x89 //3 Menu Text messages received
+const byte Menu_Text_Receive_4 [] PROGMEM         = 3B 05 68 22 03 FF };//0x88 //4 Menu Text messages received
+const byte Menu_Text_Receive_5 [] PROGMEM         = 3B 05 68 22 04 FF };//0x8F //5 Menu Text messages received
+const byte Menu_Text_Receive_6 [] PROGMEM         = 3B 05 68 22 05 FF };//0x8E //6 Menu Text messages received
+const byte Menu_Text_Receive_7 [] PROGMEM         = 3B 05 68 22 06 FF };//0x8D //7 Menu Text messages received
+const byte Menu_Text_Receive_8 [] PROGMEM         = 3B 05 68 22 07 FF };//0x8C //8 Menu Text messages received
+const byte Menu_Text_Receive_9 [] PROGMEM         = 3B 05 68 22 08 FF };//0x83 //9 Menu Text messages received
+const byte Menu_Text_Receive_10[] PROGMEM         = 3B 05 68 22 09 FF };//0x82 //10 Menu Text messages received
+                                                  
+const byte Menu_Text_End_Message [] PROGMEM       = 68 06 3B A5 60 01 00};//0x91 // Menu end text
+//
+// Misc diplay commands.
+//
+// Nav screen display items Main screen top
+//
+const byte AUX [] PROGMEM                         = 68 12 3B 23 62 10 41 55 58 20 20 20 20 20 20 20 20 20 20 };//0x5C //  AUX 68 12 3B 23 62 10 41 55 58 20 20 20 20 20 20 20 20 20 20 5C
+const byte AUX_MODE [] PROGMEM                    = 68 12 3B 23 62 10 41 55 58 20 4D 6F 64 65 20 20 20 20 20 };//0x7F //  AUX Mode
+//                                               
+const byte A2DP [] PROGMEM                        = {0x68 0D 3B 23 62 10 42 54 20 41 32 44 50 20 7E}; // A2DP
+const byte SETUP[] PROGMEM                        = {0x68 10 3B 21 60 00 40 2D 20 53 65 74 75 70 20 2D 06 03}; // SETUP
+//                                               
+const byte Radio[] PROGMEM                        = {0x68 0b 3B a5 62 01 41 20 20 46 4d 20}; // RAIDO
+const byte TAPE[] PROGMEM                         = {0x68 12 3B 23 62 10 4E 4f 20 54 41 50 45 20 20 20 20 20 20 31}; // SETUP
+//
+// Now playing text
+const byte Menu_text_NP [] PROGMEM                = 2D 20 4E 6F 77 20 50 6C 61 79 69 6E 67 20 2D }; // F0="- Now Playing -"
+//
+const byte TV_IN_A [] PROGMEM                     = ED 05 F0 4F 11 12 };//0x54 // TV in
+const byte TV_IN_B [] PROGMEM                     = ED 05 F0 4F 11 11 };//0x57 // TV in
+const byte TV_IN_C [] PROGMEM                     = 3B 05 68 4E 01 00 };//0x19 // TV in
+const byte TV_OUT [] PROGMEM                      = ED 05 F0 4F 12 11 };//0x54 // TV out
+const byte TV_OUT_B [] PROGMEM                    = 3B 05 BB 4F 02 00 };//0xC8 // TV out
+// Clears AUX screen menu lines
+//
+const byte Radio_display_text_1 [] PROGMEM        = 68 0B 3B A5 62 01 41 20 20 20 20 20 };//0xFF //Blank
+const byte Radio_display_text_2 [] PROGMEM        = 68 0B 3B A5 62 01 42 20 20 20 20 20 };//0xFC //Blank
+const byte Radio_display_text_3 [] PROGMEM        = 68 0B 3B A5 62 01 43 20 20 20 20 20 };//0xFD //Blank ;
+const byte Radio_display_text_4 [] PROGMEM        = 68 0B 3B A5 62 01 44 20 20 20 20 20 };//0xFA //Blank ;
+const byte Radio_display_text_5 [] PROGMEM        = 68 0D 3B A5 62 01 45 20 20 20 20 20 20 20 };//0xFD //Blank
+const byte Radio_display_text_6 [] PROGMEM        = 68 1A 3B A5 62 01 46 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0xC9 //Blank
+//
+// his \/ must be sent as its the end text cmd
+const byte Screen_text_Radio_end [] PROGMEM       = 68 1A 3B A5 62 01 07 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 20 };//0x88 //Blank
+const byte Screen_text_Radio_End_Close []         = 68 06 3B A5 62 01 00 };//0x93 // Radio end text
+//
+// NAV display message body close
+//
+const byte Screen_text_menu_End [] PROGMEM        = 68 06 3B A5 60 01 00 };//0x91 // end text
+const byte Screen_text_menu_End_Close [] PROGMEM  = 68 07 3B A5 60 01 00 00 };//0x90 // end text
+//
+// IBUS message definitions. Add/Remove as needed.
+//
+const byte KEY_IN [] PROGMEM                      = 44 05 BF 74 04 00 };//0x8E // Ignition key in
+const byte KEY_OUT [] PROGMEM                     = 44 05 BF 74 00 FF };//0x75 // Ignition key out
+//                                               
+const byte IGNITION_OFF [] PROGMEM                = 80 04 BF 11 00 };//0x2A // Ignition Off
+const byte IGNITION_POS1 [] PROGMEM               = 80 04 BF 11 01 };//0x2B // Ignition Acc position - POS1
+const byte IGNITION_POS2 [] PROGMEM               = 80 04 BF 11 03 };//0x29 // Ignition On position - POS2
+//                                                                                         
+const byte REMOTE_UNLOCK [] PROGMEM               = 00 04 BF 72 22 };//0xEB // Remote control unlock
+const byte REMOTE_LOCK [] PROGMEM                 = 00 04 BF 72 12 };//0xDB // Remote control lock
+const byte REMOTE_UNLOCK_BOOT [] PROGMEM          = 00 04 BF 72 42 };//0x8B // Remote Boot unlock
+//                                                                                         
+const byte POWER_OFF [] PROGMEM                   = 68 04 F0 4A 00 };//0xD6 // Power off
+//                                                                                         
+const byte PDC_ON [] PROGMEM                      = 3F 04 60 0C 80 };//0xD7 // PDC On
+const byte PDC_OFF [] PROGMEM                     = 3F 04 60 0C 40 };//0x17 // PDC Off
+//
+// Right side menu press
+const byte BT_Selected [] PROGMEM                 = 3B 06 68 31 60 00 01 };//0x05 //menu knob BT 3B 06 68 31 60 00 01 05
+const byte DAB_Selected [] PROGMEM                = 3B 06 68 31 60 00 02 };//0x06 //menu knob DAB
+const byte AUX_In_Selected [] PROGMEM             = 3B 06 68 31 60 00 03 };//0x07 //menu knob AUX-In
+const byte Main_Menu [] PROGMEM                   = 3B 06 68 31 60 00 09 };//0x0D //menu knob Menu
+const byte Main_Menu_Release [] PROGMEM           = 3B 06 68 31 60 00 49 };//0x4D //menu knob Menu relase
+const byte Display_Toggle [] PROGMEM              = F0 04 68 48 30 };//0xE4 //display toggle
+const byte Radio_display_off [] PROGMEM           = 68 04 3b 46 02 };//0x13 //display toggle
+const byte display_off [] PROGMEM                 = 7f 04 43 ab 21 };//0x2b //display toggle
+//                                                                                           
+//  Nav Screen buttons                                                                       
+//
+// Left Side
+const byte ROTARY_VOL_UP [] PROGMEM               = F0 04 68 32 11 };//0xBF // knob Volume Up
+const byte ROTARY_VOL_DOWN [] PROGMEM             = F0 04 68 32 10 };//0xBE // knob Volume Down
+const byte ROTARY_VOL_PRESS [] PROGMEM            = F0 04 3B 48 06 };//0xD2 // knob VOL press
+const byte ROTARY_VOL_PRESS_REL [] PROGMEM        = F0 04 68 48 86 };//0x52 // knob Vol press
+const byte ROTARY_VOL_PRESS_LONG [] PROGMEM       = F0 04 68 48 46 };//0x92 // knob Vol press long
+//                                                                                         
+const byte MODE [] PROGMEM                        = F0 04 68 48 23 };//0xF7 // MODE
+const byte MODE_REL [] PROGMEM                    = F0 04 68 48 A3 };//0x77 // MODE
+//                                                
+const byte INFO [] PROGMEM                        = F0 05 FF 47 00 38 };//0x75 // INFO
+const byte INFO_LONG [] PROGMEM                   = F0 05 FF 47 00 78 };//0x35 // INFO LONG
+const byte INFO_RELEASE [] PROGMEM                = F0 05 FF 47 00 B8 };//0xF5 // INFO RELEASE
+//                                                
+const byte BMBT_1 [] PROGMEM                      = F0 04 68 48 11 };//0xC5 // one
+const byte BMBT_2 [] PROGMEM                      = F0 04 68 48 01 };//0xD5 // two
+const byte BMBT_3 [] PROGMEM                      = F0 04 68 48 12 };//0xC6 // three
+const byte BMBT_4 [] PROGMEM                      = F0 04 68 48 02 };//0xD6 // four
+const byte BMBT_5 [] PROGMEM                      = F0 04 68 48 13 };//0xC7 // five
+const byte BMBT_6 [] PROGMEM                      = F0 04 68 48 03 };//0xD7 // six
+//                                                                                         
+const byte BMBT_1_REL [] PROGMEM                  = F0 04 68 48 91 };//0x45
+const byte BMBT_2_REL [] PROGMEM                  = F0 04 68 48 81 };//0x55
+const byte BMBT_3_REL [] PROGMEM                  = F0 04 68 48 92 };//0x46
+const byte BMBT_4_REL [] PROGMEM                  = F0 04 68 48 82 };//0x56
+const byte BMBT_5_REL [] PROGMEM                  = F0 04 68 48 93 };//0x47
+const byte BMBT_6_REL [] PROGMEM                  = F0 04 68 48 83 };//0x57
+//                                                
+// Right side                                     
+const byte ROTARY_MENU_CW [] PROGMEM              = F0 04 3B 49 81 };//0x07 // menu knob cw turn F0 04 3B 49 81 07
+const byte ROTARY_MENU_CCW [] PROGMEM             = F0 04 3B 49 01 };//0x87 // menu knob cw turn F0 04 3B 49 01 87
+const byte ROTARY_MENU_PRESS [] PROGMEM           = F0 04 3B 48 05 };//0x82 // menu knob press
+const byte ROTARY_MENU_PRESS_REL [] PROGMEM       = F0 04 3B 48 05 };//0x82 // menu knob press
+const byte ROTARY_MENU_PRESS_LONG [] PROGMEM      = F0 04 3B 48 45 };//0xC2 // menu knob press long
+//                                                                                         
+const byte MENU [] PROGMEM                        = F0 04 FF 48 B4 };//0xF7 // menu
+const byte FWD [] PROGMEM                         = F0 04 68 48 00 };//0xD4 // >> FWD
+const byte REV [] PROGMEM                         = F0 04 68 48 10 };//0xC4 // << REV
+const byte CLOCK [] PROGMEM                       = F0 04 FF 48 07 };//0x44 // clock
+const byte TAPE_DIR [] PROGMEM                    = F0 04 68 48 14 };//0xC0 // tape rev
+const byte TAPE_DIR_LONG [] PROGMEM               = F0 04 68 48 54 };//0x80 // tape rev long F0 04 68 48 54 80
+const byte SEL [] PROGMEM                         = F0 05 FF 47 00 0F };//0x42 // sel
+const byte TONE [] PROGMEM                        = F0 04 68 48 04 };//0xD0 // TONE
+//                                                                                         
+const byte MENU_REL [] PROGMEM                    = F0 04 FF 48 B4 };//0xF7 // menu release
+const byte FWD_REL [] PROGMEM                     = F0 04 68 48 80 };//0x54 // >> FWD release
+const byte REV_REL [] PROGMEM                     = F0 04 68 48 90 };//0x44 // << REV release
+const byte CLOCK_REL [] PROGMEM                   = F0 04 FF 48 87 };//0xC4 // clock release
+const byte TAPE_DIR_REL [] PROGMEM                = F0 04 68 48 94 };//0x40 // tape rev release
+const byte SEL_REL [] PROGMEM                     = F0 05 FF 47 00 8F };//0xC2 // sel release
+const byte TONE_REL [] PROGMEM                    = F0 04 68 48 84 };//0x50 // TONE release
+//
+///////////////////////////////////////////////////////////////////////////////////////////////////////
+//
+const byte MFL_VOL_UP [] PROGMEM                  = 50 04 68 32 11 };//0x1F // Steering wheel Volume Up
+const byte MFL_VOL_DOWN [] PROGMEM                = 50 04 68 32 10 };//0x1E // Steering wheel Volume Down
+const byte MFL_SEARCH_UP [] PROGMEM               = 50 04 68 3B 01 };//0x06 // Steering wheel Search Up
+const byte MFL_SEARCH_DOWN [] PROGMEM             = 50 04 68 3B 08 };//0x0F // Steering wheel Search Down
+const byte MFL_TEL_VOL_UP [] PROGMEM              = 50 04 C8 32 11 };//0xBF // Steering wheel Volume Up - Telephone
+const byte MFL_TEL_VOL_DOWN [] PROGMEM            = 50 04 C8 32 10 };//0xBE // Steering wheel Volume Down - Telephone
+const byte MFL_SES_PRESS [] PROGMEM               = 50 04 B0 3B 80 };//0x5F // Steering wheel press and hold phone button
+const byte MFL_SEND_END_PRESS [] PROGMEM          = 50 04 C8 3B 80 };//0x27 // Steering wheel send/end press
+const byte MFL_RT_PRESS [] PROGMEM                = 50 04 68 3B 02 };//0x05 // MFL R/T press
+//                                                                                              
+const byte BUTTON_PRESSED [] PROGMEM              = 68 04 FF 3B 00 };//0xA8 // Radio/Telephone control, No_buttons_pressed
+const byte INCOMING_CALL [] PROGMEM               = C8 04 E7 2C 05 };//0x02 // Incoming phone call
+const byte PHONE_ON [] PROGMEM                    = C8 04 E7 2C 10 };//0x17 // Phone On
+const byte HANDSFREE_PHONE_ON [] PROGMEM          = C8 04 E7 2C 11 };//0x16 // Hands Free Phone On
+const byte TIVE_CALL [] PROGMEM                   = C8 04 E7 2C 33 };//0x34 // Active phone call
+//                                                
+const byte GO_TO_RADIO [] PROGMEM                 = 68 04 FF 3B 00 };//0xA8 // Go  to radio - I think
+const byte REQUEST_TIME [] PROGMEM                = 68 05 80 41 01 01 };//0xAC // Request current time from IKE
+const byte CLOWN_FLASH [] PROGMEM                 = 3F 05 00 0C 4E 01 };//0x79 // Turn on clown nose for 3 seconds
+const byte BACK_ONE [] PROGMEM                    = 68 05 18 38 08 00 };//0x45 // Back
+const byte BACK_TWO [] PROGMEM                    = 68 05 18 38 08 01 };//0x44 // Back
+const byte SELECT [] PROGMEM                      = 68 05 18 38 07 01 };//0x4B // Select
+//
+const byte DSP_STATUS_REQUEST [] PROGMEM          = 68 03 6A 01};// 0x00 // DSP status request
+const byte DSP_STATUS_REPLY [] PROGMEM            = 6A 04 FF 02 00 };//0x93 // DSP status reply
+const byte DSP_STATUS_REPLY_RST [] PROGMEM        = 6A 04 FF 02 01 };//0x92 // DSP status ready after reset to LOC
+const byte DSP_VOL_UP_1 [] PROGMEM                = 68 04 6A 32 11 };//0x25 // Rotary Volume Up 1 step
+const byte DSP_VOL_UP_2 [] PROGMEM                = 68 04 6A 32 21 };//0x15 // Rotary Volume Up 2 step
+const byte DSP_VOL_UP_3 [] PROGMEM                = 68 04 6A 32 31 };//0x05 // Rotary Volume Up 3 step
+const byte DSP_VOL_DOWN_1 [] PROGMEM              = 68 04 6A 32 10 };//0x24 // Rotary Volume Down 1 step
+const byte DSP_VOL_DOWN_2 [] PROGMEM              = 68 04 6A 32 20 };//0x14 // Rotary Volume Down 2 step
+const byte DSP_VOL_DOWN_3 [] PROGMEM              = 68 04 6A 32 30 };//0x04 // Rotary Volume Down 3 step
+const byte DSP_FUNC_0 [] PROGMEM                  = 68 04 6A 36 30 };//0x00 // DSP_Function 0
+const byte DSP_FUNC_1 [] PROGMEM                  = 68 04 6A 36 E1 };//0xD1 // DSP_Function 1
+const byte DSP_FUNC_2 [] PROGMEM                  = 68 04 6A 36 E2 };//0xD2 // DSP_Function 2
+const byte DSP_SRCE_OFF [] PROGMEM                = 68 04 6A 36 AF };//0x9F // DSP Source = OFF
+const byte DSP_SRCE_CD [] PROGMEM                 = 68 04 6A 36 A0 };//0x90 // DSP Source = CD
+const byte DSP_SRCE_TUNER [] PROGMEM              = 68 04 6A 36 A1 };//0x91 // DSP Source = Tuner
+//                                               
+const byte CD_STOP [] PROGMEM                     = 68 05 18 38 01 00 };//0x4C // CD Stop command
+const byte CD_PLAY [] PROGMEM                     = 68 05 18 38 03 00 };//0x4E // CD Play command
+const byte CD_PAUSE [] PROGMEM                    = 68 05 18 38 02 00 };//0x4F // CD Pause command
+const byte CD_STOP_STATUS [] PROGMEM              = 18 0A 68 39 00 02 00 3F 00 07 01 };//0x78 // CD stop request
+const byte CD_PLAY_STATUS [] PROGMEM              = 18 0A 68 39 02 09 00 3F 00 07 01 };//0x71 // CD play request
+const byte CD_PLAY_REPLY [] PROGMEM               = 18 0E 68 39 02 89 00 3F 00 07 01 00 01 01 01 };//0xF4 // CD play reply
+const byte CD_PAUSE_REPLY [] PROGMEM              = 18 0E 68 39 01 8C 00 3F 00 07 01 00 01 01 01 };//0xF2 // CD pause reply
+const byte CD_STOP_REPLY [] PROGMEM               = 18 0E 68 39 00 82 00 3F 00 07 01 00 01 01 01 };//0xFD // CD stop reply
+//                                                                                                                                                     
+const byte CD_STATUS [] PROGMEM                   = 18 0E 68 39 00 82 00 3F 00 07 00 00 01 01 01 };//0xFC // CD status
+const byte CDC_LEFT [] PROGMEM                    = 68 05 18 38 0A 01 };//0x46 // CDC Left short press
+const byte CDC_LEFT_LONG [] PROGMEM               = 68 05 18 38 04 00 };//0x49 // CDC Left long press
+const byte CDC_RIGHT [] PROGMEM                   = 68 05 18 38 0A 00 };//0x47 // CDC Right short press
+const byte CDC_RIGHT_LONG [] PROGMEM              = 68 05 18 38 04 01 };//0x48 // CDC Right long press
+const byte CDC_BUTTON_1 [] PROGMEM                = 68 05 18 38 06 01 };//0x4A // CDC Button 1
+const byte CDC_BUTTON_2 [] PROGMEM                = 68 05 18 38 06 02 };//0x49 // CDC Button 2
+const byte CDC_BUTTON_3 [] PROGMEM                = 68 05 18 38 06 03 };//0x48 // CDC Button 3
+const byte CDC_BUTTON_4 [] PROGMEM                = 68 05 18 38 06 04 };//0x4F // CDC Button 4
+const byte CDC_BUTTON_5 [] PROGMEM                = 68 05 18 38 06 05 };//0x4E // CDC Button 5
+const byte CDC_BUTTON_6 [] PROGMEM                = 68 05 18 38 06 06 };//0x4D // CDC Button 6
+const byte CDC_STATUS_REPLY_RST [] PROGMEM        = 18 04 FF 02 01 };//0xE0       // CDC status ready after reset to LOC
+const byte CDC_STATUS_REPLY [] PROGMEM            = 18 04 FF 02 00 };//0xE1       // CDC status reply
+const byte CDC_STATUS_REQUEST [] PROGMEM          = 68 03 18 01 };//0x72             // CDC status request
+//
+const byte RT_PRESS [] PROGMEM                    = 50 04 FF 3B 40 };//0xD0       // MFL R/T press - activate SIRI
+const byte SDRS_STATUS_REPLY_RST [] PROGMEM       = 73 04 68 02 01 };//0x1C       // SDRS (Sirius) status ready after reset to LOC
+const byte SDRS_STATUS_REPLY [] PROGMEM           = 73 04 68 02 00 };//0x1D       // SDRS status request
+const byte SDRS_STATUS_REQUEST [] PROGMEM         = 68 03 73 01 };//0x19             // SDRS status request
+//                                               
+const byte SIRIUS_LEFT [] PROGMEM                 = 68 05 73 3D 03 00 };//0x20 // SDRS Left short press
+const byte SIRIUS_LEFT_LONG [] PROGMEM            = 68 05 73 3D 06 00 };//0x25 // SDRS Left long press
+const byte SIRIUS_RIGHT [] PROGMEM                = 68 05 73 3D 04 00 };//0x27 // SDRS Right short press
+const byte SIRIUS_RIGHT_LONG [] PROGMEM           = 68 05 73 3D 05 00 };//0x26 // SDRS Right long press
+const byte SIRIUS_BUTTON_1 [] PROGMEM             = 68 05 73 3D 08 01 };//0x2A // SDRS Button 1
+const byte SIRIUS_BUTTON_2 [] PROGMEM             = 68 05 73 3D 08 02 };//0x29 // SDRS Button 2
+const byte SIRIUS_BUTTON_3 [] PROGMEM             = 68 05 73 3D 08 03 };//0x28 // SDRS Button 3
+const byte SIRIUS_BUTTON_4 [] PROGMEM             = 68 05 73 3D 08 04 };//0x2F // SDRS Button 4
+const byte SIRIUS_BUTTON_5 [] PROGMEM             = 68 05 73 3D 08 05 };//0x2E // SDRS Button 5
+const byte SIRIUS_BUTTON_6 [] PROGMEM             = 68 05 73 3D 08 06 };//0x2D // SDRS Button 6
+const byte SIRIUS_OFF [] PROGMEM                  = 68 05 73 3D 01 00 };//0x22 // press MODE to leave Sirius mode
+const byte SIRIUS_ON [] PROGMEM                   = 68 05 73 3D 02 00 };//0x21 // press MODE to enter Sirius mode
+//
+const byte VOL_INCREMENT [64] PROGMEM             = 00 44 46 48 4A 4C 4E 50,
+                                                    52 54 56 58 5A 5C 5E 60,
+                                                    62 64 66 68 6A 6C 6E 70,
+                                                    72 74 76 78 7A 7C 7E 80,
+                                                    82 84 86 88 8A 8C 8E 90,
+                                                    92 94 96 98 9A 9C 9E A0,
+                                                    A2 A4 A6 A8 AA AC AE B0,
+                                                    B2 B4 B6 B8 BA BC BE C0}; // Volume increments
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+const byte cdc_rad_devstatready [] PROGMEM        = 18 04 68 02 00 };// 0x76
+const byte cdc_rad_cdstatstoppause [] PROGMEM     = 18 0A 68 39 00 02 00 3F 00 01 01 };// 0x7E
+const byte cdc_rad_cdstatplaypause [] PROGMEM     = 18 0A 68 39 02 02 00 3F 00 01 01 };// 0x7C
+const byte cdc_rad_cdstatplayplay [] PROGMEM      = 18 0A 68 39 02 09 00 3F 00 01 01 };// 0x77
+
+const byte dis_glo_opentrunk [] PROGMEM           = 3F 05 00 0C 02 01 };
+const byte dis_lcm_foglights [] PROGMEM           = 3F 0B BF 0C 00 00 00 00 00 00 01 06 };
+const byte dis_lcm_righttaillight [] PROGMEM      = 3F 0B BF 0C 00 00 00 00 00 00 08 0C };
+const byte dis_lcm_lefttaillight [] PROGMEM       = 3F 0B BF 0C 00 00 00 00 00 40 00 06 };
+
+const byte unk_lcm_keyremove [] PROGMEM           = 44 05 BF 74 00 FF };//0x75 //key removed
+const byte unk_lcm_keyinsert [] PROGMEM           = 44 05 BF 74 04 01 };//0x8F //key 1 inserted
+
+const byte mfl_rad_rt [] PROGMEM                  = 50 03 C8 01 };//0x9A
+const byte mfl_rad_pushfwd [] PROGMEM             = 50 04 68 3B 01 };
+const byte mfl_rad_pushbwd [] PROGMEM             = 50 04 68 3B 08 };
+const byte mfl_rad_relfwd [] PROGMEM              = 50 04 68 3B 21 };
+const byte mfl_rad_relbwd [] PROGMEM              = 50 04 68 3B 28 };
+const byte mfl_rad_speakhold [] PROGMEM           = 50 04 C8 3B 90 };//0x37
+const byte mfl_rad_speakrelease [] PROGMEM        = 50 04 C8 3B A0 };//0x07
+
+const byte rad_cdc_devstatusrequest [] PROGMEM    = 68 03 18 01 };//0x72
+const byte rad_cdc_cdcontrolstatrequest [] PROGMEM= 68 05 18 38 00 00 };//0x4D
+const byte rad_cdc_cdcontrolmode7fuct00 [] PROGMEM= 68 05 18 38 07 00 };//0x4A
+const byte rad_cdc_cdcontrolrandomoff [] PROGMEM  = 68 05 18 38 08 00 };//0x45
+
+const byte tel_ike_clrscr [] PROGMEM              = C8 05 80 23 41 20 };
+
+const byte turnsig_stop [] PROGMEM                = D0 08 BF 5B 00 00 00 00 00 };//0x3C
+const byte lightsig_highbeam [] PROGMEM           = D0 08 BF 5B 04 00 00 00 00 };//0x38
+const byte turnsig_left_start [] PROGMEM          = D0 08 BF 5B 20 00 04 00 00 };//0x18
+const byte turnsig_right_start [] PROGMEM         = D0 08 BF 5B 40 00 04 00 00 };//0x78
+const byte turnsig_warn [] PROGMEM                = D0 08 BF 5B 60 00 04 00 00 };//0x58

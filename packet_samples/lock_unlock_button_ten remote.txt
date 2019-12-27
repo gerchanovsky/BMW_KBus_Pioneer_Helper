@@ -1,0 +1,28 @@
+Broadcast->GLO: 00 05 BF 7A 22 44 A6 
+Broadcast->GLO: 00 05 BF 7A 12 44 96 
+GM5: Remote control key 6 code=unlock
+Broadcast->GLO: 00 04 BF 72 26 EF 
+Broadcast->GLO: 00 05 BF 7A 52 44 D6 
+GM5: Remote control key 6 code=6
+Broadcast->GLO: 00 04 BF 72 06 CF 
+GM5: Remote control key 6 code=lock
+Broadcast->GLO: 00 04 BF 72 16 DF 
+Broadcast->GLO: 00 05 BF 7A 72 44 F6 
+Broadcast->GLO: 00 05 BF 7A 32 44 B6 
+Broadcast->GLO: 00 04 BF 76 02 CF 
+Broadcast->GLO: 00 04 BF 76 00 CD 
+Broadcast->EWS: 00 06 44 73 00 00 80 B1 
+EWS: Ignition key:?,??
+EWS->GLO: 44 05 BF 74 00 FF 75 
+GM5: Remote control key 6 code=6
+Broadcast->GLO: 00 04 BF 72 06 CF 
+GM5: Remote control key 6 code=unlock
+Broadcast->GLO: 00 04 BF 72 26 EF 
+Broadcast->GLO: 00 05 BF 7A 12 44 96 
+Broadcast->GLO: 00 05 BF 7A 52 44 D6 
+Broadcast->GLO: 00 04 BF 76 02 CF 
+Broadcast->GLO: 00 04 BF 76 00 CD 
+Broadcast->GLO: 00 04 BF 76 02 CF 
+Broadcast->GLO: 00 04 BF 76 00 CD 
+GM5: Remote control key 6 code=6
+Broadcast->GLO: 00 04 BF 72 06 CF 
