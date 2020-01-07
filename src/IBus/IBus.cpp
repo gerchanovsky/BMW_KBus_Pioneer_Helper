@@ -227,7 +227,7 @@ void IBus::sendIbus()
 {
   int8_t len = sendBuffer.pop();
 #ifdef TX_DEBUG
-  debug->printf("Sending %d/%d bytes: ", len, sendBuffer.available());
+  debug->printf("Sending %d bytes(avail=%d): ", len, sendBuffer.available());
   sendBuffer.dump(len);
 #endif
   while (len-->0) {

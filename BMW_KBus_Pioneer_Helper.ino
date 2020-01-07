@@ -99,8 +99,8 @@ typedef enum : uint8_t {
   TAG_DIMMER_RLS,
   TAG_DIMMER_LCM,
   TAG_DBL_PRESS_RT,
-  TAG_DBL_PRESS_DIAL,
-  TAG_LONG_PRESS_DIAL,
+  TAG_DBL_PRESS_TALK,
+  TAG_LONG_PRESS_TALK,
   TAG_IKE_SWEEP,
   TAG_IKE_HELLO,
   TAG_CLOSE_HOOD
@@ -175,6 +175,9 @@ class pinClass {
         digitalWrite(pin, inverse ^ LOW);
         onDisable(tag);
       }
+    }
+    bool isEnabled(const byte tag) {
+      return (on&(1<<tag))!=0;
     }
     virtual void onEnable(const byte tag) const {}
     virtual void onDisable(const byte tag) const {}
@@ -481,14 +484,13 @@ typedef enum : byte {
   MFL_RELEASE,
   MFL_UNKNOWN
 } MFL_PRESS_TYPE;
-/*
-static const char* const press_str[] = {
-  "Press",
-  "Hold",
-  "Release",
-  "Unknown"
-};
-*/
+
+static const char *press2str(register const byte t)
+{
+  return (t==MFL_PRESS)?"Press":
+         (t==MFL_HOLD)?"Hold":
+         (t==MFL_RELEASE)?"Release":"Unknown";
+}
 
 #include <SPI.h>
 
@@ -581,9 +583,10 @@ static void release()
 #define PRESS_TIME_KEEP    0
 #define PRESS_TIME_SHORT  70
 #define PRESS_TIME_LONG 2500
+#define PRESS_TIME_SIRI 1000
 
 #define RT_DBL_PRESS_TIME   600
-#define DIAL_DBL_PRESS_TIME 500
+#define TALK_DBL_PRESS_TIME 500
 
 static void press(const PIONEER_BTN btn, unsigned int t = 0)
 {
@@ -597,9 +600,10 @@ static void press(const PIONEER_BTN btn, unsigned int t = 0)
     Scheduler::del(TAG_WIRED_RELEASE);
 }
 
-static void pressRT()
+static void pressRT(const byte data1)
 {
-  debugSerial.print("\r\nRT button\r\n");
+  debugSerial.printf("R/T pressed (data=0x%02X)", data1);
+  bool off = (data1==0);
   if (Scheduler::del(TAG_DBL_PRESS_RT)) {
     press(DISP, PRESS_TIME_SHORT);
   } else {
@@ -609,39 +613,53 @@ static void pressRT()
   }
 }
 
-static void pressDial(const MFL_PRESS_TYPE state)
+static void pressTalk(const MFL_PRESS_TYPE state)
 {
-  static bool hold_dial = false;
-  debugSerial.printf("\r\nDial button (%d)\r\n",state);
+  static bool hold_talk = false;
+  debugSerial.printf("Talk button %s", press2str(state));
   switch (state) {
   case MFL_PRESS:
-    hold_dial = false;
-    Scheduler::add(TAG_LONG_PRESS_DIAL, 500, [] (byte) {
-      hold_dial = true;
-      Scheduler::del(TAG_DBL_PRESS_DIAL);
+    hold_talk = false;
+    //
+    Scheduler::add(TAG_LONG_PRESS_TALK, 500, [] (byte) {
+      hold_talk = true;
+      Scheduler::del(TAG_DBL_PRESS_TALK);
       press(VOICE_CTRL);
     });
+    //
     break;
   case MFL_HOLD: // never happen :-(
-    hold_dial = true;
-    Scheduler::del(TAG_DBL_PRESS_DIAL);
+    Scheduler::del(TAG_LONG_PRESS_TALK);
+    hold_talk = true;
+    Scheduler::del(TAG_DBL_PRESS_TALK);
     press(VOICE_CTRL);
     break;
   case MFL_RELEASE:
   default:
-    Scheduler::del(TAG_LONG_PRESS_DIAL);
-    if (hold_dial) {
-      hold_dial = false;
+    Scheduler::del(TAG_LONG_PRESS_TALK);
+    if (hold_talk) {
+      hold_talk = false;
       release();//Voice control
-    } else if (/*current_speed_mph<10 || */Scheduler::del(TAG_DBL_PRESS_DIAL)) {
+    } else if (/*current_speed_mph<10 || */Scheduler::del(TAG_DBL_PRESS_TALK)) {
       press(DISP, PRESS_TIME_LONG); // escape from camera
     } else {
-      Scheduler::add(TAG_DBL_PRESS_DIAL, DIAL_DBL_PRESS_TIME, [] (byte) {
+      Scheduler::add(TAG_DBL_PRESS_TALK, TALK_DBL_PRESS_TIME, [] (byte) {
         press(MUTE, PRESS_TIME_SHORT);
       });
     }
   }
 }
+
+static void pressNav(const MFL_PRESS_TYPE state, bool next)
+{
+  debugSerial.printf("Nаvigation button %s %s", next?"Next":"Prev", press2str(state));
+  switch (state) {
+  case MFL_PRESS:  PioneerRemote::press(next?NEXT:PREV);break;
+  case MFL_HOLD:   /*debugSerial.print("Hold MFL");*/break;
+  case MFL_RELEASE:
+  default:         PioneerRemote::release();
+  }
+}          
 
 static inline void setup()
 {
@@ -752,8 +770,8 @@ typedef enum : byte {
   IGN_MASK  = 7,
 } IGN_TYPES;
 
-static byte ignition = IGN_OFF;
 static bool skip_RT = true;
+static byte ignition = IGN_OFF;
 
 #define BACKCAM_SWITCH_TIME 100
 typedef enum : byte {
@@ -762,9 +780,9 @@ typedef enum : byte {
   TRIGGER_DOOR_OPEN  = (1<<1),
   TRIGGER_DOOR_CLOSE = (1<<2),
   TRIGGER_START      = (1<<3),
-  TRIGGER_LETSGO  = (TRIGGER_ENABLE|TRIGGER_DOOR_OPEN|TRIGGER_DOOR_CLOSE|TRIGGER_START),
-  TRIGGER_GOODBYE = (TRIGGER_ENABLE|TRIGGER_DOOR_OPEN|TRIGGER_DOOR_CLOSE|TRIGGER_START),
-  TRIGGER_HELLO   = (TRIGGER_ENABLE|TRIGGER_DOOR_OPEN|TRIGGER_DOOR_CLOSE),
+  TRIGGER_LETSGO  = (TRIGGER_ENABLE/*|TRIGGER_DOOR_OPEN*/|TRIGGER_DOOR_CLOSE|TRIGGER_START),
+  TRIGGER_GOODBYE = (TRIGGER_ENABLE/*|TRIGGER_DOOR_OPEN*/|TRIGGER_DOOR_CLOSE|TRIGGER_START),
+  TRIGGER_HELLO   = (TRIGGER_ENABLE/*|TRIGGER_DOOR_OPEN*/|TRIGGER_DOOR_CLOSE),
 } TRIGGER_FLAGS;
 static byte play_letsgo  = TRIGGER_ENABLE;
 static byte play_hello   = TRIGGER_ENABLE;
@@ -797,9 +815,6 @@ static inline void gear_switch(byte b)
   if (gear == gear_new)
     return;
   switch (gear_new) {
-  case GEAR_P:
-    check_hood_msg = true;
-    break;
   case GEAR_R:
     if (check_hood_msg && hood_open) {
 //ds2 car contour
@@ -827,13 +842,16 @@ static inline void gear_switch(byte b)
             backupCam.enable(TAG_IKE_REVERSE);
             ibus.write_kbus((const byte[]){ 0x3F, 0x05, 0x00, 0x0C, 0x4E, 0x01 });//0x79 // Turn on clown nose for 3 seconds
       } );
-      break;
+    break;
+  case GEAR_P:
+    check_hood_msg = true;
+//    break;
   default:
     Scheduler::del(TAG_IKE_REVERSE);
     audioMute.disable(TAG_IKE_REVERSE);
     if (backupCam.on && gear_new < GEAR_R)
       backupCam.disable(TAG_IKE_REVERSE);
-    if ((gear_new == GEAR_D) && (play_letsgo==TRIGGER_LETSGO)) {
+    if ((gear_new == GEAR_D) && ((play_letsgo&TRIGGER_LETSGO)==TRIGGER_LETSGO)) {
       Speaker::play(Speaker::LETS_GO);
       play_letsgo = TRIGGER_STOP;
     }
@@ -892,7 +910,7 @@ static inline void update_ignition(byte data1)
     if ((data1==IGN_ACC) && (ignition==IGN_OFF)) {
       debugSerial.print("*Turn accessory power* ");
       skip_RT = true;
-      if (play_hello == TRIGGER_HELLO) {
+      if ((play_hello&TRIGGER_HELLO)==TRIGGER_HELLO) {
         play_hello = TRIGGER_STOP;
         Speaker::play(Speaker::HELLO);
         Scheduler::add(TAG_IKE_SWEEP, 500, [] (byte) {
@@ -995,7 +1013,7 @@ Unlocking:
     //driver door open or closed
     if (data1&1) {//open
       debugSerial.print("Driver's DOOR OPEN ");
-      if (play_goodbye==TRIGGER_GOODBYE) {
+      if ((play_goodbye&TRIGGER_GOODBYE)==TRIGGER_GOODBYE) {
         play_goodbye = TRIGGER_STOP;
         Speaker::play(Speaker::GOOD_BYE);
       }
@@ -1254,14 +1272,14 @@ The message can be viewed with the following options:
     }
     break;
   case 0x50://src==MFL
-    if (dst!=0x68)// && dst!=0xB0 && dst!=0xC8 && dst!=0xFF) //TEL,RAD,SES or 0xFF
-      break;
+    //if (dst!=0x68 && dst!=0xB0 && dst!=0xC8 && dst!=0xFF) //TEL,RAD,SES or 0xFF
+    //  break;
     switch (msg) {
     case 0x01://ping
       //50 03 C8 01  -> TEL
       //50 03 B0 01  -> SES
       {
-        debugSerial.print("(Send pong back to MFL)");
+        debugSerial.print("Ping. Sending pong");
         //TEL --> MFL : Device status ready Bit3 Assist_ready_after_Reset Bit5
         //byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x38 };//https://xoutpost.com/electronics/bluetooth/81491-retrofit-bluetoth-using-tcu-ece-european-us-x5-e53.html
         //byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x30 };//http://bmwraspcontrol.de/board/printthread.php?tid=343&page=5
@@ -1280,36 +1298,40 @@ The message can be viewed with the following options:
         //const byte tel_ready[] = { dst, 0x04, 0xBF, 0x02, 0x01 };
         //ibus.write_kbus(tel_ready);
         //byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x00 };
-        const byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x38 };
+        const byte tel_reply[] = { dst, 0x04, 0x50, 0x02, 0x78 };
         ibus.write_kbus(tel_reply);
       }
       return;
     case 0x3B:
       switch (data1&0xCF) {//button code
-      case 0x00://R/T 50 04 68 3B 02    switch to Radio
-      case 0x02://R/T 50 04 68 3B 02 MFL R/T press
-      case 0x40://R/T 50 04 FF 3B 40 D0 switch to Telephone Siri (RT_PRESS)
-                // 50 04 C8 3B 40
-                // 50 04 FF 3B 40 MFL R/T press - activate SIRI
-        if (skip_RT)
+      case 0x00://R/T 50 04 68 3B 02 CK: switch to Radio
+      case 0x02://R/T 50 04 68 3B 02 CK: MFL R/T press
+      case 0x40://R/T 50 04 FF 3B 40 CK: switch to Telephone Siri (RT_PRESS)
+                //    50 04 C8 3B 40 CK:
+                //    50 04 FF 3B 40 CK: MFL R/T press - activate SIRI
+        if (skip_RT) {
           skip_RT = false; // on TEL detection MFL will send RT to switch to RAD
-        else
-          PioneerRemote::pressRT();
-        break;//return;
+          debugSerial.print("ignore R/T button");
+        } else {
+          PioneerRemote::pressRT(data1);
+        }
+        break;
 #define CODE2PRESS(code) (MFL_PRESS_TYPE)((code>>4)&3)
-      case 0x80://Dial
-        PioneerRemote::pressDial(CODE2PRESS(data1));
+      case 0x80://Talk
+        if (turn_signal && backupCam.isEnabled(TAG_TURN_LCM)) {
+          if (CODE2PRESS(data1)==MFL_RELEASE)
+            backupCam.disable(TAG_TURN_LCM);
+        } else {
+          PioneerRemote::pressTalk(CODE2PRESS(data1));
+        }
         return;
       case 0x01://Next/FF
       case 0x08://Prev/Rew
-        switch (CODE2PRESS(data1)) {
-        case MFL_PRESS:  PioneerRemote::press((data1&1)?PioneerRemote::NEXT:PioneerRemote::PREV);break;
-        case MFL_HOLD:   debugSerial.println("Hold MFL"); break;
-        case MFL_RELEASE:
-        default:         PioneerRemote::release();
-        }
+        PioneerRemote::pressNav(CODE2PRESS(data1), (data1&1)!=0);
         return;
 #undef CODE2PRESS
+      default:
+        debugSerial.printf("Unknown button=0x%02X", data1);
       }
       break;
     case 0x32: // Vol+/Vol-
