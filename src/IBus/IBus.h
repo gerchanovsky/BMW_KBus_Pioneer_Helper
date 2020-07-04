@@ -196,7 +196,7 @@ private:
 
     IbusPacketHandler_t *pPacketHandler = NULL;
     IbusSendCallback_t *pSendCallback = NULL;
-    HardwareSerial &ibusSerial;
+    HardwareSerial &uart;
 };
 
 #define IBUS_BUF_SIZE 32

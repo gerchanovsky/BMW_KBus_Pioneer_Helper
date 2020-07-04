@@ -1,0 +1,95 @@
+﻿https://recom-power.com/pdf/Innoline-2008/R-78xx-0.5.pdf
+
+https://forum.arduino.cc/index.php?topic=13345.0
+
+Absolutely not:  that circuit is doomed.  Sooner or later the car will generate a voltage spike that fries it.
+
+But there's a simple protection circuit that will almost completely eliminate that risk.
+
+Start with a diode (any old 1N4000-series will do) in serieds with the positive supply to protect against negative spikes.  Follow that with a series resistor chosen to drop about 1-2V at the maximum expected current draw (i.e.,  if you're going to use about 200mA,  use an 8-10 Ohm).  Then add a Zener in the 20-30V range to ground.  The resistor and Zener will absorb any big positive spikes.
+
+If you replace the 7809 in your example circuit with a 7808,  you'll have a nice clean 8V going into the Arduino while the car is stopped or the engine is running.  However,  while the engine is being cranked to start it,  the car's voltage will sag quite a bit (8V is considered "acceptable" under those conditions),  so the 7808 will drop out of regulation,  and the Arduino will almost certainly reset itself.
+
+If you're not hooking up much to the Arduino,  and it's not using much power,  you can eliminate the 7808.  If you are,  it's probably better to keep it,  so you're dissipating more of the waste heat from linear regulation off the board.
+-----------------
+
+You can also use TVS diodes or Varistors.
+http://www.maxim-ic.com/appnotes.cfm/an_pk/4240
+
+It´s a 14 Vrms (S14K14)=> http://uk.rs-online.com/web/search/searchBrowseAction.html?method=searchProducts&searchTerm=204-1902&x=16&y=7
+EPCOS Standard Series Metal Oxide Varistor 9.95nF 10A, Clamping 43V, Varistor 22V
+
+-----------------
+In this thread:
+http://www.arduino.cc/cgi-bin/yabb2/YaBB.pl?num=1236735887/15
+there is a picture of a protection circuit for a car mounted project. You can try it.
+Also Mike has some ideas in his pages:
+http://www.thebox.myzen.co.uk/Tutorial/Protection.html
+-----------------
+
+I believe some credit is deserved for the Arduino design as it includes reverse voltage protection, ripple suppression capacitors and the 7805 power regulator is in itself a very robust chip with several protection schemes included. Keep in mind also that a car battery acts as a gigantic capacitor with excellent noise/ripple suppression.
+-----------------
+I´ve tested in a car and bike without problems. I´ve only added a varistor between Vcc and Gnd.
+How BenF said, the diode for reverse voltage protection and capacitor is already in the pcb.
+
+-----------------
+Car Keypad
+https://forum.arduino.cc/index.php?topic=7497.0
+----------
+Thanks!
+PowerSupply.jpg
+So the 1N diode keeps the current from flowing backwards, the zener diode would cut out voltages above 15v, and the choke would clean up the power a bit.  What exactly do the two different caps do?  Decoupling to clean up the power?  Something else?
+
+I assume that everything to the right of C3 I should ignore, as I don't want to reduce the voltage to 5v?
+-------
+Yes, you dont need C3,IC1,C2 when it should only protect  ;)
+L1 blocks HF noise (should be 2A cappable).
+the 1N makes in case somebody messed up the polarity a safety, and in case the input drops it prevents the C1 from getting discharged. 
+D2, can also be a 20V type, this limits the voltage.
+C1 (Ultra Low ESR) smoothens out small ripple.
+C3 could be removed, but im used to always put C3 and C2 with a 7805  :)
+--------
+Would this work for L1?
+http://www.mouser.com/Search/ProductDetail.aspx?qs=sGAEpiMZZMsg%252by3WlYCkUzVCd1mk%252bcol1TAFnl1vgYE%3d
+And for C1, can I use a ceramic here, or only electrolytic?  I'm thinking of longevity and temperature sensitivity, but I'm not terribly sure of when I can use one.  If ceramics are non-polar, can they always replace the others, but not the other way around (like when dealing with AC)?
+----
+Edit:
+Ok, here's the cart I'm looking at, ignore the amounts:
+http://www.mouser.com/ProjectManager/ProjectDetail.aspx?AccessID=e91ded73b4 
+https://www.mouser.com/ProjectManager/ProjectDetail.aspx?AccessID=e91ded73b4
+
+Mouser #:	581-06033A221JAT2A	
+Mfr. #:	06033A221JAT2A
+Manufacturer:	AVX
+Desc.:	Multilayer Ceramic Capacitors MLCC - SMD/SMT 25V 220pF C0G 0603 5%
+
+Mouser #:	512-1N4744A	
+Mfr. #:	1N4744A
+Manufacturer:	ON Semiconductor
+Zener Diodes 15V 1W ZENER 5%
+
+https://www.mouser.com/ProductDetail/?qs=sGAEpiMZZMsg%252by3WlYCkUzVCd1mk%252bcol1TAFnl1vgYE%3D
+Mouser #:	434-11-400M	
+Mfr. #:	MESC-400M-00
+Manufacturer:	Fastron
+Fixed Inductors RFI COIL 40uH 2A
+
+I may not have room for that choke on the board!
+--------
+
+yes, that L1 looks good! 
+
+for C1 it should be a ultra low ESR electrolytic. Thats becouse they are like the "fastest" and you can get them with big F values.
+elextrolytic is fine, as long as you dont take the super cheap ones.
+my C1: http://shop.conrad.at/ce/de/product/445903/KONDENSATORULTRA-LOW-ESR220F35V
+its rated with 6000h at 105°C, that should be enough...
+
+in your chart you have a 220pF, what should be a 220µF  ;)
+and with a 20V zener diode your still safe but it will not be so close to trigger unwanted (14,4V is quite common in a car)
+
+thats how this looks in my prototype:
+------
+Edit:
+Ok, here's my cart, take 2.
+http://www.mouser.com/ProjectManager/ProjectDetail.aspx?AccessID=52fca78cf3
+

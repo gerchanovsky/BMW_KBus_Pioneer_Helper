@@ -43,7 +43,7 @@ void printHex(Print &print, const byte *buffer, int8_t length, const char *termi
   print.print(terminator);
 }
 
-IBus::IBus(HardwareSerial &newIbusSerial, const byte senSta) : ibusSerial(newIbusSerial)
+IBus::IBus(HardwareSerial &newIbusSerial, const byte senSta) : uart(newIbusSerial)
 {
   senStaPin = senSta;
   debug = &Serial;
@@ -52,17 +52,25 @@ IBus::IBus(HardwareSerial &newIbusSerial, const byte senSta) : ibusSerial(newIbu
 void IBus::begin(Print &newIbusDebug, IbusPacketHandler_t newHandler)
 {
   debug = &newIbusDebug;
-  ibusSerial.begin(9600, SERIAL_8E1); // ibus always 9600 8E1
-  ibusSerial.setRxBufferSize(1024);
+  uart.begin(9600, SERIAL_8E1); // ibus always 9600 8E1
+#ifdef ESP32
+  uart.setRxBufferSize(1024);
+#elif TEENSYDUINO
+  uart.attachCts(senStaPin);
+//  uart.transmitterEnable(senStaPin);
+#endif
+
   pPacketHandler = newHandler;
 
+#if TEENSYDUINO
   pinMode(senStaPin, INPUT);
   clearToSend = (digitalRead(senStaPin)==LOW);
-
+#endif
   clearToSendTarget = 0;
   packetGapTarget = millis()+PACKET_GAP_MS;
 
   attachInterrupt(digitalPinToInterrupt(senStaPin), startTimerISR, CHANGE);
+  Serial.printf("IBus Transmission buffer size: %d\n", uart.availableForWrite());
 }
 
 //========================
@@ -122,9 +130,9 @@ void IBus::writeCS(const byte *message, int8_t len)
 bool IBus::readIbus()
 {
 #if 1
-  register int available = ibusSerial.available();
+  register int available = uart.available();
   while (available-->0)
-    recvBuffer.push((byte)ibusSerial.read());
+    recvBuffer.push((byte)uart.read());
   while ((available = recvBuffer.available()) >= 4) {
 
     int length = recvBuffer.peek(IBUS_LEN);
@@ -214,8 +222,8 @@ bool IBus::readIbus()
   }
 #else
   static int pos = 0;
-  while (ibusSerial.available()>0) {
-    byte b=ibusSerial.read();
+  while (uart.available()>0) {
+    byte b=uart.read();
     printHex(*debug, b);
     if (((++pos) % 32)==0) debug->println();
   }
@@ -232,6 +240,6 @@ void IBus::sendIbus()
 #endif
   while (len-->0) {
     byte b = sendBuffer.pop();
-    ibusSerial.write(b); // write byte to IBUS.
+    uart.write(b); // write byte to IBUS.
   }
 }

@@ -1,0 +1,26 @@
+DigiPots
+DS1803-100 i2c digital pot
+MCP4131
+
+AD8400
+
+https://www.digikey.com/products/en/integrated-circuits-ics/data-acquisition-digital-potentiometers/717?k=DGT+POT+100k&k=&pkeyword=DGT+POT+100k&sv=1&pv1853=276932&sf=0&FV=16%7C294032%2C16%7C96863%2C154%7C406106%2C-8%7C717&quantity=&ColumnSort=0&page=1&stock=1&pageSize=25
+
+MCP41100-E/P
+MCP41100-I/P
+MCP4151-104E/P
+MCP4152-104E/P
+MCP4161-104E/P
+
+2 pots
+MCP42100-E/P
+MCP4251-104E/P
+MCP4261-104E/P
+
+http://matthewcmcmillan.blogspot.com/2013/10/arduino-using-digital-potentiometers.html
+
+The Fritzing diagram is available here: https://github.com/matt448/arduino/raw/master/SPI_Digital_Pot_AD8403/SPI_Digital_Pot_AD8403.fzz
+
+Code
+The most update to date version of the code is available here: https://github.com/matt448/arduino/blob/master/SPI_Digital_Pot_AD8403/SPI_Digital_Pot_AD8403.ino
+

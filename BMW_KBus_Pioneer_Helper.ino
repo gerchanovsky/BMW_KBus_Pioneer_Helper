@@ -245,7 +245,11 @@ static IRAM_ATTR void busyISR()
 
 static inline void setup()
 {
+#ifdef ESP32
   mp3.begin(PIN_JQ6500_RX, PIN_JQ6500_TX);
+#else
+  mp3.begin();
+#endif
   mp3.setVolume(30);
   mp3.setSource(JQ6500::SRC_FLASH);
   //mp3.setEqualizer(EQ_NORMAL);
@@ -530,7 +534,7 @@ static const char* const remote_str[] = {
   "Volume(+)",
   "Volume(-)",
   "Enter/Select",
-  "Band",
+  "Band/Esc",   //when streaming over BT serves "Play"
   //shift
   "Tel.Menu",
   "Tel.Answer",
@@ -542,11 +546,21 @@ static const char* const remote_str[] = {
   "UNK4",
   "VoiceCtrl"
 };
+// Pioneer wired remote info
+// http://jvde.net/comment/150
+// http://jvde.net/node/7
+// https://forum.arduino.cc/index.php?topic=230068.15
+//The wired remote interface is internally composed of a pull-up (10k) and a series resistor of 1k to the analogue input (Tip) as well as to the digital input (Ring). 
+//I have this information from the circuit diagram inside the service manual of the DEH-5200-SD.
+//+1K inline to ADC then +10K to 3.3V inside f unit
+//SHIFT:+1K inline to ADC then +100K to 3.3V inside f unit
+//For the analogue input, the internal pull-up and the series/external resistor form a voltage divider which is evaluated by AD-converter. The nominal thresholds apparently are 17.5/25/32.5/40/47.5/55/62.5/70/77.5/85% of the respective microcontroller supply (5V in older HUs, 3,3V in newer ones).
+//To ensure safe operation of the "shift" (ring) functions, it is recommended to use shottky diodes instead of 1N4148 to reduce the undesired voltage offset to be able to use the same resistors as for the equivalent Tip function. Otherwise the resistors need to be lowered due to the diode's forward voltage.
 static const byte btn_val[] = {
-  3,   //1.22K
-  9,   //4.18K  10
-  15,  //6.05K  15
-  21,  //8.27K  21
+  3,   // 1.22K
+  9,   // 4.18K 10
+  15,  // 6.05K 15
+  21,  // 8.27K 21
   30,  //11.64K 29
   42,  //16.12K 40
   63,  //23.17K 57
